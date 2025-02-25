@@ -13,6 +13,11 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Minsan',
+        url: '/dashboard',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
