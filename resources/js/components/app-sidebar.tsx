@@ -30,15 +30,15 @@ const data = {
       items: [
         {
           title: "Users",
-          url: "#",
+          url: "/dashboard",
         },
         {
           title: "Roles",
-          url: "#",
+          url: "/settings/password",
         },
         {
           title: "Permissions",
-          url: "#",
+          url: "/settings/appearance",
         },
       ],
     },
