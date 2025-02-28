@@ -38,19 +38,29 @@ export function NavMain({
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    const updatedOpenMenus: Record<string, boolean> = {};
-    items.forEach((item) => {
-      if (item.items?.some((subItem) => subItem.url === currentUrl)) {
-        updatedOpenMenus[item.title] = true; // Open parent menu if any submenu is active
-      }
+    setOpenMenus((prev) => {
+      const updatedOpenMenus = { ...prev };
+
+      items.forEach((item) => {
+        if (item.items?.some((subItem) => {
+          // Extract base path, ignoring query parameters
+          const baseSubItemUrl = new URL(subItem.url, window.location.origin).pathname;
+          const baseCurrentUrl = new URL(currentUrl, window.location.origin).pathname;
+
+          return baseSubItemUrl === baseCurrentUrl;
+        })) {
+          updatedOpenMenus[item.title] = true; // Keep parent menu open
+        }
+      });
+
+      return updatedOpenMenus;
     });
-    setOpenMenus(updatedOpenMenus);
   }, [currentUrl, items]);
 
   const toggleMenu = (title: string) => {
     setOpenMenus((prev) => ({
       ...prev,
-      [title]: !prev[title],
+      [title]: !prev[title], // Toggle open state
     }));
   };
 
@@ -66,28 +76,32 @@ export function NavMain({
                   <SidebarMenuButton tooltip={item.title}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    <ChevronRight className={`ml-auto transition-transform duration-200 ${openMenus[item.title] ? "rotate-90" : ""}`} />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <SidebarMenuSub>
-                    {item.items.map((subItem) => (
-                      <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild isActive={subItem.url === currentUrl}>
-                          <Link href={subItem.url}>
-                            <span>{subItem.title}</span>
-                          </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))}
+                    {item.items.map((subItem) => {
+                      const isActive = new URL(subItem.url, window.location.origin).pathname ===
+                        new URL(currentUrl, window.location.origin).pathname;
+
+                      return (
+                        <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubButton asChild isActive={isActive}>
+                            <Link href={subItem.url}>
+                              <span>{subItem.title}</span>
+                            </Link>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      );
+                    })}
                   </SidebarMenuSub>
                 </CollapsibleContent>
               </SidebarMenuItem>
             </Collapsible>
           ) : (
-            // Direct link if no sub-items
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild tooltip={item.title} isActive={item.url === currentUrl}>
+              <SidebarMenuButton asChild tooltip={item.title} isActive={new URL(item.url, window.location.origin).pathname === new URL(currentUrl, window.location.origin).pathname}>
                 <Link href={item.url} className="flex items-center gap-2 w-full px-2 py-1.5">
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
