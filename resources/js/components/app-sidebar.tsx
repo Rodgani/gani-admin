@@ -43,26 +43,9 @@ const data = {
       ],
     },
     {
-      title: "Models",
+      title: "Profile",
       url: "/settings/profile",
       icon: Bot,
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
     },
   ],
 }
