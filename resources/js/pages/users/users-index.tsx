@@ -99,8 +99,8 @@ export default function UserIndex({ users }: UserIndexProps) {
                         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                         className=""
                     />
-                    <Button onClick={handleSearch}>Search</Button>
-                    <Button onClick={() => setIsModalOpen(true)} className="ml-auto">
+                    <Button onClick={handleSearch} className='cursor-pointer'>Search</Button>
+                    <Button onClick={() => setIsModalOpen(true)} className="ml-auto cursor-pointer">
                         Add New User
                     </Button>
                 </div>
