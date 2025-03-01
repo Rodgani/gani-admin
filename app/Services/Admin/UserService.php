@@ -15,9 +15,17 @@ class UserService
      */
     public function users($request)
     {
-        return User::whereNot('id',Auth::user()->id)
-        ->orderBy('updated_at','desc')
-        ->paginate($request->per_page ?? 10);
+        $search = $request->search;
+
+        return User::whereNot('id', Auth::id()) // Exclude the logged-in user
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('updated_at', 'desc')
+            ->paginate($request->per_page ?? 10);
     }
     
     /**
@@ -38,5 +46,9 @@ class UserService
      */
     public function update($id,$request){
         return User::where('id',$id)->update($request);
+    }
+
+    public function store($request){
+        return User::create($request);
     }
 }

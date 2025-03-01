@@ -6,6 +6,8 @@ import { PaginatedUsers, User } from './user';
 import UserTable from './users-table';
 import { useState } from 'react';
 import UserFormModal from './users-form-modal';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -21,6 +23,15 @@ interface UserIndexProps {
 export default function UserIndex({ users }: UserIndexProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
+    const [search, setSearch] = useState<string>(""); // Make it a string
+
+    const handleSearch = () => {
+        router.get(
+            route('user.index'),
+            { search, page: users.current_page, per_page: 10 }, // Preserve pagination
+            { preserveState: true, preserveScroll: true }
+        );
+    };
 
     const handlePageChange = (page: number) => {
         if (page >= 1 && page <= users.last_page) {
@@ -78,7 +89,21 @@ export default function UserIndex({ users }: UserIndexProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users Management" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 rounded-xl border md:min-h-min">
+                <div className="">
+                <div className="flex items-center gap-2 mb-4">
+                    <Input
+                        type="text"
+                        placeholder="Search users..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                        className=""
+                    />
+                    <Button onClick={handleSearch}>Search</Button>
+                    <Button onClick={() => setIsModalOpen(true)} className="ml-auto">
+                        Add New User
+                    </Button>
+                </div>
                     <UserTable users={users} handlePageChange={handlePageChange} handleDelete={handleDelete} handleEdit={handleEdit} />
                 </div>
             </div>
