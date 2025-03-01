@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Users\UserCreateRequest;
 use App\Http\Requests\Admin\Users\UserUpdateRequest;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
@@ -46,7 +47,17 @@ class UserController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update($id,UserUpdateRequest $request){
-        $this->service->update($id,$request->all());
+        $this->service->update($id,$request->validated());
         return Redirect::route('user.index')->with('success', 'User updated successfully.');
+    }
+
+    /**
+     * Summary of store
+     * @param \App\Http\Requests\Admin\Users\UserCreateRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(UserCreateRequest $request){
+        $this->service->store($request->validated());
+        return Redirect::route('user.index')->with('success',  'User created successfully.');
     }
 }

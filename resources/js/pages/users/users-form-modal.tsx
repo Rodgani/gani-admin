@@ -9,28 +9,27 @@ interface UserFormModalProps {
     isOpen: boolean;
     onClose: () => void;
     user?: User;
-    onSubmit: (formData: { name: string; email: string }, userId?: number) => void;
+    onSubmit: (formData: { name: string; email: string; password?: string; password_confirmation?: string }, userId?: number) => void;
 }
 
-
 export default function UserFormModal({ isOpen, onClose, user, onSubmit }: UserFormModalProps) {
-    // const [formData, setFormData] = useState({
-    //     name: '',
-    //     email: '',
-    // });
-    const [formData, setFormData] = useState<{ name: string; email: string }>({
+    const [formData, setFormData] = useState<{ name: string; email: string; password?: string; password_confirmation?: string }>({
         name: '',
         email: '',
-      });
-      
+        password: '',
+        password_confirmation: ''
+    });
+
     useEffect(() => {
         if (user) {
             setFormData({
                 name: user.name,
                 email: user.email,
+                password: '', // Keep it empty for existing users
+                password_confirmation: '' // Keep it empty for existing users
             });
         } else {
-            setFormData({ name: '', email: '' });
+            setFormData({ name: '', email: '', password: '', password_confirmation: '' });
         }
     }, [user]);
 
@@ -39,7 +38,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit }: UserF
             ...prev!,
             [e.target.name]: e.target.value,
         }));
-    };    
+    };
 
     const handleSubmit = () => {
         onSubmit(formData, user?.id); // Pass user ID if it exists
@@ -56,8 +55,16 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit }: UserF
                     </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
-                    <Input name="name" value={formData.name} onChange={handleChange} placeholder="Name" />
-                    <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required/>
+                    <Input name="name" value={formData.name} onChange={handleChange} placeholder="Name" required />
+                    <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
+                    
+                    {/* Show password fields only for new user creation */}
+                    {!user && (
+                        <>
+                            <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" required={!user} />
+                            <Input type="password" name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} placeholder="Confirm Password" required={!user} />
+                        </>
+                    )}
                 </div>
                 <DialogFooter>
                     <Button onClick={onClose} variant="outline">Cancel</Button>
