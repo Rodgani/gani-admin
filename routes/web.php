@@ -1,13 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('welcome');
-})->name('home');
-
 Route::middleware(['auth'])->group(function () {
+    Route::get('/', function () {
+        return Redirect::to('/login');
+    })->name('login');
+
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');

@@ -67,8 +67,8 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit }: UserF
                     )}
                 </div>
                 <DialogFooter>
-                    <Button onClick={onClose} variant="outline">Cancel</Button>
-                    <Button onClick={handleSubmit}>{user ? 'Update' : 'Create'}</Button>
+                    <Button onClick={onClose} variant="outline" className='cursor-pointer'>Cancel</Button>
+                    <Button onClick={handleSubmit} className='cursor-pointer'>{user ? 'Update' : 'Create'}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
