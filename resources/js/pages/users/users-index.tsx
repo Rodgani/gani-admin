@@ -8,6 +8,7 @@ import { useState } from 'react';
 import UserFormModal from './users-form-modal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { UserErrors } from './user-errors';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -18,9 +19,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface UserIndexProps {
     users: PaginatedUsers;
+    errors: UserErrors
 }
 
-export default function UserIndex({ users }: UserIndexProps) {
+export default function UserIndex({ users,errors }: UserIndexProps) {
+   
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
     const [search, setSearch] = useState<string>(""); // Make it a string
@@ -71,7 +74,6 @@ export default function UserIndex({ users }: UserIndexProps) {
             router.put(route('user.update', { id: userId }), formData, {
                 onSuccess: () => {
                     console.log('User updated successfully');
-                    closeModal()
                 },
             });
         } else {
@@ -79,35 +81,42 @@ export default function UserIndex({ users }: UserIndexProps) {
             router.post(route('user.store'), formData, {
                 onSuccess: () => {
                     console.log('User created successfully');
-                    closeModal()
                 },
             });
         }
+
+        if (Object.keys(errors).length === 0) {
+            closeModal();
+        }
+        
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users Management" />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="">
-                <div className="flex items-center gap-2 mb-4">
+            <div className="w-full">
+               
+                <div className="flex items-center py-4 gap-2 m-4">
                     <Input
                         type="text"
                         placeholder="Search users..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                        className=""
                     />
                     <Button onClick={handleSearch} className='cursor-pointer'>Search</Button>
                     <Button onClick={() => setIsModalOpen(true)} className="ml-auto cursor-pointer">
                         Add New User
                     </Button>
                 </div>
-                    <UserTable users={users} handlePageChange={handlePageChange} handleDelete={handleDelete} handleEdit={handleEdit} />
-                </div>
+                <UserTable 
+                    users={users} 
+                    handlePageChange={handlePageChange} 
+                    handleDelete={handleDelete} 
+                    handleEdit={handleEdit} 
+                />
             </div>
-            <UserFormModal isOpen={isModalOpen} onClose={closeModal} user={selectedUser}  onSubmit={handleSubmit} />
+            <UserFormModal isOpen={isModalOpen} onClose={closeModal} user={selectedUser}  onSubmit={handleSubmit} errors={errors} />
         </AppLayout>
     );
 }

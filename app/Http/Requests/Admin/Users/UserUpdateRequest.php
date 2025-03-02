@@ -21,9 +21,11 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = request("id");
+       
         return [
             "name" => "required",
-            "email" => "required|email"
+            "email" => "required|email|unique:users,email,$id,id"
         ];
     }
 }

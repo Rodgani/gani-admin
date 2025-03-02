@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -31,8 +30,8 @@ export default function UserTable({ users, handlePageChange, handleDelete,handle
   const { data, current_page, last_page, total } = users;
 
   return (
-    <div className="w-full">
-      <Table className="border">
+    <div className="m-4 border">
+      <Table>
         <TableCaption>List of Users</TableCaption>
         <TableHeader>
           <TableRow>
@@ -66,7 +65,7 @@ export default function UserTable({ users, handlePageChange, handleDelete,handle
       </Table>
 
       {/* Pagination */}
-      <Pagination className="mt-4">
+      <Pagination className="mt-4 mb-4">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
