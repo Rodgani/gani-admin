@@ -94,9 +94,7 @@ export default function UserIndex({ users,errors }: UserIndexProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users Management" />
-            <div className="w-full">
-               
-                <div className="flex items-center py-4 gap-2 m-4">
+            <div className="flex items-center py-4 gap-2 m-4">
                     <Input
                         type="text"
                         placeholder="Search users..."
@@ -115,7 +113,6 @@ export default function UserIndex({ users,errors }: UserIndexProps) {
                     handleDelete={handleDelete} 
                     handleEdit={handleEdit} 
                 />
-            </div>
             <UserFormModal isOpen={isModalOpen} onClose={closeModal} user={selectedUser}  onSubmit={handleSubmit} errors={errors} />
         </AppLayout>
     );
