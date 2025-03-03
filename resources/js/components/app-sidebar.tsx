@@ -1,8 +1,4 @@
 import * as React from "react"
-import {
-  Bot,
-  SquareTerminal,
-} from "lucide-react"
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
 import {
@@ -12,62 +8,33 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { Link } from "@inertiajs/react"
+import { Link, usePage } from "@inertiajs/react"
 import AppLogo from "./app-logo"
 import { Separator } from "./ui/separator"
-// This is sample data.
-const data = {
-  navMain: [
-    {
-      title: 'Dashboard',
-      href: '/dashboard',
-      icon: LayoutGrid,
-    },
-    {
-      title: 'Minsan',
-      url: '/dashboard',
-      icon: LayoutGrid,
-    },
-  ];
+import { NavItem } from "@/types"
+import { SquareTerminal, Bot, type LucideIcon } from "lucide-react"
 
-  const footerNavItems: NavItem[] = [
-    {
-      title: 'Repository',
-      href: 'https://github.com/laravel/react-starter-kit',
-      icon: Folder,
-    },
-    {
-      title: 'Documentation',
-      href: 'https://laravel.com/docs/starter-kits',
-      icon: BookOpen,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "Users",
-          url: "/admin/users",
-        },
-        {
-          title: "Roles",
-          url: "/settings/password",
-        },
-        {
-          title: "Permissions",
-          url: "/settings/appearance",
-        },
-      ],
-    },
-    {
-      title: "Profile",
-      url: "/settings/profile",
-      icon: Bot,
-    },
-  ],
+// Map icon names (as strings) to actual Lucide components
+const ICON_MAP: Record<string, LucideIcon> = {
+  SquareTerminal,
+  Bot,
+  // Add more icons if needed
 }
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { menus_permissions } = usePage().props as { menus_permissions?: NavItem[] };
+  const safeMenus: NavItem[] = Array.isArray(menus_permissions) ? menus_permissions : [];
+
+  // Convert icon strings to actual Lucide components
+  const processedMenus = safeMenus.map((menu) => ({
+    ...menu,
+    icon: menu.icon && typeof menu.icon === "string" ? ICON_MAP[menu.icon] : undefined, // Convert icon string to component
+    items: menu.items?.map((subItem) => ({
+      ...subItem,
+      icon: subItem.icon && typeof subItem.icon === "string" ? ICON_MAP[subItem.icon] : undefined,
+    })),
+  }));
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="flex" onClick={(e) => e.stopPropagation()}>
@@ -77,12 +44,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <Separator className="mt-2" />
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={processedMenus} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser />
       </SidebarFooter>
       <SidebarRail />
-    </Sidebar>
+    </Sidebar >
   )
 }

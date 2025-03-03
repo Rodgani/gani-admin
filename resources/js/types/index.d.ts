@@ -15,12 +15,15 @@ export interface NavGroup {
     items: NavItem[];
 }
 
-export interface NavItem {
-    title: string;
-    href: string;
-    icon?: LucideIcon | null;
-    isActive?: boolean;
-}
+
+export type NavItem = {
+  title: string;
+  url: string;
+  icon?: string; // Ensure icon is a string, not `LucideIcon`
+  isActive?: boolean;
+  items?: NavItem[]; // Nested menu items should also be of type `NavItem`
+};
+
 
 export interface SharedData {
     name: string;
