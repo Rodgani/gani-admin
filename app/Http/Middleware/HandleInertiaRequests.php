@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\Authorization\MenusPermissions;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -37,7 +38,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
-
+        $menusPermissions = new MenusPermissions();
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -45,6 +46,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'menus_permissions' => $menusPermissions()
         ];
     }
 }
