@@ -12,26 +12,25 @@ import { Link, usePage } from "@inertiajs/react"
 import AppLogo from "./app-logo"
 import { Separator } from "./ui/separator"
 import { NavItem } from "@/types"
-import { SquareTerminal, Bot, type LucideIcon } from "lucide-react"
-
-// Map icon names (as strings) to actual Lucide components
-const ICON_MAP: Record<string, LucideIcon> = {
-  SquareTerminal,
-  Bot,
-  // Add more icons if needed
-}
+import { icons, type LucideIcon } from "lucide-react" // Import all Lucide icons
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { menus_permissions } = usePage().props as { menus_permissions?: NavItem[] };
   const safeMenus: NavItem[] = Array.isArray(menus_permissions) ? menus_permissions : [];
 
-  // Convert icon strings to actual Lucide components
+  // Function to dynamically get an icon from Lucide
+  const getIcon = (iconName?: string): LucideIcon | undefined => {
+    if (!iconName) return undefined;
+    return icons[iconName as keyof typeof icons] || undefined;
+  };
+
+  // Process menus and convert icon names to actual components
   const processedMenus = safeMenus.map((menu) => ({
     ...menu,
-    icon: menu.icon && typeof menu.icon === "string" ? ICON_MAP[menu.icon] : undefined, // Convert icon string to component
+    icon: getIcon(menu.icon),
     items: menu.items?.map((subItem) => ({
       ...subItem,
-      icon: subItem.icon && typeof subItem.icon === "string" ? ICON_MAP[subItem.icon] : undefined,
+      icon: getIcon(subItem.icon),
     })),
   }));
 
