@@ -25,7 +25,8 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors}
     const errorObject = {
         name:'',
         email: '', 
-        password: ''
+        password: '',
+        role_slug:''
     }
 
     const [visibleErrors, setVisibleErrors] = useState<UserErrors>(errorObject);
@@ -89,6 +90,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors}
                             {visibleErrors.name && <p>{visibleErrors.name}</p>}
                             {visibleErrors.email && <p>{visibleErrors.email}</p>}
                             {visibleErrors.password && <p>{visibleErrors.password}</p>}
+                            {visibleErrors.role_slug && <p>{visibleErrors.role_slug}</p>}
                         </div>
                     )}
                     {/* {errors.email && <p className="text-red-500">{errors.name}</p>}

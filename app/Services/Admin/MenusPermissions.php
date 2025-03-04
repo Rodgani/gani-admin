@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Authorization;
+namespace App\Services\Admin;
 
 class MenusPermissions
 {
@@ -8,6 +8,12 @@ class MenusPermissions
     {
 
         $menus = [
+            [
+                "title" => "Dashboard",
+                "url" => "/dashboard",
+                "icon" => "LayoutDashboard",
+                "permissions" => ["can-read", "can-create", "can-update", "can-delete"]
+            ],
             [
                 "title" => "Admin",
                 "url" => "#",
@@ -25,12 +31,6 @@ class MenusPermissions
                     ]
                 ]
             ],
-            [
-                "title" => "Profile",
-                "url" => "/settings/profile",
-                "icon" => "Bot",
-                "permissions" => ["can-read", "can-create", "can-update", "can-delete"]
-            ]
         ];
 
         return $menus;

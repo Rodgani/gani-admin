@@ -2,7 +2,7 @@
 
 namespace App\Services\Admin;
 
-use App\Models\User;
+use App\Models\Admin\User;
 use Illuminate\Support\Facades\Auth;
 
 class UserService
@@ -27,14 +27,14 @@ class UserService
             ->orderBy('updated_at', 'desc')
             ->paginate($request->per_page ?? 10);
     }
-    
+
     /**
      * Summary of destroy
      * @param mixed $id
      */
     public function destroy($id)
     {
-        $user = User::whereNot('id',Auth::user()->id)->findOrFail($id);
+        $user = User::whereNot('id', Auth::user()->id)->findOrFail($id);
         return $user->delete();
     }
 
@@ -44,11 +44,18 @@ class UserService
      * @param mixed $request
      * @return bool
      */
-    public function update($id,$request){
-        return User::where('id',$id)->update($request);
+    public function update($id, $request)
+    {
+        return User::where('id', $id)->update($request);
     }
 
-    public function store($request){
+    /**
+     * Summary of store
+     * @param mixed $request
+     * @return User
+     */
+    public function store($request)
+    {
         return User::create($request);
     }
 }
