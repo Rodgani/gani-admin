@@ -50,14 +50,15 @@ export default function UserIndex({ users,errors }: UserIndexProps) {
         if (window.confirm("Are you sure you want to delete this user?")) {
             router.delete(route("user.destroy", { id }), {
                 preserveScroll: true,
-                onSuccess: () => console.log("User deleted successfully"),
+                onSuccess: () => alert("User deleted successfully"),
+                onError: () => alert("User deleted successfully"),
             });
         }
     };
     
 
     const handleEdit = (user: User) => {
-        console.log(user)
+
         setSelectedUser(user || undefined)
         setIsModalOpen(true)
         // open modal pass the props
@@ -70,25 +71,16 @@ export default function UserIndex({ users,errors }: UserIndexProps) {
     
     const handleSubmit = (formData: { name: string; email: string }, userId?: number) => {
         if (userId) {
-            console.log('Updating user:', userId, formData);
             router.put(route('user.update', { id: userId }), formData, {
-                onSuccess: () => {
-                    console.log('User updated successfully');
-                },
+                onSuccess: () => alert('User updated successfully'),
+                onError: () =>  false,
             });
         } else {
-            console.log('Creating new user:', formData);
             router.post(route('user.store'), formData, {
-                onSuccess: () => {
-                    console.log('User created successfully');
-                },
+                onSuccess: () =>  alert('User created successfully'),
+                onError: () =>  false,
             });
         }
-
-        if (Object.keys(errors).length === 0) {
-            closeModal();
-        }
-        
     };
 
     return (

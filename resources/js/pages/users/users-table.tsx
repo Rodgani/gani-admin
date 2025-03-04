@@ -38,6 +38,9 @@ export default function UserTable({ users, handlePageChange, handleDelete,handle
             <TableHead>ID</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead>Updated At</TableHead>
+            <TableHead>Created At</TableHead>
             <TableHead className="text-center">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -47,17 +50,19 @@ export default function UserTable({ users, handlePageChange, handleDelete,handle
               <TableCell>{user.id}</TableCell>
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
+              <TableCell>{user.role_slug}</TableCell>
+              <TableCell>{user.updated_at}</TableCell>
+              <TableCell>{user.created_at}</TableCell>
               <TableCell className="flex justify-center gap-2">
                 <Button size="sm" variant="ghost" onClick={() => handleEdit(user)} className="cursor-pointer">Edit</Button>
                 <Button size="sm" variant="ghost" onClick={() => handleDelete(user.id)} className="cursor-pointer ">Delete</Button>
-                <Button size="sm" variant="ghost" onClick={() => {}} className="cursor-pointer">Set Privilege</Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={4} className="text-center font-medium">
+            <TableCell colSpan={7} className="text-center font-medium">
                   Showing {data.length} of {total} users
             </TableCell>
           </TableRow>
