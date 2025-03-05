@@ -15,11 +15,19 @@ interface UserFormModalProps {
 }
 
 export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors}: UserFormModalProps) {
-    const [formData, setFormData] = useState<{ name: string; email: string; password?: string; password_confirmation?: string }>({
+    console.log(errors)
+    const [formData, setFormData] = useState<{ 
+        name: string; 
+        email: string; 
+        password?: string; 
+        password_confirmation?: string 
+        role_slug: string
+    }>({
         name: '',
         email: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
+        role_slug:''
     });
 
     const errorObject = {
@@ -32,7 +40,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors}
     const [visibleErrors, setVisibleErrors] = useState<UserErrors>(errorObject);
 
     useEffect(() => {
-        setVisibleErrors(errors);
+        setVisibleErrors(errors); // Set errors only when they exist
         if (Object.keys(errors).length > 0) {
             const timer = setTimeout(() => setVisibleErrors(errorObject), 3000);
             return () => clearTimeout(timer);
@@ -45,13 +53,20 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors}
                 name: user.name,
                 email: user.email,
                 password: '', // Keep it empty for existing users
-                password_confirmation: '' // Keep it empty for existing users
+                password_confirmation: '', // Keep it empty for existing users,
+                role_slug:''
             });
         } else {
-            setFormData({ name: '', email: '', password: '', password_confirmation: '' });
+            setFormData({ 
+                name: '', 
+                email: '', 
+                password: '', 
+                password_confirmation: '',
+                role_slug:'' 
+            });
         }
     }, [user]);
-
+    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({
             ...prev!,
@@ -93,12 +108,9 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors}
                             {visibleErrors.role_slug && <p>{visibleErrors.role_slug}</p>}
                         </div>
                     )}
-                    {/* {errors.email && <p className="text-red-500">{errors.name}</p>}
-                    {errors.email && <p className="text-red-500">{errors.email}</p>}
-                    {errors.password && <p className="text-red-500">{errors.password}</p>} */}
                 </div>
                 <DialogFooter>
-                    <Button onClick={onClose} variant="outline" className='cursor-pointer'>Cancel</Button>
+                    <Button onClick={() => {onClose()}} variant="outline" className="cursor-pointer">Cancel</Button>
                     <Button onClick={handleSubmit} className='cursor-pointer'>{user ? 'Update' : 'Create'}</Button>
                 </DialogFooter>
             </DialogContent>
