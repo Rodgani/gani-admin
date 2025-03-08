@@ -5,7 +5,6 @@ namespace App\Models\Admin;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Carbon\Carbon;
-use Database\Factories\UsersFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,7 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role_slug'
     ];
 
     /**

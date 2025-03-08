@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Users\UserCreateRequest;
 use App\Http\Requests\Admin\Users\UserUpdateRequest;
+use App\Services\Admin\RoleService;
 use App\Services\Admin\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -15,18 +16,26 @@ class UserController extends Controller
     /**
      * Summary of __construct
      * @param \App\Services\Admin\UserService $service
+     * @param \App\Services\Admin\RoleService $roleService
      */
-    public function __construct(protected UserService $service){}
+    public function __construct(
+        protected UserService $service,
+        protected RoleService $roleService
+    ) {
+    }
 
     /**
      * Summary of userIndex
      * @param \Illuminate\Http\Request $request
      * @return \Inertia\Response
      */
-    public function userIndex(Request $request){
-        $data = $this->service->users($request);
-        return Inertia::render('users/users-index',[
-            "users" => $data
+    public function userIndex(Request $request)
+    {
+        $users = $this->service->users($request);
+        $roles = $this->roleService->roles();
+        return Inertia::render('users/users-index', [
+            "users" => $users,
+            "roles" => $roles
         ]);
     }
 
@@ -35,7 +44,8 @@ class UserController extends Controller
      * @param mixed $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id){
+    public function destroy($id)
+    {
         $this->service->destroy($id);
         return Redirect::route('user.index')->with('success', 'User deleted successfully.');
     }
@@ -46,8 +56,9 @@ class UserController extends Controller
      * @param \App\Http\Requests\Admin\Users\UserUpdateRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update($id,UserUpdateRequest $request){
-        $this->service->update($id,$request->validated());
+    public function update($id, UserUpdateRequest $request)
+    {
+        $this->service->update($id, $request->validated());
         return Redirect::route('user.index')->with('success', 'User updated successfully.');
     }
 
@@ -56,8 +67,9 @@ class UserController extends Controller
      * @param \App\Http\Requests\Admin\Users\UserCreateRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(UserCreateRequest $request){
+    public function store(UserCreateRequest $request)
+    {
         $this->service->store($request->validated());
-        return Redirect::route('user.index')->with('success',  'User created successfully.');
+        return Redirect::route('user.index')->with('success', 'User created successfully.');
     }
 }

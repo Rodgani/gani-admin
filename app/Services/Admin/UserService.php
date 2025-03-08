@@ -54,7 +54,7 @@ class UserService
      * @param mixed $request
      * @return User
      */
-    public function store($request)
+    public function store($request): User
     {
         return User::create($request);
     }
