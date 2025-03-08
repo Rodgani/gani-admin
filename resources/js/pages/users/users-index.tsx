@@ -8,6 +8,7 @@ import UserTable from './users-table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UserErrors } from './user-errors';
+import { PlusCircle } from 'lucide-react';
 
 // 🔥 Lazy load the modal
 const UserFormModal = lazy(() => import('./users-form-modal'));
@@ -19,9 +20,12 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface UserIndexProps {
     users: PaginatedUsers;
     errors: UserErrors;
+    roles: { name: string; slug: string }[]
+
 }
 
-export default function UserIndex({ users, errors }: UserIndexProps) {
+export default function UserIndex({ users, roles }: UserIndexProps) {
+  
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
     const [search, setSearch] = useState<string>("");
@@ -70,7 +74,6 @@ export default function UserIndex({ users, errors }: UserIndexProps) {
         if (userId) {
             router.put(route('user.update', { id: userId }), formData, {
                 onSuccess: () => {
-                    alert('User updated successfully');
                     setFormErrors(emptyErrors); // ✅ Reset errors on success
                 },
                 onError: (errors) => {
@@ -80,7 +83,6 @@ export default function UserIndex({ users, errors }: UserIndexProps) {
         } else {
             router.post(route('user.store'), formData, {
                 onSuccess: () => {
-                    alert('User created successfully');
                     setFormErrors(emptyErrors); // ✅ Reset errors on success
                 },
                 onError: (errors) => {
@@ -102,8 +104,8 @@ export default function UserIndex({ users, errors }: UserIndexProps) {
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
                 <Button onClick={handleSearch} className="cursor-pointer">Search</Button>
-                <Button onClick={() => setIsModalOpen(true)} className="ml-auto cursor-pointer">
-                    Add New User
+                <Button onClick={() => setIsModalOpen(true)} className="ml-auto cursor-pointer flex items-center gap-2">
+                    <PlusCircle className="w-4 h-4" /> Create
                 </Button>
             </div>
 
@@ -118,6 +120,7 @@ export default function UserIndex({ users, errors }: UserIndexProps) {
                         user={selectedUser}  
                         onSubmit={handleSubmit} 
                         errors={formErrors} // 🔥 Use local state errors
+                        roles={roles}
                     />
                 )}
             </Suspense>

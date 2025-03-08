@@ -5,17 +5,18 @@ import { Input } from '@/components/ui/input';
 import { User } from './user';
 import { DialogDescription } from '@radix-ui/react-dialog';
 import { UserErrors } from './user-errors';
-
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 interface UserFormModalProps {
     isOpen: boolean;
     onClose: () => void;
     user?: User;
     onSubmit: (formData: { name: string; email: string; password?: string; password_confirmation?: string }, userId?: number) => void;
     errors: UserErrors,
+    roles: { name: string; slug: string }[]
 }
 
-export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors}: UserFormModalProps) {
-    console.log(errors)
+export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors,roles}: UserFormModalProps) {
+    console.log(user)
     const [formData, setFormData] = useState<{ 
         name: string; 
         email: string; 
@@ -54,7 +55,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors}
                 email: user.email,
                 password: '', // Keep it empty for existing users
                 password_confirmation: '', // Keep it empty for existing users,
-                role_slug:''
+                role_slug:user.role_slug
             });
         } else {
             setFormData({ 
@@ -78,6 +79,16 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors}
         onSubmit(formData, user?.id); // Pass user ID if it exists
     };
 
+    const fields = [
+        { name: "name", type: "text", placeholder: "Name", required: true, inputType: "input" },
+        { name: "email", type: "email", placeholder: "Email", required: true, inputType: "input" },
+        ...(!user ? [
+            { name: "password", type: "password", placeholder: "Password", required: true, inputType: "input" },
+            { name: "password_confirmation", type: "password", placeholder: "Confirm Password", required: true, inputType: "input" }
+        ] : []),
+        { name: "role_slug", type: "text", placeholder: "Select Role", required: true, inputType: "dropdown" }
+    ];
+
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent>
@@ -87,31 +98,53 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors}
                         {user ? "Update the user details below." : "Fill in the details to create a new user."}
                     </DialogDescription>
                 </DialogHeader>
+    
                 <div className="space-y-4">
-                    <Input name="name" value={formData.name} onChange={handleChange} placeholder="Name" required />
-                    <Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
-                    
-                    {/* Show password fields only for new user creation */}
-                    {!user && (
-                        <>
-                            <Input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" required={!user} />
-                            <Input type="password" name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} placeholder="Confirm Password" required={!user} />
-                        </>
-                    )}
+                    {fields.map(({ name, type, placeholder, required, inputType }) => (
+                        inputType === "input" ? (
+                            <Input
+                                key={name}
+                                name={name}
+                                type={type}
+                                value={formData[name as keyof typeof formData] ?? ''}
+                                onChange={handleChange}
+                                placeholder={placeholder}
+                                required={required}
+                            />
+                        ) : (
+                            <Select
+                                key={name}
+                                onValueChange={(value) => setFormData((prev) => ({ ...prev, [name]: value }))}
+                                value={formData.role_slug}
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Role" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {roles.map((role) => (
+                                        <SelectItem key={role.slug} value={role.slug}>
+                                            {role.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        )
+                    ))}
                 </div>
+    
                 <div>
                     {Object.keys(visibleErrors).length > 0 && (
                         <div className="text-red-500">
-                            {visibleErrors.name && <p>{visibleErrors.name}</p>}
-                            {visibleErrors.email && <p>{visibleErrors.email}</p>}
-                            {visibleErrors.password && <p>{visibleErrors.password}</p>}
-                            {visibleErrors.role_slug && <p>{visibleErrors.role_slug}</p>}
+                            {Object.entries(visibleErrors).map(([key, error]) => (
+                                error && <p key={key}>{error}</p>
+                            ))}
                         </div>
                     )}
                 </div>
+    
                 <DialogFooter>
-                    <Button onClick={() => {onClose()}} variant="outline" className="cursor-pointer">Cancel</Button>
-                    <Button onClick={handleSubmit} className='cursor-pointer'>{user ? 'Update' : 'Create'}</Button>
+                    <Button onClick={() => { onClose() }} variant="outline" className="cursor-pointer">Cancel</Button>
+                    <Button onClick={handleSubmit} className='cursor-pointer'>Save</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
