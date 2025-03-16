@@ -26,7 +26,7 @@ class MenusPermissions
                     ],
                     [
                         "title" => "Roles",
-                        "url" => "/admin/roles",
+                        "url" => "role.index",
                         "permissions" => ["can-read", "can-create", "can-update", "can-delete"]
                     ]
                 ]
