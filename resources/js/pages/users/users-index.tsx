@@ -25,11 +25,11 @@ interface UserIndexProps {
 }
 
 export default function UserIndex({ users, roles }: UserIndexProps) {
-  
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
     const [search, setSearch] = useState<string>("");
-  
+
     const emptyErrors: UserErrors = {
         name: '',
         email: '',
@@ -65,7 +65,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
     };
 
     const closeModal = () => {
-        setFormErrors(emptyErrors); 
+        setFormErrors(emptyErrors);
         setIsModalOpen(false);
         setSelectedUser(undefined);
     };
@@ -114,11 +114,11 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
             {/* 🔥 Lazy-load UserFormModal when needed */}
             <Suspense fallback={<p>Modal Opening...</p>}>
                 {isModalOpen && (
-                    <UserFormModal 
-                        isOpen={isModalOpen} 
-                        onClose={closeModal} 
-                        user={selectedUser}  
-                        onSubmit={handleSubmit} 
+                    <UserFormModal
+                        isOpen={isModalOpen}
+                        onClose={closeModal}
+                        user={selectedUser}
+                        onSubmit={handleSubmit}
                         errors={formErrors} // 🔥 Use local state errors
                         roles={roles}
                     />

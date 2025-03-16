@@ -23,10 +23,10 @@ interface UserTableProps {
   users: PaginatedUsers;
   handlePageChange: (page: number) => void;
   handleDelete: (id: number) => void;
-  handleEdit: (user:User) => void;
+  handleEdit: (user: User) => void;
 }
 
-export default function UserTable({ users, handlePageChange, handleDelete,handleEdit }: UserTableProps) {
+export default function UserTable({ users, handlePageChange, handleDelete, handleEdit }: UserTableProps) {
   const { data, current_page, last_page, total } = users;
 
   return (
@@ -63,43 +63,43 @@ export default function UserTable({ users, handlePageChange, handleDelete,handle
         <TableFooter>
           <TableRow>
             <TableCell colSpan={7} className="text-center font-medium">
-                  Showing {data.length} of {total} users
+              Showing {data.length} of {total} users
             </TableCell>
           </TableRow>
         </TableFooter>
       </Table>
-        {/* Pagination */}
-        <Pagination className="mt-4 mb-4">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={() => handlePageChange(current_page - 1)}
-                className={current_page === 1 ? "pointer-events-none opacity-50" : ""}
-              />
-            </PaginationItem>
+      {/* Pagination */}
+      <Pagination className="mt-4 mb-4">
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() => handlePageChange(current_page - 1)}
+              className={current_page === 1 ? "pointer-events-none opacity-50" : ""}
+            />
+          </PaginationItem>
 
-            {Array.from({ length: last_page }, (_, i) => {
-              const page = i + 1;
-              return (
-                <PaginationItem key={page}>
-                  <PaginationLink className="cursor-pointer"
-                    isActive={page === current_page}
-                    onClick={() => handlePageChange(page)}
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              );
-            })}
+          {Array.from({ length: last_page }, (_, i) => {
+            const page = i + 1;
+            return (
+              <PaginationItem key={page}>
+                <PaginationLink className="cursor-pointer"
+                  isActive={page === current_page}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            );
+          })}
 
-            <PaginationItem>
-              <PaginationNext
-                onClick={() => handlePageChange(current_page + 1)}
-                className={current_page === last_page ? "pointer-events-none opacity-50" : ""}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+          <PaginationItem>
+            <PaginationNext
+              onClick={() => handlePageChange(current_page + 1)}
+              className={current_page === last_page ? "pointer-events-none opacity-50" : ""}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }

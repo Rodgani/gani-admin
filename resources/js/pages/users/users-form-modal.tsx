@@ -15,27 +15,27 @@ interface UserFormModalProps {
     roles: { name: string; slug: string }[]
 }
 
-export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors,roles}: UserFormModalProps) {
+export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors, roles }: UserFormModalProps) {
     console.log(user)
-    const [formData, setFormData] = useState<{ 
-        name: string; 
-        email: string; 
-        password?: string; 
-        password_confirmation?: string 
+    const [formData, setFormData] = useState<{
+        name: string;
+        email: string;
+        password?: string;
+        password_confirmation?: string
         role_slug: string
     }>({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
-        role_slug:''
+        role_slug: ''
     });
 
     const errorObject = {
-        name:'',
-        email: '', 
+        name: '',
+        email: '',
         password: '',
-        role_slug:''
+        role_slug: ''
     }
 
     const [visibleErrors, setVisibleErrors] = useState<UserErrors>(errorObject);
@@ -55,19 +55,19 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors,
                 email: user.email,
                 password: '', // Keep it empty for existing users
                 password_confirmation: '', // Keep it empty for existing users,
-                role_slug:user.role_slug
+                role_slug: user.role_slug
             });
         } else {
-            setFormData({ 
-                name: '', 
-                email: '', 
-                password: '', 
+            setFormData({
+                name: '',
+                email: '',
+                password: '',
                 password_confirmation: '',
-                role_slug:'' 
+                role_slug: ''
             });
         }
     }, [user]);
-    
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({
             ...prev!,
@@ -98,7 +98,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors,
                         {user ? "Update the user details below." : "Fill in the details to create a new user."}
                     </DialogDescription>
                 </DialogHeader>
-    
+
                 <div className="space-y-4">
                     {fields.map(({ name, type, placeholder, required, inputType }) => (
                         inputType === "input" ? (
@@ -131,7 +131,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors,
                         )
                     ))}
                 </div>
-    
+
                 <div>
                     {Object.keys(visibleErrors).length > 0 && (
                         <div className="text-red-500">
@@ -141,7 +141,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit ,errors,
                         </div>
                     )}
                 </div>
-    
+
                 <DialogFooter>
                     <Button onClick={() => { onClose() }} variant="outline" className="cursor-pointer">Cancel</Button>
                     <Button onClick={handleSubmit} className='cursor-pointer'>Save</Button>
