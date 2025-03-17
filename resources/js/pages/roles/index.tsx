@@ -2,22 +2,24 @@ import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
 import { Head, router } from "@inertiajs/react";
 
-import { PaginatedRoles, Role } from "./role";
+import { MenusPermissions, PaginatedRoles, Role } from "./role";
 import RoleTable from "./role-table";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
+import RoleFormModal from "./role-form-modal";
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Roles Management', href: 'role.index' },
 ];
 
 interface RoleIndexProps {
-    roles: PaginatedRoles
+    roles: PaginatedRoles,
+    default_menus_permissions: MenusPermissions
 }
 
-export default function RoleIndex({ roles }: RoleIndexProps) {
+export default function RoleIndex({ roles, default_menus_permissions }: RoleIndexProps) {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRole, setSelectedRole] = useState<Role | undefined>(undefined);
@@ -34,7 +36,13 @@ export default function RoleIndex({ roles }: RoleIndexProps) {
     };
 
     const handleEdit = (role: Role) => {
-        alert("hephep")
+        setSelectedRole(role || undefined);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedRole(undefined);
     };
 
     return (
@@ -49,12 +57,24 @@ export default function RoleIndex({ roles }: RoleIndexProps) {
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
                 <Button onClick={handleSearch} className="cursor-pointer">Search</Button>
-                {/* <Button onClick={() => setIsModalOpen(true)} className="ml-auto cursor-pointer flex items-center gap-2">
+                <Button onClick={() => setIsModalOpen(true)} className="ml-auto cursor-pointer flex items-center gap-2">
                     <PlusCircle className="w-4 h-4" /> Create
-                </Button> */}
+                </Button>
             </div>
 
             <RoleTable roles={roles} handlePageChange={handlePageChange} handleEdit={handleEdit} />
+
+            {/* 🔥 Lazy-load UserFormModal when needed */}
+            <Suspense fallback={<p>Modal Opening...</p>}>
+                {isModalOpen && (
+                    <RoleFormModal
+                        isOpen={isModalOpen}
+                        onClose={closeModal}
+                        role={selectedRole}
+                        defaultMenusPermissions={default_menus_permissions}
+                    />
+                )}
+            </Suspense>
         </AppLayout>
     );
 }

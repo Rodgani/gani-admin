@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\Admin\MenusPermissions;
 use App\Services\Admin\RoleService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,7 +15,8 @@ class RoleController extends Controller
      * @param \App\Services\Admin\RoleService $service
      */
     public function __construct(
-        protected RoleService $service
+        protected RoleService $service,
+        protected MenusPermissions $menusPermissionsService
     ) {
 
     }
@@ -27,8 +29,10 @@ class RoleController extends Controller
     public function roleIndex(Request $request)
     {
         $roles = $this->service->paginatedRoles($request);
+        $defaultMenusPermissions = $this->menusPermissionsService->__invoke();
         return Inertia::render('roles/index', [
-            "roles" => $roles
+            "roles" => $roles,
+            "default_menus_permissions" => $defaultMenusPermissions
         ]);
     }
 }
