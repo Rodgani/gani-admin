@@ -24,7 +24,7 @@ export default function RoleTable({ roles, handlePageChange, handleEdit }: RoleT
                         <TableHead>Slug</TableHead>
                         <TableHead>Updated At</TableHead>
                         <TableHead>Created At</TableHead>
-                        <TableHead className="text-center">Actions</TableHead>
+                        <TableHead className="text-center">Action</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -36,7 +36,7 @@ export default function RoleTable({ roles, handlePageChange, handleEdit }: RoleT
                             <TableCell>{role.updated_at}</TableCell>
                             <TableCell>{role.created_at}</TableCell>
                             <TableCell className="flex justify-center gap-2">
-                                <Button size="sm" variant="ghost" onClick={() => handleEdit(role)} className="cursor-pointer">Edit | Set Permissions</Button>
+                                <Button size="sm" variant="ghost" onClick={() => handleEdit(role)} className="cursor-pointer">Edit</Button>
                             </TableCell>
                         </TableRow>
                     ))}
