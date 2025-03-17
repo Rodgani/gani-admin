@@ -15,7 +15,7 @@ interface UserFormModalProps {
 }
 
 export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors, roles }: UserFormModalProps) {
-    console.log(user)
+
     const [formData, setFormData] = useState<{
         name: string;
         email: string;
