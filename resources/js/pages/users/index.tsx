@@ -3,15 +3,14 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
 
-import { PaginatedUsers, User } from './user';
-import UserTable from './users-table';
+import { PaginatedUsers, User, UserErrors } from './user';
+import UserTable from './user-table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { UserErrors } from './user-errors';
 import { PlusCircle } from 'lucide-react';
 
 // 🔥 Lazy load the modal
-const UserFormModal = lazy(() => import('./users-form-modal'));
+const UserFormModal = lazy(() => import('./user-form-modal'));
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Users Management', href: '/admin/users' },
@@ -98,7 +97,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
             <div className="flex items-center py-4 gap-2 m-4">
                 <Input
                     type="text"
-                    placeholder="Search users..."
+                    placeholder="Search..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}

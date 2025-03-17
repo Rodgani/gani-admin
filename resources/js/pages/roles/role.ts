@@ -9,4 +9,5 @@ export interface Role {
     updated_at: string;
 }
 
+
 export type PaginatedRoles = LaravelPagination<Role>;

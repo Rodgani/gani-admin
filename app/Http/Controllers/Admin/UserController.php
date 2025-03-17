@@ -33,7 +33,7 @@ class UserController extends Controller
     {
         $users = $this->service->users($request);
         $roles = $this->roleService->roles();
-        return Inertia::render('users/users-index', [
+        return Inertia::render('users/index', [
             "users" => $users,
             "roles" => $roles
         ]);

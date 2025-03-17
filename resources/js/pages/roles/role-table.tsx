@@ -1,14 +1,16 @@
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PaginatedRoles } from "./role";
+import { PaginatedRoles, Role } from "./role";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
 
 
 interface RoleTableProps {
     roles: PaginatedRoles,
     handlePageChange: (page: number) => void;
+    handleEdit: (role: Role) => void;
 }
 
-export default function RoleTable({ roles, handlePageChange }: RoleTableProps) {
+export default function RoleTable({ roles, handlePageChange, handleEdit }: RoleTableProps) {
     const { data, current_page, last_page, total } = roles;
 
     return (
@@ -34,10 +36,7 @@ export default function RoleTable({ roles, handlePageChange }: RoleTableProps) {
                             <TableCell>{role.updated_at}</TableCell>
                             <TableCell>{role.created_at}</TableCell>
                             <TableCell className="flex justify-center gap-2">
-                                {/* 
-                                <Button size="sm" variant="ghost" onClick={() => handleEdit(role)} className="cursor-pointer">Edit</Button>
-                                <Button size="sm" variant="ghost" onClick={() => handleDelete(role.id)} className="cursor-pointer ">Delete</Button> 
-                                */}
+                                <Button size="sm" variant="ghost" onClick={() => handleEdit(role)} className="cursor-pointer">Edit | Set Permissions</Button>
                             </TableCell>
                         </TableRow>
                     ))}

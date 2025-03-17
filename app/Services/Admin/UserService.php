@@ -3,6 +3,7 @@
 namespace App\Services\Admin;
 
 use App\Models\Admin\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class UserService
@@ -11,18 +12,22 @@ class UserService
     /**
      * Summary of users
      * @param mixed $request
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator
      */
-    public function users($request)
+    public function users($request): LengthAwarePaginator
     {
         $search = $request->search;
 
         return User::whereNot('id', Auth::id()) // Exclude the logged-in user
             ->when($search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('email', 'like', "%{$search}%");
-                });
+                $query->whereAny(
+                    [
+                        'name',
+                        'email'
+                    ],
+                    'like',
+                    "%{$search}%"
+                );
             })
             ->orderBy('updated_at', 'desc')
             ->paginate($request->per_page ?? 10);
