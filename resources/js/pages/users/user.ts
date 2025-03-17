@@ -10,6 +10,12 @@ export interface User {
     updated_at: string;
 }
 
+export interface UserErrors {
+    name: string;
+    email: string;
+    password?: string
+    role_slug: string
+}
 /**
  * Type for paginated users
  */

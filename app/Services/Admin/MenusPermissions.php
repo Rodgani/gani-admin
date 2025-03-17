@@ -6,7 +6,6 @@ class MenusPermissions
 {
     public function __invoke()
     {
-
         $menus = [
             [
                 "title" => "Dashboard",

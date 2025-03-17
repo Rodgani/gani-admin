@@ -27,7 +27,7 @@ class RoleController extends Controller
     public function roleIndex(Request $request)
     {
         $roles = $this->service->paginatedRoles($request);
-        return Inertia::render('roles/roles-index', [
+        return Inertia::render('roles/index', [
             "roles" => $roles
         ]);
     }
