@@ -23,7 +23,6 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                     ? JSON.parse(role.menus_permissions)
                     : role.menus_permissions;
 
-                // Transform parsed array to object with url as key
                 const mappedState: { [key: string]: string[] } = {};
 
                 parsed.forEach((menu: any) => {
@@ -38,12 +37,27 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
 
                 setMenusPermissionsState(mappedState);
             } catch (error) {
+                console.error("Failed to parse menus_permissions", error);
                 setMenusPermissionsState({});
             }
         } else {
-            setMenusPermissionsState({});
+            // No existing role permissions, so check all by default
+            const defaultState: { [key: string]: string[] } = {};
+
+            defaultMenusPermissions.forEach((menu) => {
+                if (menu.items) {
+                    menu.items.forEach((item) => {
+                        defaultState[item.url] = item.permissions || [];
+                    });
+                } else {
+                    defaultState[menu.url] = menu.permissions || [];
+                }
+            });
+
+            setMenusPermissionsState(defaultState);
         }
-    }, [role, isOpen]);
+    }, [role, isOpen, defaultMenusPermissions]);
+
 
 
     const hasPermission = (url: string, permission: string): boolean => {
@@ -91,6 +105,29 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
         console.log("Payload to submit:", payload);
     };
 
+    const [checkAll, setCheckAll] = useState(false);
+
+    const handleToggleAll = () => {
+        if (checkAll) {
+            // Uncheck all
+            setMenusPermissionsState({});
+        } else {
+            // Check all
+            const allCheckedState: { [key: string]: string[] } = {};
+            defaultMenusPermissions.forEach((menu) => {
+                if (menu.items) {
+                    menu.items.forEach((item) => {
+                        allCheckedState[item.url] = item.permissions || [];
+                    });
+                } else {
+                    allCheckedState[menu.url] = menu.permissions || [];
+                }
+            });
+            setMenusPermissionsState(allCheckedState);
+        }
+        setCheckAll(!checkAll);
+    };
+
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
@@ -103,7 +140,12 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                 </DialogHeader>
 
                 <div className="space-y-4">
-                    <Accordion type="single" collapsible className="w-full">
+                    <div className="flex justify-start mb-2">
+                        <Button variant="secondary" onClick={handleToggleAll}>
+                            {checkAll ? "Uncheck All" : "Check All"}
+                        </Button>
+                    </div>
+                    <Accordion type="multiple" className="w-full">
                         {defaultMenusPermissions.map((menu, index) => (
                             <AccordionItem key={index} value={`item-${index}`}>
                                 <AccordionTrigger>{menu.title}</AccordionTrigger>
