@@ -10,7 +10,7 @@ export interface User {
     updated_at: string;
 }
 
-export interface UserErrors {
+export interface UserForm {
     name: string;
     email: string;
     password?: string

@@ -15,13 +15,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-
-        User::create([
-            "name" => "Admin",
-            "email" => "admin@gmail.com",
-            "password" => Hash::make("password"),
-            "role_slug" => Role::first()->slug
-        ]);
         User::factory()->count(10)->create();
     }
 }
