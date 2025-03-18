@@ -41,24 +41,9 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                 setMenusPermissionsState({});
             }
         } else {
-            // No existing role permissions, so check all by default
-            const defaultState: { [key: string]: string[] } = {};
-
-            defaultMenusPermissions.forEach((menu) => {
-                if (menu.items) {
-                    menu.items.forEach((item) => {
-                        defaultState[item.url] = item.permissions || [];
-                    });
-                } else {
-                    defaultState[menu.url] = menu.permissions || [];
-                }
-            });
-
-            setMenusPermissionsState(defaultState);
+            setMenusPermissionsState({});
         }
     }, [role, isOpen, defaultMenusPermissions]);
-
-
 
     const hasPermission = (url: string, permission: string): boolean => {
         return menusPermissionsState[url]?.includes(permission) ?? false;
@@ -77,7 +62,6 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
             };
         });
     };
-
 
     const handleSubmit = () => {
         const payload = defaultMenusPermissions.map((menu) => {
@@ -182,8 +166,6 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                                             ))}
                                         </div>
                                     )}
-
-
                                 </AccordionContent>
                             </AccordionItem>
                         ))}
