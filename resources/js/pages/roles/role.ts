@@ -1,12 +1,20 @@
 import { LaravelPagination } from "@/types/laravel-paginate";
 
-export interface MenusPermissions {
+export interface MenuItem {
     title: string;
     url: string;
-    icon?: string;
     permissions?: string[];
-    items?: MenusPermissions[]; // Nested menu items
 }
+
+export interface Menu {
+    title: string;
+    url: string;
+    icon: string;
+    permissions?: string[];
+    items?: MenuItem[];
+}
+
+export type MenusPermissions = Menu[];
 
 export interface Role {
     id: number;

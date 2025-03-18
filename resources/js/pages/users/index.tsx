@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
 
-import { PaginatedUsers, User, UserErrors } from './user';
+import { PaginatedUsers, User, UserForm } from './user';
 import UserTable from './user-table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,7 +18,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface UserIndexProps {
     users: PaginatedUsers;
-    errors: UserErrors;
+    errors: UserForm;
     roles: { name: string; slug: string }[]
 
 }
@@ -29,14 +29,14 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
     const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
     const [search, setSearch] = useState<string>("");
 
-    const emptyErrors: UserErrors = {
+    const resetForm: UserForm = {
         name: '',
         email: '',
         password: '',
         role_slug: ''
     };
 
-    const [formErrors, setFormErrors] = useState<UserErrors>(emptyErrors);
+    const [formErrors, setFormErrors] = useState<UserForm>(resetForm);
 
     const handleSearch = () => {
         router.get(route('user.index'), { search, page: users.current_page, per_page: 10 }, { preserveState: true, preserveScroll: true });
@@ -64,7 +64,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
     };
 
     const closeModal = () => {
-        setFormErrors(emptyErrors);
+        setFormErrors(resetForm);
         setIsModalOpen(false);
         setSelectedUser(undefined);
     };
@@ -73,19 +73,19 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
         if (userId) {
             router.put(route('user.update', { id: userId }), formData, {
                 onSuccess: () => {
-                    setFormErrors(emptyErrors); // ✅ Reset errors on success
+                    closeModal()
                 },
                 onError: (errors) => {
-                    setFormErrors({ ...emptyErrors, ...errors }); // ✅ Merge Inertia errors into `UserErrors`
+                    setFormErrors({ ...resetForm, ...errors }); // ✅ Merge Inertia errors into `UserForm`
                 },
             });
         } else {
             router.post(route('user.store'), formData, {
                 onSuccess: () => {
-                    setFormErrors(emptyErrors); // ✅ Reset errors on success
+                    setFormErrors(resetForm); // ✅ Reset errors on success
                 },
                 onError: (errors) => {
-                    setFormErrors({ ...emptyErrors, ...errors }); // ✅ Merge Inertia errors into `UserErrors`
+                    setFormErrors({ ...resetForm, ...errors }); // ✅ Merge Inertia errors into `UserForm`
                 },
             });
         }

@@ -8,16 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
 import { PaginatedUsers, User } from "./user";
+import TablePagination from "../table-pagination";
 
 interface UserTableProps {
   users: PaginatedUsers;
@@ -68,38 +61,11 @@ export default function UserTable({ users, handlePageChange, handleDelete, handl
           </TableRow>
         </TableFooter>
       </Table>
-      {/* Pagination */}
-      <Pagination className="mt-4 mb-4">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => handlePageChange(current_page - 1)}
-              className={current_page === 1 ? "pointer-events-none opacity-50" : ""}
-            />
-          </PaginationItem>
-
-          {Array.from({ length: last_page }, (_, i) => {
-            const page = i + 1;
-            return (
-              <PaginationItem key={page}>
-                <PaginationLink className="cursor-pointer"
-                  isActive={page === current_page}
-                  onClick={() => handlePageChange(page)}
-                >
-                  {page}
-                </PaginationLink>
-              </PaginationItem>
-            );
-          })}
-
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => handlePageChange(current_page + 1)}
-              className={current_page === last_page ? "pointer-events-none opacity-50" : ""}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <TablePagination
+        currentPage={current_page}
+        lastPage={last_page}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }
