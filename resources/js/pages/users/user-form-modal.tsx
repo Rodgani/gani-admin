@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { User, UserErrors } from './user';
+import { User, UserForm } from './user';
 import { DialogDescription } from '@radix-ui/react-dialog';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 interface UserFormModalProps {
@@ -10,19 +10,13 @@ interface UserFormModalProps {
     onClose: () => void;
     user?: User;
     onSubmit: (formData: { name: string; email: string; password?: string; password_confirmation?: string }, userId?: number) => void;
-    errors: UserErrors,
+    errors: UserForm,
     roles: { name: string; slug: string }[]
 }
 
 export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors, roles }: UserFormModalProps) {
 
-    const [formData, setFormData] = useState<{
-        name: string;
-        email: string;
-        password?: string;
-        password_confirmation?: string
-        role_slug: string
-    }>({
+    const [formData, setFormData] = useState<UserForm>({
         name: '',
         email: '',
         password: '',
@@ -37,7 +31,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
         role_slug: ''
     }
 
-    const [visibleErrors, setVisibleErrors] = useState<UserErrors>(errorObject);
+    const [visibleErrors, setVisibleErrors] = useState<UserForm>(errorObject);
 
     useEffect(() => {
         setVisibleErrors(errors); // Set errors only when they exist
