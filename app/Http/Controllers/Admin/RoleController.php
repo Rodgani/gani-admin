@@ -47,7 +47,7 @@ class RoleController extends Controller
     public function store(RoleCreateRequest $request)
     {
         $this->service->store($request->validated());
-        return Redirect::route('role.index')->with('success', 'Role created successfully.');
+        return Redirect::route('role.index');
     }
 
     /**
@@ -59,6 +59,6 @@ class RoleController extends Controller
     public function update(RoleUpdateRequest $request, $id)
     {
         $this->service->update($request->validated(), $id);
-        return Redirect::route('role.index')->with('success', 'Role updated successfully.');
+        return Redirect::route('role.index');
     }
 }
