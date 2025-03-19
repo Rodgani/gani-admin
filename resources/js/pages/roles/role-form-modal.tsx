@@ -1,20 +1,31 @@
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@/components/ui/dialog";
-import { MenusPermissions, Role } from "./role";
+import { MenusPermissions, Role, RoleForm } from "./role";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";  // assuming you have a Checkbox component
 import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
 
 interface RoleFormProps {
     isOpen: boolean;
     onClose: () => void;
     role?: Role;
     defaultMenusPermissions: MenusPermissions;
+    onSubmit: (formData: {
+        name: string;
+        slug: string;
+        menus_permissions: MenusPermissions
+    }, roleId?: number) => void;
 }
 
-export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermissions }: RoleFormProps) {
+export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermissions, onSubmit }: RoleFormProps) {
     const [menusPermissionsState, setMenusPermissionsState] = useState<{ [key: string]: string[] }>({});
+
+    const [formData, setFormData] = useState<RoleForm>({
+        name: '',
+        slug: '',
+    });
 
     useEffect(() => {
         if (role?.menus_permissions) {
@@ -36,8 +47,11 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                 });
 
                 setMenusPermissionsState(mappedState);
+                setFormData({
+                    name: role.name,
+                    slug: role.slug,
+                });
             } catch (error) {
-                console.error("Failed to parse menus_permissions", error);
                 setMenusPermissionsState({});
             }
         } else {
@@ -64,7 +78,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
     };
 
     const handleSubmit = () => {
-        const payload = defaultMenusPermissions.map((menu) => {
+        const menusPermissions = defaultMenusPermissions.map((menu) => {
             if (menu.items) {
                 return {
                     title: menu.title,
@@ -86,7 +100,12 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
             }
         });
 
-        console.log("Payload to submit:", payload);
+        const mergedData = {
+            ...formData,
+            menus_permissions: menusPermissions
+        };
+
+        onSubmit(mergedData, role?.id);
     };
 
     const [checkAll, setCheckAll] = useState(false);
@@ -112,6 +131,17 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
         setCheckAll(!checkAll);
     };
 
+    const fields = [
+        { name: "name", type: "text", placeholder: "Name", required: true },
+        { name: "slug", type: "slug", placeholder: "Slug", required: true, readOnly: !!role },
+    ];
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData((prev) => ({
+            ...prev!,
+            [e.target.name]: e.target.value,
+        }));
+    };
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
@@ -129,6 +159,18 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                             {checkAll ? "Uncheck All" : "Check All"}
                         </Button>
                     </div>
+                    {fields.map(({ name, type, placeholder, required, readOnly }) => (
+                        <Input
+                            key={name}
+                            name={name}
+                            type={type}
+                            value={formData[name as keyof typeof formData] ?? ''}
+                            onChange={handleChange}
+                            placeholder={placeholder}
+                            required={required}
+                            {...(readOnly ? { readOnly: true } : {})}
+                        />
+                    ))}
                     <Accordion type="multiple" className="w-full">
                         {defaultMenusPermissions.map((menu, index) => (
                             <AccordionItem key={index} value={`item-${index}`}>
