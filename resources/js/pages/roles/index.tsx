@@ -11,7 +11,7 @@ import { PlusCircle } from "lucide-react";
 import RoleFormModal from "./role-form-modal";
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Roles Management', href: 'role.index' },
+    { title: 'Roles & Permissions', href: 'admin/roles' },
 ];
 
 interface RoleIndexProps {
