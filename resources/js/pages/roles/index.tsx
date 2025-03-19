@@ -45,6 +45,32 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
         setSelectedRole(undefined);
     };
 
+
+    const handleSubmit = (formData: { name: string, slug: string, menus_permissions: MenusPermissions }, roleId?: number) => {
+
+        const payload = {
+            name: formData.name,
+            slug: formData.slug,
+            menus_permissions: JSON.stringify(formData.menus_permissions),
+        };
+        console.log(payload)
+        if (roleId) {
+            router.put(route('role.update', { id: roleId }), payload, {
+                onSuccess: () => closeModal(),
+                onError: (errors) => {
+                    console.error(errors);
+                },
+            });
+        } else {
+            router.post(route('role.store'), payload, {
+                onSuccess: () => closeModal(),
+                onError: (errors) => {
+                    console.error(errors);
+                },
+            });
+        }
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Roles Management" />
@@ -72,6 +98,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
                         onClose={closeModal}
                         role={selectedRole}
                         defaultMenusPermissions={default_menus_permissions}
+                        onSubmit={handleSubmit}
                     />
                 )}
             </Suspense>

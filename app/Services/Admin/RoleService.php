@@ -34,4 +34,24 @@ class RoleService
             ->orderBy('updated_at', 'desc')
             ->paginate($request->per_page ?? 10);
     }
+
+    /**
+     * Summary of store
+     * @param mixed $request
+     * @return Role
+     */
+    public function store($request): Role
+    {
+        return Role::create($request);
+    }
+
+    /**
+     * Summary of update
+     * @param mixed $request
+     * @param mixed $id
+     */
+    public function update($request, $id)
+    {
+        return Role::findOrFail($id)->update($request);
+    }
 }
