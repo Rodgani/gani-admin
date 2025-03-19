@@ -1,8 +1,11 @@
 # Laravel + React Starter Kit
 
-## Introduction
+Gani admin
 
-Our React starter kit provides a robust, modern starting point for building Laravel applications with a React frontend using [Inertia](https://inertiajs.com).
+requirements
+PHP 8.4
+PostgreSQL
+Docker laravel sail
 
 Inertia allows you to build modern, single-page React applications using classic server-side routing and controllers. This lets you enjoy the frontend power of React combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
 
