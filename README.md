@@ -1,11 +1,11 @@
 # Laravel + React Starter Kit
 
-Gani admin
+## Gani admin
 
-requirements
-PHP 8.4
-PostgreSQL
-Docker laravel sail
+## requirements
+### PHP 8.4
+### PostgreSQL
+### Docker laravel sail
 
 Inertia allows you to build modern, single-page React applications using classic server-side routing and controllers. This lets you enjoy the frontend power of React combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
 
