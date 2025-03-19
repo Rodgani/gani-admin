@@ -13,7 +13,7 @@ import { PlusCircle } from 'lucide-react';
 const UserFormModal = lazy(() => import('./user-form-modal'));
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Users Management', href: '/admin/users' },
+    { title: 'Users', href: '/admin/users' },
 ];
 
 interface UserIndexProps {
