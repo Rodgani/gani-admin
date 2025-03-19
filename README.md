@@ -1,6 +1,4 @@
-# Laravel + React Starter Kit
-
-## Gani admin
+# Gani Admin
 
 ## requirements
 ### PHP 8.4
