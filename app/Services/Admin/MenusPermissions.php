@@ -4,6 +4,14 @@ namespace App\Services\Admin;
 
 class MenusPermissions
 {
+    /**
+     * Icons reference https://lucide.dev/icons/
+     */
+
+    /**
+     * Summary of __invoke
+     * @return array[]
+     */
     public function __invoke()
     {
         $menus = [
