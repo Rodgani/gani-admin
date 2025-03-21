@@ -4,11 +4,11 @@ import { Head, router } from "@inertiajs/react";
 
 import { MenusPermissions, PaginatedRoles, Role } from "./role";
 import RoleTable from "./role-table";
-import { Suspense, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import RoleFormModal from "./role-form-modal";
+import CenteredSpinner from "../centered-spinner";
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Roles & Permissions', href: 'admin/roles' },
@@ -18,6 +18,9 @@ interface RoleIndexProps {
     roles: PaginatedRoles,
     default_menus_permissions: MenusPermissions
 }
+
+// 🔥 Lazy load the modal
+const RoleFormModal = lazy(() => import('./role-form-modal'));
 
 export default function RoleIndex({ roles, default_menus_permissions }: RoleIndexProps) {
 
@@ -91,7 +94,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
             <RoleTable roles={roles} handlePageChange={handlePageChange} handleEdit={handleEdit} />
 
             {/* 🔥 Lazy-load UserFormModal when needed */}
-            <Suspense fallback={<p>Modal Opening...</p>}>
+            <Suspense fallback={<CenteredSpinner />}>
                 {isModalOpen && (
                     <RoleFormModal
                         isOpen={isModalOpen}
