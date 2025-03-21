@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Constant;
+namespace App\Constants;
 
 class AdminConstant
 {

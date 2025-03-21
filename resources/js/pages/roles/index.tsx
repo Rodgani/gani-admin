@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import CenteredSkeletonLoader from "../centered-skeleton-loader";
+import { PER_PAGE_DEFAULT } from "@/contants/app";
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Roles & Permissions', href: 'admin/roles' },
@@ -29,12 +30,12 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
     const [search, setSearch] = useState<string>("");
 
     const handleSearch = () => {
-        router.get(route('role.index'), { search, page: roles.current_page, per_page: 10 }, { preserveState: true, preserveScroll: true });
+        router.get(route('role.index'), { search, page: roles.current_page, per_page: PER_PAGE_DEFAULT }, { preserveScroll: true, preserveState: true });
     };
 
     const handlePageChange = (page: number) => {
         if (page >= 1 && page <= roles.last_page) {
-            router.get(route('role.index', { page, per_page: 10 }), {}, { preserveScroll: true, preserveState: true });
+            router.get(route('role.index', { page, per_page: PER_PAGE_DEFAULT }), { preserveScroll: true, preserveState: true });
         }
     };
 

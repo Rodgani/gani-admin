@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PlusCircle } from 'lucide-react';
 import CenteredSkeletonLoader from '../centered-skeleton-loader';
+import { PER_PAGE_DEFAULT } from '@/contants/app';
 
 // 🔥 Lazy load the modal
 const UserFormModal = lazy(() => import('./user-form-modal'));
@@ -40,12 +41,12 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
     const [formErrors, setFormErrors] = useState<UserForm>(resetForm);
 
     const handleSearch = () => {
-        router.get(route('user.index'), { search, page: users.current_page, per_page: 10 }, { preserveState: true, preserveScroll: true });
+        router.get(route('user.index'), { search, page: users.current_page, per_page: PER_PAGE_DEFAULT }, { preserveScroll: true, preserveState: true });
     };
 
     const handlePageChange = (page: number) => {
         if (page >= 1 && page <= users.last_page) {
-            router.get(route('user.index', { page, per_page: 10 }), {}, { preserveScroll: true, preserveState: true });
+            router.get(route('user.index', { page, per_page: PER_PAGE_DEFAULT }), { preserveScroll: true, preserveState: true });
         }
     };
 
