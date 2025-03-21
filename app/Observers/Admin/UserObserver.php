@@ -2,7 +2,7 @@
 
 namespace App\Observers\Admin;
 
-use App\Constant\AdminConstant;
+use App\Constants\AdminConstant;
 use App\Models\Admin\User;
 use Illuminate\Validation\ValidationException;
 

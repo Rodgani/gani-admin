@@ -2,7 +2,7 @@
 
 namespace App\Services\Admin;
 
-use App\Constant\AdminConstant;
+use App\Constants\AdminConstant;
 use App\Helper\PaginationHelper;
 use App\Models\Admin\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
