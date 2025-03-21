@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function CenteredSpinner() {
+export default function CenteredSkeletonLoader() {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
             <div className="flex flex-col items-center gap-4 animate-pulse">

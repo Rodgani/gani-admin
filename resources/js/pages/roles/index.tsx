@@ -8,7 +8,7 @@ import { lazy, Suspense, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import CenteredSpinner from "../centered-spinner";
+import CenteredSkeletonLoader from "../centered-skeleton-loader";
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Roles & Permissions', href: 'admin/roles' },
@@ -94,7 +94,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
             <RoleTable roles={roles} handlePageChange={handlePageChange} handleEdit={handleEdit} />
 
             {/* 🔥 Lazy-load UserFormModal when needed */}
-            <Suspense fallback={<CenteredSpinner />}>
+            <Suspense fallback={<CenteredSkeletonLoader />}>
                 {isModalOpen && (
                     <RoleFormModal
                         isOpen={isModalOpen}
