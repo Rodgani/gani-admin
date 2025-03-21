@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use App\Constant\AdminConstant;
 use App\Models\Admin\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class UserService
     {
         $search = $request->search;
 
-        return User::whereNot('id', Auth::id()) // Exclude the logged-in user
+        return User::whereNotIn('id', [Auth::id(), AdminConstant::DEFAULT_ADMIN_ID]) // Exclude the logged-in user
             ->when($search, function ($query, $search) {
                 $query->whereAny(
                     [

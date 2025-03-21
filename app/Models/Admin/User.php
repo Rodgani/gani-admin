@@ -4,12 +4,15 @@ namespace App\Models\Admin;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Observers\Admin\UserObserver;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+#[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
     use HasFactory;
