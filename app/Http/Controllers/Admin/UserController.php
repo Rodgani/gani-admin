@@ -41,10 +41,10 @@ class UserController extends Controller
 
     /**
      * Summary of destroy
-     * @param mixed $id
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $this->service->destroy($id);
         return Redirect::route('user.index');
@@ -52,11 +52,11 @@ class UserController extends Controller
 
     /**
      * Summary of update
-     * @param mixed $id
+     * @param int $id
      * @param \App\Http\Requests\Admin\Users\UserUpdateRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update($id, UserUpdateRequest $request)
+    public function update(int $id, UserUpdateRequest $request)
     {
         $this->service->update($id, $request->validated());
         return Redirect::route('user.index');

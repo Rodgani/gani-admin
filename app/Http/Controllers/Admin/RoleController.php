@@ -52,11 +52,11 @@ class RoleController extends Controller
 
     /**
      * Summary of update
+     * @param int $id
      * @param \App\Http\Requests\Admin\Roles\RoleUpdateRequest $request
-     * @param mixed $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(RoleUpdateRequest $request, $id)
+    public function update(int $id, RoleUpdateRequest $request)
     {
         $this->service->update($request->validated(), $id);
         return Redirect::route('role.index');
