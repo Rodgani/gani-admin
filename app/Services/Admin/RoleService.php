@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 
+use App\Helper\PaginationHelper;
 use App\Models\Admin\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -20,6 +21,11 @@ class RoleService
     public function paginatedRoles($request): LengthAwarePaginator
     {
         $search = $request->search;
+        $options = PaginationHelper::pageQueryOptions($request);
+        $column = $options->column;
+        $direction = $options->direction;
+        $perPage = $options->perPage;
+
         return Role::
             when($search, function ($query, $search) {
                 $query->whereAny(
@@ -31,8 +37,8 @@ class RoleService
                     "%{$search}%"
                 );
             })
-            ->orderBy('updated_at', 'desc')
-            ->paginate($request->per_page ?? 10);
+            ->orderBy($column, $direction)
+            ->paginate($perPage);
     }
 
     /**
@@ -47,10 +53,11 @@ class RoleService
 
     /**
      * Summary of update
+     * @param int $id
      * @param mixed $request
-     * @param mixed $id
+     * @return bool
      */
-    public function update($request, $id)
+    public function update(int $id, $request)
     {
         return Role::findOrFail($id)->update($request);
     }
