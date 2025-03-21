@@ -8,7 +8,7 @@ import UserTable from './user-table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PlusCircle } from 'lucide-react';
-import CenteredSpinner from '../centered-spinner';
+import CenteredSkeletonLoader from '../centered-skeleton-loader';
 
 // 🔥 Lazy load the modal
 const UserFormModal = lazy(() => import('./user-form-modal'));
@@ -112,7 +112,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
             <UserTable users={users} handlePageChange={handlePageChange} handleDelete={handleDelete} handleEdit={handleEdit} />
 
             {/* 🔥 Lazy-load UserFormModal when needed */}
-            <Suspense fallback={<CenteredSpinner />}>
+            <Suspense fallback={<CenteredSkeletonLoader />}>
                 {isModalOpen && (
                     <UserFormModal
                         isOpen={isModalOpen}
