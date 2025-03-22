@@ -20,7 +20,7 @@ export function Icon({
     }
 
     const defaultColor =
-        IconComponent === Trash || IconComponent === Trash2 ? '#d01b1b' : 'currentColor';
+        IconComponent === Trash || IconComponent === Trash2 ? '#ef4444' : 'currentColor';
 
     return (
         <IconComponent
