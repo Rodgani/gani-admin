@@ -3,10 +3,9 @@
 namespace App\Services\Admin;
 
 use App\Constants\AdminConstant;
-use App\Helper\PaginationHelper;
+use App\Helpers\PaginationHelper;
 use App\Models\Admin\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserService
@@ -17,14 +16,11 @@ class UserService
      * @param mixed $request
      * @return LengthAwarePaginator
      */
-    public function users(Request $request): LengthAwarePaginator
+    public function users($request): LengthAwarePaginator
     {
         $search = $request->search;
 
-        $options = PaginationHelper::pageQueryOptions($request);
-        $column = $options->column;
-        $direction = $options->direction;
-        $perPage = $options->perPage;
+        $option = PaginationHelper::pageQueryOptions($request);
 
         return User::whereNotIn('id', [Auth::id(), AdminConstant::DEFAULT_ADMIN_ID])
             ->when($search, function ($query, $search) {
@@ -37,8 +33,8 @@ class UserService
                     "%{$search}%"
                 );
             })
-            ->orderBy($column, $direction)
-            ->paginate($perPage);
+            ->orderBy($option->column, $option->direction)
+            ->paginate($option->perPage);
     }
 
     /**
@@ -54,7 +50,7 @@ class UserService
 
     /**
      * Summary of update
-     * @param mixed $id
+     * @param int $id
      * @param mixed $request
      * @return bool
      */
