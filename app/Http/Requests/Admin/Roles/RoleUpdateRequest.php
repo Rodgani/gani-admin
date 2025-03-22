@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Roles;
 
+use App\Helpers\PermissionHelper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RoleUpdateRequest extends FormRequest
@@ -11,7 +12,12 @@ class RoleUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $permissionService = app(PermissionHelper::class);
+        $userPermissions = $permissionService->userPermissions($this->user());
+
+        return $permissionService
+            ->subMenu("/admin/roles")
+            ->authorize("update", $userPermissions);
     }
 
     /**

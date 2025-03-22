@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import CenteredSkeletonLoader from "@/components/centered-skeleton-loader";
 import { PER_PAGE_DEFAULT } from "@/contants/app";
+import { toast } from "sonner";
+import { useToastMessage } from "@/hooks/use-toast-message";
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Roles & Permissions', href: 'admin/roles' },
@@ -28,6 +30,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRole, setSelectedRole] = useState<Role | undefined>(undefined);
     const [search, setSearch] = useState<string>("");
+    const { showToast } = useToastMessage();
 
     const handleSearch = () => {
         router.get(route('role.index'), { search, page: roles.current_page, per_page: PER_PAGE_DEFAULT }, { preserveScroll: true, preserveState: true });
@@ -60,16 +63,22 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
 
         if (roleId) {
             router.put(route('role.update', { id: roleId }), payload, {
-                onSuccess: () => closeModal(),
+                onSuccess: () => {
+                    closeModal()
+                    showToast("success", { message: "Updated successfully!" })
+                },
                 onError: (errors) => {
-                    console.error(errors);
+                    showToast("error", errors);
                 },
             });
         } else {
             router.post(route('role.store'), payload, {
-                onSuccess: () => closeModal(),
+                onSuccess: () => {
+                    closeModal()
+                    showToast("success", { message: "Created successfully!" })
+                },
                 onError: (errors) => {
-                    console.error(errors);
+                    showToast("error", errors);
                 },
             });
         }

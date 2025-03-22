@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Users\UserCreateRequest;
+use App\Http\Requests\Admin\Users\UserDeleteRequest;
+use App\Http\Requests\Admin\Users\UserIndexRequest;
 use App\Http\Requests\Admin\Users\UserUpdateRequest;
 use App\Services\Admin\RoleService;
 use App\Services\Admin\UserService;
@@ -24,12 +26,8 @@ class UserController extends Controller
     ) {
     }
 
-    /**
-     * Summary of userIndex
-     * @param \Illuminate\Http\Request $request
-     * @return \Inertia\Response
-     */
-    public function userIndex(Request $request)
+
+    public function userIndex(UserIndexRequest $request)
     {
         $users = $this->service->users($request);
         $roles = $this->roleService->roles();
@@ -41,24 +39,23 @@ class UserController extends Controller
 
     /**
      * Summary of destroy
-     * @param int $id
+     * @param \App\Http\Requests\Admin\Users\UserDeleteRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(int $id)
+    public function destroy(UserDeleteRequest $request)
     {
-        $this->service->destroy($id);
+        $this->service->destroy($request->id);
         return Redirect::route('user.index');
     }
 
     /**
      * Summary of update
-     * @param int $id
      * @param \App\Http\Requests\Admin\Users\UserUpdateRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(int $id, UserUpdateRequest $request)
+    public function update(UserUpdateRequest $request)
     {
-        $this->service->update($id, $request->validated());
+        $this->service->update($request->id, $request->validated());
         return Redirect::route('user.index');
     }
 

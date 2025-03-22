@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Roles\RoleCreateRequest;
+use App\Http\Requests\Admin\Roles\RoleIndexRequest;
 use App\Http\Requests\Admin\Roles\RoleUpdateRequest;
 use App\Services\Admin\MenusPermissions;
 use App\Services\Admin\RoleService;
@@ -26,10 +27,10 @@ class RoleController extends Controller
 
     /**
      * Summary of roleIndex
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\Admin\Roles\RoleIndexRequest $request
      * @return \Inertia\Response
      */
-    public function roleIndex(Request $request)
+    public function roleIndex(RoleIndexRequest $request)
     {
         $roles = $this->service->paginatedRoles($request);
         $defaultMenusPermissions = $this->menusPermissionsService->__invoke();
@@ -52,13 +53,12 @@ class RoleController extends Controller
 
     /**
      * Summary of update
-     * @param int $id
      * @param \App\Http\Requests\Admin\Roles\RoleUpdateRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(int $id, RoleUpdateRequest $request)
+    public function update(RoleUpdateRequest $request)
     {
-        $this->service->update($id, $request->validated());
+        $this->service->update($request->id, $request->validated());
         return Redirect::route('role.index');
     }
 }

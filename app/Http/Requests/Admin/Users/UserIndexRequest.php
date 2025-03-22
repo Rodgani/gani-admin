@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Admin\Roles;
+namespace App\Http\Requests\Admin\Users;
 
 use App\Helpers\PermissionHelper;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RoleCreateRequest extends FormRequest
+class UserIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,8 +16,8 @@ class RoleCreateRequest extends FormRequest
         $userPermissions = $permissionService->userPermissions($this->user());
 
         return $permissionService
-            ->subMenu("/admin/roles")
-            ->authorize("create", $userPermissions);
+            ->subMenu("/admin/users")
+            ->authorize("view", $userPermissions);
     }
 
     /**
@@ -28,9 +28,11 @@ class RoleCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'slug' => 'required|unique:roles,slug',
-            'menus_permissions' => 'required|json'
+            "paginated" => "sometimes|boolean",
+            "per_page" => "sometimes|integer|min:1",
+            "order_by" => "sometimes|string|in:name,email,updated_at,created_at",
+            "order_direction" => "sometimes|string|in:asc,desc"
         ];
     }
+
 }
