@@ -57,7 +57,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
             slug: formData.slug,
             menus_permissions: JSON.stringify(formData.menus_permissions),
         };
-        console.log(payload)
+
         if (roleId) {
             router.put(route('role.update', { id: roleId }), payload, {
                 onSuccess: () => closeModal(),

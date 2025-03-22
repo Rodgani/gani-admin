@@ -4,7 +4,7 @@ namespace App\DTO;
 
 use Illuminate\Http\Request;
 
-class PaginationOptionsDTO
+class PaginationDTO
 {
     /**
      * Summary of __construct
@@ -24,7 +24,7 @@ class PaginationOptionsDTO
     /**
      * Summary of fromRequest
      * @param \Illuminate\Http\Request $request
-     * @return PaginationOptionsDTO
+     * @return PaginationDTO
      */
     public static function fromRequest(Request $request): self
     {

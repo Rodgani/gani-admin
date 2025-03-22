@@ -58,7 +58,7 @@ class RoleController extends Controller
      */
     public function update(int $id, RoleUpdateRequest $request)
     {
-        $this->service->update($request->validated(), $id);
+        $this->service->update($id, $request->validated());
         return Redirect::route('role.index');
     }
 }

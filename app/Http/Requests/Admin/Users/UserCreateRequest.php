@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Users;
 
+use App\Helpers\PermissionHelper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserCreateRequest extends FormRequest
@@ -11,7 +12,12 @@ class UserCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $permissionService = app(PermissionHelper::class);
+        $userPermissions = $permissionService->userPermissions($this->user());
+
+        return $permissionService
+            ->subMenu("/admin/users")
+            ->authorize("create", $userPermissions);
     }
 
     /**
