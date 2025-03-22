@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { PaginatedUsers, User } from "./user";
 import TablePagination from "@/components/table-pagination";
+import { Icon } from "@/components/ui/icon";
+import { SquarePen, Trash2 } from "lucide-react";
 
 interface UserTableProps {
   users: PaginatedUsers;
@@ -47,8 +49,8 @@ export default function UserTable({ users, handlePageChange, handleDelete, handl
               <TableCell>{user.updated_at}</TableCell>
               <TableCell>{user.created_at}</TableCell>
               <TableCell className="flex justify-center gap-2">
-                <Button size="sm" variant="ghost" onClick={() => handleEdit(user)} className="cursor-pointer">Edit</Button>
-                <Button size="sm" variant="ghost" onClick={() => handleDelete(user.id)} className="cursor-pointer ">Delete</Button>
+                <Button size="sm" variant="ghost" onClick={() => handleEdit(user)} className="cursor-pointer"><Icon iconNode={SquarePen} className="w-4 h-4" /></Button>
+                <Button size="sm" variant="ghost" onClick={() => handleDelete(user.id)} className="cursor-pointer "><Icon iconNode={Trash2} className="w-4 h-4" /></Button>
               </TableCell>
             </TableRow>
           ))}

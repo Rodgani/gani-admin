@@ -7,11 +7,12 @@ import { PaginatedUsers, User, UserForm } from './user';
 import UserTable from './user-table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, Search } from 'lucide-react';
 import CenteredSkeletonLoader from '@/components/centered-skeleton-loader';
 import { PER_PAGE_DEFAULT } from '@/contants/app';
 import { useToastMessage } from '@/hooks/use-toast-message';
 import { useConfirmToast } from '@/hooks/use-confirm-toast';
+import { Icon } from '@/components/icon';
 
 // 🔥 Lazy load the modal
 const UserFormModal = lazy(() => import('./user-form-modal'));
@@ -116,9 +117,9 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
                     onChange={(e) => setSearch(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
-                <Button onClick={handleSearch} className="cursor-pointer">Search</Button>
+                <Button onClick={handleSearch} className="cursor-pointer"> <Icon iconNode={Search} /></Button>
                 <Button onClick={() => setIsModalOpen(true)} className="ml-auto cursor-pointer flex items-center gap-2">
-                    <PlusCircle className="w-4 h-4" /> Create
+                    <Icon iconNode={PlusCircle} />
                 </Button>
             </div>
 

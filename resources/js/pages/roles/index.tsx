@@ -7,11 +7,11 @@ import RoleTable from "./role-table";
 import { lazy, Suspense, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Search } from "lucide-react";
 import CenteredSkeletonLoader from "@/components/centered-skeleton-loader";
 import { PER_PAGE_DEFAULT } from "@/contants/app";
-import { toast } from "sonner";
 import { useToastMessage } from "@/hooks/use-toast-message";
+import { Icon } from "@/components/icon";
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Roles & Permissions', href: 'admin/roles' },
@@ -95,9 +95,9 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
                     onChange={(e) => setSearch(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
-                <Button onClick={handleSearch} className="cursor-pointer">Search</Button>
+                <Button onClick={handleSearch} className="cursor-pointer"> <Icon iconNode={Search} /></Button>
                 <Button onClick={() => setIsModalOpen(true)} className="ml-auto cursor-pointer flex items-center gap-2">
-                    <PlusCircle className="w-4 h-4" /> Create
+                    <Icon iconNode={PlusCircle} />
                 </Button>
             </div>
 
