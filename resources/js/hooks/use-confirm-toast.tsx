@@ -30,6 +30,7 @@ export const useConfirmToast = () => {
                   onCancel?.();
                 }}
                 className="cursor-pointer"
+                size="sm"
               >
                 {cancelText}
               </Button>
@@ -40,6 +41,7 @@ export const useConfirmToast = () => {
                 }}
                 className="cursor-pointer"
                 variant="destructive"
+                size="sm"
               >
                 {confirmText}
               </Button>
