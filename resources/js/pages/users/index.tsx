@@ -8,8 +8,9 @@ import UserTable from './user-table';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PlusCircle } from 'lucide-react';
-import CenteredSkeletonLoader from '../centered-skeleton-loader';
+import CenteredSkeletonLoader from '@/components/centered-skeleton-loader';
 import { PER_PAGE_DEFAULT } from '@/contants/app';
+import { toast } from 'sonner';
 
 // 🔥 Lazy load the modal
 const UserFormModal = lazy(() => import('./user-form-modal'));
@@ -54,8 +55,8 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
         if (window.confirm("Are you sure you want to delete this user?")) {
             router.delete(route("user.destroy", { id }), {
                 preserveScroll: true,
-                onSuccess: () => alert("User deleted successfully"),
-                onError: () => alert("Failed to delete user"),
+                onSuccess: () => toast.success("Deleted Successfully"),
+                onError: () => toast.error("Failed to delete user"),
             });
         }
     };
@@ -76,6 +77,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
             router.put(route('user.update', { id: userId }), formData, {
                 onSuccess: () => {
                     closeModal()
+                    toast.success("Updated Successfully")
                 },
                 onError: (errors) => {
                     setFormErrors({ ...resetForm, ...errors }); // ✅ Merge Inertia errors into `UserForm`
@@ -85,6 +87,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
             router.post(route('user.store'), formData, {
                 onSuccess: () => {
                     setFormErrors(resetForm); // ✅ Reset errors on success
+                    toast.success("Created Successfully")
                 },
                 onError: (errors) => {
                     setFormErrors({ ...resetForm, ...errors }); // ✅ Merge Inertia errors into `UserForm`
