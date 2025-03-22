@@ -63,19 +63,61 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
         return menusPermissionsState[url]?.includes(permission) ?? false;
     };
 
+    // const togglePermission = (url: string, permission: string) => {
+    //     setMenusPermissionsState((prev) => {
+    //         const currentPermissions = prev[url] || [];
+    //         const updatedPermissions = currentPermissions.includes(permission)
+    //             ? currentPermissions.filter((p) => p !== permission)
+    //             : [...currentPermissions, permission];
+
+    //         return {
+    //             ...prev,
+    //             [url]: updatedPermissions,
+    //         };
+    //     });
+    // };
     const togglePermission = (url: string, permission: string) => {
         setMenusPermissionsState((prev) => {
             const currentPermissions = prev[url] || [];
-            const updatedPermissions = currentPermissions.includes(permission)
-                ? currentPermissions.filter((p) => p !== permission)
-                : [...currentPermissions, permission];
+            const isChecked = currentPermissions.includes(permission);
 
-            return {
-                ...prev,
-                [url]: updatedPermissions,
-            };
+            // If toggling "view" off, remove all permissions
+            if (permission === "view" && isChecked) {
+                return {
+                    ...prev,
+                    [url]: []
+                };
+            }
+
+            // If toggling "view" on, just add "view"
+            if (permission === "view" && !isChecked) {
+                return {
+                    ...prev,
+                    [url]: [...currentPermissions, "view"]
+                };
+            }
+
+            // If toggling other permissions, only allow if "view" is present
+            if (permission !== "view") {
+                if (!currentPermissions.includes("view")) {
+                    // Don't allow adding other permissions without view
+                    return prev;
+                }
+
+                const updatedPermissions = isChecked
+                    ? currentPermissions.filter((p) => p !== permission)
+                    : [...currentPermissions, permission];
+
+                return {
+                    ...prev,
+                    [url]: updatedPermissions
+                };
+            }
+
+            return prev;
         });
     };
+
 
     const handleSubmit = () => {
         const menusPermissions = defaultMenusPermissions.map((menu) => {
@@ -186,9 +228,10 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                                                             <label key={permission} className="flex items-center gap-1">
                                                                 <Checkbox
                                                                     checked={hasPermission(subItem.url, permission)}
+                                                                    disabled={permission !== 'view' && !hasPermission(subItem.url, 'view')}
                                                                     onCheckedChange={() => togglePermission(subItem.url, permission)}
                                                                 />
-                                                                <span className="capitalize text-sm">{permission.replace("can-", "")}</span>
+                                                                <span className="capitalize text-sm">{permission}</span>
                                                             </label>
                                                         ))}
                                                     </div>
@@ -201,9 +244,10 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                                                 <label key={permission} className="flex items-center gap-1">
                                                     <Checkbox
                                                         checked={hasPermission(menu.url, permission)}
+                                                        disabled={permission !== 'view' && !hasPermission(menu.url, 'view')}
                                                         onCheckedChange={() => togglePermission(menu.url, permission)}
                                                     />
-                                                    <span className="capitalize text-sm">{permission.replace("can-", "")}</span>
+                                                    <span className="capitalize text-sm">{permission}</span>
                                                 </label>
                                             ))}
                                         </div>

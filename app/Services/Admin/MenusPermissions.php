@@ -19,7 +19,7 @@ class MenusPermissions
                 "title" => "Dashboard",
                 "url" => "/dashboard",
                 "icon" => "LayoutDashboard",
-                "permissions" => ["can-read-any", "can-create", "can-update", "can-delete"]
+                "permissions" => ["view", "create", "update", "delete"]
             ],
             [
                 "title" => "Admin",
@@ -29,12 +29,12 @@ class MenusPermissions
                     [
                         "title" => "Users",
                         "url" => "/admin/users",
-                        "permissions" => ["can-read-any", "can-create", "can-update", "can-delete"]
+                        "permissions" => ["view", "create", "update", "delete"]
                     ],
                     [
                         "title" => "Roles & Permissions",
                         "url" => "/admin/roles",
-                        "permissions" => ["can-read-any", "can-create", "can-update", "can-delete"]
+                        "permissions" => ["view", "create", "update", "delete"]
                     ]
                 ]
             ],

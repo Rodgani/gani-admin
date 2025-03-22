@@ -2,9 +2,11 @@
 
 namespace App\Services\Admin;
 
-use App\Helper\PaginationHelper;
+use App\Constants\AdminConstant;
+use App\Helpers\PaginationHelper;
 use App\Models\Admin\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 
 class RoleService
 {
@@ -21,11 +23,7 @@ class RoleService
     public function paginatedRoles($request): LengthAwarePaginator
     {
         $search = $request->search;
-        $options = PaginationHelper::pageQueryOptions($request);
-        $column = $options->column;
-        $direction = $options->direction;
-        $perPage = $options->perPage;
-
+        $option = PaginationHelper::pageQueryOptions($request);
         return Role::
             when($search, function ($query, $search) {
                 $query->whereAny(
@@ -37,8 +35,12 @@ class RoleService
                     "%{$search}%"
                 );
             })
-            ->orderBy($column, $direction)
-            ->paginate($perPage);
+            // default user only have access at admin role
+            ->when($request->user()->id != AdminConstant::DEFAULT_ADMIN_ID, function ($query) {
+                $query->whereNot('id', AdminConstant::DEFAULT_ROLE_ID);
+            })
+            ->orderBy($option->column, $option->direction)
+            ->paginate($option->perPage);
     }
 
     /**
