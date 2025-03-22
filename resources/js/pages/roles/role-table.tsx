@@ -2,6 +2,8 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { PaginatedRoles, Role } from "./role";
 import { Button } from "@/components/ui/button";
 import TablePagination from "@/components/table-pagination";
+import { Icon } from "@/components/ui/icon";
+import { SquarePen } from "lucide-react";
 
 
 interface RoleTableProps {
@@ -36,7 +38,7 @@ export default function RoleTable({ roles, handlePageChange, handleEdit }: RoleT
                             <TableCell>{role.updated_at}</TableCell>
                             <TableCell>{role.created_at}</TableCell>
                             <TableCell className="flex justify-center gap-2">
-                                <Button size="sm" variant="ghost" onClick={() => handleEdit(role)} className="cursor-pointer">Edit</Button>
+                                <Button size="sm" variant="ghost" onClick={() => handleEdit(role)} className="cursor-pointer"><Icon iconNode={SquarePen} className="w-4 h-4" /></Button>
                             </TableCell>
                         </TableRow>
                     ))}
