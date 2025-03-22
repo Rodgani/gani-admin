@@ -31,6 +31,14 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
         role_slug: ''
     }
 
+    const resetFormData = {
+        name: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+        role_slug: ''
+    }
+
     const [visibleErrors, setVisibleErrors] = useState<UserForm>(errorObject);
 
     useEffect(() => {
@@ -51,13 +59,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                 role_slug: user.role_slug
             });
         } else {
-            setFormData({
-                name: '',
-                email: '',
-                password: '',
-                password_confirmation: '',
-                role_slug: ''
-            });
+            setFormData(resetFormData);
         }
     }, [user]);
 
@@ -70,6 +72,9 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
 
     const handleSubmit = () => {
         onSubmit(formData, user?.id); // Pass user ID if it exists
+        if (!user?.id) {
+            setFormData(resetFormData);
+        }
     };
 
     const fields = [

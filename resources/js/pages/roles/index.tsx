@@ -8,7 +8,7 @@ import { lazy, Suspense, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
-import CenteredSkeletonLoader from "../centered-skeleton-loader";
+import CenteredSkeletonLoader from "@/components/centered-skeleton-loader";
 import { PER_PAGE_DEFAULT } from "@/contants/app";
 
 const breadcrumbs: BreadcrumbItem[] = [

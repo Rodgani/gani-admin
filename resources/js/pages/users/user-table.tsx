@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { PaginatedUsers, User } from "./user";
-import TablePagination from "../table-pagination";
+import TablePagination from "@/components/table-pagination";
 
 interface UserTableProps {
   users: PaginatedUsers;
