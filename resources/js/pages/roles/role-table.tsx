@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PaginatedRoles, Role } from "./role";
 import { Button } from "@/components/ui/button";
-import TablePagination from "../table-pagination";
+import TablePagination from "@/components/table-pagination";
 
 
 interface RoleTableProps {
