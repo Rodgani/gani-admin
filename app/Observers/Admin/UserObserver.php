@@ -2,7 +2,7 @@
 
 namespace App\Observers\Admin;
 
-use App\Constants\AdminConstant;
+use App\Constants\AdminConstants;
 use App\Models\Admin\User;
 use Illuminate\Validation\ValidationException;
 
@@ -14,7 +14,7 @@ class UserObserver
      */
     public function deleting(User $user): void
     {
-        if ($user->id === AdminConstant::DEFAULT_ADMIN_ID) {
+        if ($user->id === AdminConstants::DEFAULT_ADMIN_ID) {
 
             throw ValidationException::withMessages([
                 'user' => 'The default admin user cannot be deleted.',

@@ -2,7 +2,7 @@
 
 namespace App\Services\Admin;
 
-use App\Constants\AdminConstant;
+use App\Constants\AdminConstants;
 use App\Helpers\PaginationHelper;
 use App\Models\Admin\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -19,7 +19,7 @@ class UserService
 
         $option = PaginationHelper::pageQueryOptions($request);
 
-        return $this->user->whereNotIn('id', [Auth::id(), AdminConstant::DEFAULT_ADMIN_ID])
+        return $this->user->whereNotIn('id', [Auth::id(), AdminConstants::DEFAULT_ADMIN_ID])
             ->when($search, function ($query, $search) {
                 $query->whereAny(
                     [

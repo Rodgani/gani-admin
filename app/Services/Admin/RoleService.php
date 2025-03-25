@@ -2,7 +2,7 @@
 
 namespace App\Services\Admin;
 
-use App\Constants\AdminConstant;
+use App\Constants\AdminConstants;
 use App\Helpers\PaginationHelper;
 use App\Models\Admin\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -27,8 +27,8 @@ class RoleService
             ->when($search, function ($query, $search) {
                 $query->whereAny(['name', 'slug'], 'like', "%{$search}%");
             })
-            ->when($request->user()->id != AdminConstant::DEFAULT_ADMIN_ID, function ($query) {
-                $query->whereNot('id', AdminConstant::DEFAULT_ROLE_ID);
+            ->when($request->user()->id != AdminConstants::DEFAULT_ADMIN_ID, function ($query) {
+                $query->whereNot('id', AdminConstants::DEFAULT_ROLE_ID);
             })
             ->orderBy($option->column, $option->direction)
             ->paginate($option->perPage);

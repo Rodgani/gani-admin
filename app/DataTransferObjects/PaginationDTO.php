@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO;
+namespace App\DataTransferObjects;
 
 use Illuminate\Http\Request;
 
@@ -21,11 +21,6 @@ class PaginationDTO
     ) {
     }
 
-    /**
-     * Summary of fromRequest
-     * @param \Illuminate\Http\Request $request
-     * @return PaginationDTO
-     */
     public static function fromRequest(Request $request): self
     {
         return new self(
