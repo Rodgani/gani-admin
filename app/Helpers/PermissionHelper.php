@@ -3,7 +3,6 @@
 namespace App\Helpers;
 
 use App\Services\Admin\MenusPermissions;
-use Illuminate\Support\Facades\Auth;
 
 class PermissionHelper
 {
