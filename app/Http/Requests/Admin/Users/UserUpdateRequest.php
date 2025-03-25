@@ -27,7 +27,7 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = request("id");
+        $id = request("user")->id;
 
         return [
             "name" => "required",

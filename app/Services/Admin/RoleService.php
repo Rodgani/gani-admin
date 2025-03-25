@@ -6,36 +6,27 @@ use App\Constants\AdminConstant;
 use App\Helpers\PaginationHelper;
 use App\Models\Admin\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
 
 class RoleService
 {
-    public function roles()
+    public function __construct(protected Role $role)
     {
-        return Role::all("slug", "name");
     }
 
-    /**
-     * Summary of paginatedRoles
-     * @param mixed $request
-     * @return LengthAwarePaginator
-     */
+    public function roles()
+    {
+        return $this->role->select('slug', 'name')->get();
+    }
+
     public function paginatedRoles($request): LengthAwarePaginator
     {
         $search = $request->search;
         $option = PaginationHelper::pageQueryOptions($request);
-        return Role::
-            when($search, function ($query, $search) {
-                $query->whereAny(
-                    [
-                        'name',
-                        'slug'
-                    ],
-                    'like',
-                    "%{$search}%"
-                );
+
+        return $this->role
+            ->when($search, function ($query, $search) {
+                $query->whereAny(['name', 'slug'], 'like', "%{$search}%");
             })
-            // default user only have access at admin role
             ->when($request->user()->id != AdminConstant::DEFAULT_ADMIN_ID, function ($query) {
                 $query->whereNot('id', AdminConstant::DEFAULT_ROLE_ID);
             })
@@ -43,24 +34,14 @@ class RoleService
             ->paginate($option->perPage);
     }
 
-    /**
-     * Summary of store
-     * @param mixed $request
-     * @return Role
-     */
     public function store($request): Role
     {
-        return Role::create($request);
+        return $this->role->create($request);
     }
 
-    /**
-     * Summary of update
-     * @param int $id
-     * @param mixed $request
-     * @return bool
-     */
-    public function update(int $id, $request)
+    public function update(Role $role, $request): bool
     {
-        return Role::findOrFail($id)->update($request);
+        // here you are updating an existing Role instance
+        return $role->update($request);
     }
 }
