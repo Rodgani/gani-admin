@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
-    public function __construct(protected User $user)
+    public function __construct(private User $user)
     {
     }
     public function users($request): LengthAwarePaginator

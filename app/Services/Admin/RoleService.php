@@ -9,7 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class RoleService
 {
-    public function __construct(protected Role $role)
+    public function __construct(private Role $role)
     {
     }
 
