@@ -17,12 +17,18 @@ export interface NavGroup {
 
 
 export type NavItem = {
-  title: string;
-  url: string;
-  icon?: string; // Ensure icon is a string, not `LucideIcon`
-  isActive?: boolean;
-  items?: NavItem[]; // Nested menu items should also be of type `NavItem`
+    title: string;
+    url: string;
+    icon?: string; // Ensure icon is a string, not `LucideIcon`
+    isActive?: boolean;
+    items?: NavItem[]; // Nested menu items should also be of type `NavItem`
 };
+
+export interface SettingSidebarNavItem {
+    title: string;
+    href: string;
+    icon: React.ReactNode | null;
+}
 
 
 export interface SharedData {
