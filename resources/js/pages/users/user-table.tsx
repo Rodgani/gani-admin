@@ -13,6 +13,7 @@ import { PaginatedUsers, User } from "./user";
 import TablePagination from "@/components/table-pagination";
 import { Icon } from "@/components/ui/icon";
 import { SquarePen, Trash2 } from "lucide-react";
+import { usePermission } from "@/hooks/use-permission";
 
 interface UserTableProps {
   users: PaginatedUsers;
@@ -22,6 +23,11 @@ interface UserTableProps {
 }
 
 export default function UserTable({ users, handlePageChange, handleDelete, handleEdit }: UserTableProps) {
+  const { hasPermission } = usePermission();
+  const { hasAnyPermission } = usePermission();
+
+  const module = "/admin/users";
+
   const { data, current_page, last_page, total } = users;
 
   return (
@@ -36,7 +42,9 @@ export default function UserTable({ users, handlePageChange, handleDelete, handl
             <TableHead>Role</TableHead>
             <TableHead>Updated At</TableHead>
             <TableHead>Created At</TableHead>
-            <TableHead className="text-center">Actions</TableHead>
+            {hasAnyPermission(module, ['update', 'delete']) && (
+              <TableHead className="text-center">Actions</TableHead>
+            )}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -48,10 +56,16 @@ export default function UserTable({ users, handlePageChange, handleDelete, handl
               <TableCell>{user.role_slug}</TableCell>
               <TableCell>{user.updated_at}</TableCell>
               <TableCell>{user.created_at}</TableCell>
-              <TableCell className="flex justify-center gap-2">
-                <Button size="sm" variant="ghost" onClick={() => handleEdit(user)} className="cursor-pointer"><Icon iconNode={SquarePen} className="w-4 h-4" /></Button>
-                <Button size="sm" variant="ghost" onClick={() => handleDelete(user.id)} className="cursor-pointer "><Icon iconNode={Trash2} className="w-4 h-4" /></Button>
-              </TableCell>
+              {hasAnyPermission(module, ['update', 'delete']) && (
+                <TableCell className="flex justify-center gap-2">
+                  {hasPermission(module, 'update') && (
+                    <Button size="sm" variant="ghost" onClick={() => handleEdit(user)} className="cursor-pointer"><Icon iconNode={SquarePen} className="w-4 h-4" /></Button>
+                  )}
+                  {hasPermission(module, 'delete') && (
+                    <Button size="sm" variant="ghost" onClick={() => handleDelete(user.id)} className="cursor-pointer "><Icon iconNode={Trash2} className="w-4 h-4" /></Button>
+                  )}
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

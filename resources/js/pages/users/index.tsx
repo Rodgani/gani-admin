@@ -13,12 +13,14 @@ import { PER_PAGE_DEFAULT } from '@/contants/app';
 import { useToastMessage } from '@/hooks/use-toast-message';
 import { useConfirmToast } from '@/hooks/use-confirm-toast';
 import { Icon } from '@/components/icon';
+import { usePermission } from '@/hooks/use-permission';
 
 // 🔥 Lazy load the modal
-const UserFormModal = lazy(() => import('./user-form-modal'));
+const UserFormModal = lazy(() => import('./user-form-modal'))
+const module = "/admin/users"
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Users', href: '/admin/users' },
+    { title: 'Users', href: module },
 ];
 
 interface UserIndexProps {
@@ -29,6 +31,9 @@ interface UserIndexProps {
 }
 
 export default function UserIndex({ users, roles }: UserIndexProps) {
+
+    const { hasPermission } = usePermission();
+    const { hasAnyPermission } = usePermission();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
@@ -109,19 +114,28 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users Management" />
-            <div className="flex items-center py-4 gap-2 m-4">
-                <Input
-                    type="text"
-                    placeholder="Search..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                />
-                <Button onClick={handleSearch} className="cursor-pointer"> <Icon iconNode={Search} /></Button>
-                <Button onClick={() => setIsModalOpen(true)} className="ml-auto cursor-pointer flex items-center gap-2">
-                    <Icon iconNode={PlusCircle} />
-                </Button>
-            </div>
+            {hasAnyPermission(module, ['search', 'create']) && (
+                <div className="flex items-center py-4 gap-2 m-4">
+                    {hasPermission(module, 'search') && (
+                        <>
+                            <Input
+                                type="text"
+                                placeholder="Search..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                            />
+                            <Button onClick={handleSearch} className="cursor-pointer"> <Icon iconNode={Search} /></Button>
+                        </>
+                    )}
+
+                    {hasPermission(module, 'create') && (
+                        <Button onClick={() => setIsModalOpen(true)} className="ml-auto cursor-pointer flex items-center gap-2">
+                            <Icon iconNode={PlusCircle} />
+                        </Button>
+                    )}
+                </div>
+            )}
 
             <UserTable users={users} handlePageChange={handlePageChange} handleDelete={handleDelete} handleEdit={handleEdit} />
 

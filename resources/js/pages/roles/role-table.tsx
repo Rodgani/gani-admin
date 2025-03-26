@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import TablePagination from "@/components/table-pagination";
 import { Icon } from "@/components/ui/icon";
 import { SquarePen } from "lucide-react";
+import { usePermission } from "@/hooks/use-permission";
 
 
 interface RoleTableProps {
@@ -14,6 +15,7 @@ interface RoleTableProps {
 
 export default function RoleTable({ roles, handlePageChange, handleEdit }: RoleTableProps) {
     const { data, current_page, last_page, total } = roles;
+    const { hasPermission } = usePermission();
 
     return (
         <div className="overflow-auto m-4 border w-sm md:w-auto lg:w-auto">
@@ -37,9 +39,11 @@ export default function RoleTable({ roles, handlePageChange, handleEdit }: RoleT
                             <TableCell>{role.slug}</TableCell>
                             <TableCell>{role.updated_at}</TableCell>
                             <TableCell>{role.created_at}</TableCell>
-                            <TableCell className="flex justify-center gap-2">
-                                <Button size="sm" variant="ghost" onClick={() => handleEdit(role)} className="cursor-pointer"><Icon iconNode={SquarePen} className="w-4 h-4" /></Button>
-                            </TableCell>
+                            {hasPermission('/admin/roles', 'update') && (
+                                <TableCell className="flex justify-center gap-2">
+                                    <Button size="sm" variant="ghost" onClick={() => handleEdit(role)} className="cursor-pointer"><Icon iconNode={SquarePen} className="w-4 h-4" /></Button>
+                                </TableCell>
+                            )}
                         </TableRow>
                     ))}
                 </TableBody>
