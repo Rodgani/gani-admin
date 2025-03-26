@@ -15,8 +15,7 @@ export interface NavGroup {
     items: NavItem[];
 }
 
-
-export type NavItem = {
+export interface NavItem {
     title: string;
     url: string;
     icon?: string; // Ensure icon is a string, not `LucideIcon`
