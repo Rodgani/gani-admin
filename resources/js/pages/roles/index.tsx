@@ -59,7 +59,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
 
 
     const handleSubmit = (formData: { name: string, slug: string, menus_permissions: MenusPermissions }, roleId?: number) => {
-
+        console.log(formData.menus_permissions)
         const payload = {
             name: formData.name,
             slug: formData.slug,

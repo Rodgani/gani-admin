@@ -66,14 +66,42 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
     // const togglePermission = (url: string, permission: string) => {
     //     setMenusPermissionsState((prev) => {
     //         const currentPermissions = prev[url] || [];
-    //         const updatedPermissions = currentPermissions.includes(permission)
-    //             ? currentPermissions.filter((p) => p !== permission)
-    //             : [...currentPermissions, permission];
+    //         const isChecked = currentPermissions.includes(permission);
 
-    //         return {
-    //             ...prev,
-    //             [url]: updatedPermissions,
-    //         };
+    //         // If toggling "view" off, remove all permissions
+    //         if (permission === "view" && isChecked) {
+    //             return {
+    //                 ...prev,
+    //                 [url]: []
+    //             };
+    //         }
+
+    //         // If toggling "view" on, just add "view"
+    //         if (permission === "view" && !isChecked) {
+    //             return {
+    //                 ...prev,
+    //                 [url]: [...currentPermissions, "view"]
+    //             };
+    //         }
+
+    //         // If toggling other permissions, only allow if "view" is present
+    //         if (permission !== "view") {
+    //             if (!currentPermissions.includes("view")) {
+    //                 // Don't allow adding other permissions without view
+    //                 return prev;
+    //             }
+
+    //             const updatedPermissions = isChecked
+    //                 ? currentPermissions.filter((p) => p !== permission)
+    //                 : [...currentPermissions, permission];
+
+    //             return {
+    //                 ...prev,
+    //                 [url]: updatedPermissions
+    //             };
+    //         }
+
+    //         return prev;
     //     });
     // };
     const togglePermission = (url: string, permission: string) => {
@@ -81,66 +109,70 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
             const currentPermissions = prev[url] || [];
             const isChecked = currentPermissions.includes(permission);
 
-            // If toggling "view" off, remove all permissions
-            if (permission === "view" && isChecked) {
-                return {
-                    ...prev,
-                    [url]: []
-                };
-            }
+            let updatedPermissions: string[] = [];
 
-            // If toggling "view" on, just add "view"
-            if (permission === "view" && !isChecked) {
-                return {
-                    ...prev,
-                    [url]: [...currentPermissions, "view"]
-                };
-            }
-
-            // If toggling other permissions, only allow if "view" is present
-            if (permission !== "view") {
+            if (permission === "view") {
+                updatedPermissions = isChecked ? [] : ["view"];
+            } else {
                 if (!currentPermissions.includes("view")) {
-                    // Don't allow adding other permissions without view
+                    // Do nothing if view is not present
                     return prev;
                 }
 
-                const updatedPermissions = isChecked
+                updatedPermissions = isChecked
                     ? currentPermissions.filter((p) => p !== permission)
                     : [...currentPermissions, permission];
-
-                return {
-                    ...prev,
-                    [url]: updatedPermissions
-                };
             }
 
-            return prev;
+            const newState = { ...prev };
+
+            // If no permissions left, remove that entire key
+            if (updatedPermissions.length === 0) {
+                delete newState[url];
+            } else {
+                newState[url] = updatedPermissions;
+            }
+
+            return newState;
         });
     };
 
-
     const handleSubmit = () => {
-        const menusPermissions = defaultMenusPermissions.map((menu) => {
-            if (menu.items) {
-                return {
-                    title: menu.title,
-                    url: menu.url,
-                    icon: menu.icon,
-                    items: menu.items.map((subItem) => ({
-                        title: subItem.title,
-                        url: subItem.url,
-                        permissions: menusPermissionsState[subItem.url] || []
-                    }))
-                };
-            } else {
-                return {
-                    title: menu.title,
-                    url: menu.url,
-                    icon: menu.icon,
-                    permissions: menusPermissionsState[menu.url] || []
-                };
-            }
-        });
+        const menusPermissions = defaultMenusPermissions
+            .map((menu) => {
+                if (menu.items) {
+                    const filteredItems = menu.items
+                        .map((subItem) => ({
+                            title: subItem.title,
+                            url: subItem.url,
+                            permissions: menusPermissionsState[subItem.url] || []
+                        }))
+                        .filter((subItem) => subItem.permissions.length > 0);
+
+                    // Only include parent if it still has items
+                    if (filteredItems.length > 0) {
+                        return {
+                            title: menu.title,
+                            url: menu.url,
+                            icon: menu.icon,
+                            items: filteredItems
+                        };
+                    }
+
+                    return null; // if no sub-items left
+                } else {
+                    const permissions = menusPermissionsState[menu.url] || [];
+                    return permissions.length > 0
+                        ? {
+                            title: menu.title,
+                            url: menu.url,
+                            icon: menu.icon,
+                            permissions
+                        }
+                        : null;
+                }
+            })
+            .filter((menu) => menu !== null); // remove empty parents
 
         const mergedData = {
             ...formData,
@@ -149,6 +181,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
 
         onSubmit(mergedData, role?.id);
     };
+
 
     const [checkAll, setCheckAll] = useState(false);
 

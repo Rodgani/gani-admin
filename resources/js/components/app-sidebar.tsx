@@ -37,7 +37,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="flex" onClick={(e) => e.stopPropagation()}>
-        <Link href="/dashboard" prefetch className="flex items-center gap-2 mt-1.5">
+        <Link href="#" prefetch className="flex items-center gap-2 mt-1.5">
           <AppLogo />
         </Link>
       </SidebarHeader>
