@@ -4,11 +4,16 @@ namespace App\Observers\Admin;
 
 use App\Constants\AdminConstants;
 use App\Models\Admin\User;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 
 class UserObserver
 {
 
+    public function created(User $user)
+    {
+        Password::sendResetLink(["email" => $user->email]);
+    }
     /**
      * Handle the User "deleted" event.
      */
