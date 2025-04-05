@@ -48,6 +48,7 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'sidebarOpen' => $request->cookie('sidebar_state') === 'true',
             // Only include menus_permissions if user is authenticated
             'menus_permissions' => $request->user() ? json_decode($request->user()->role->menus_permissions, true) : [],
         ];
