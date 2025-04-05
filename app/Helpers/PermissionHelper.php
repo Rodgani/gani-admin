@@ -28,7 +28,8 @@ class PermissionHelper
 
     public function authorize(string $permission, $userPermissions): bool
     {
-        $menusPermissions = collect(new MenusPermissions()());
+        // Use app() to resolve the singleton instance of MenusPermissions
+        $menusPermissions = collect(app(MenusPermissions::class)());
         $valid = $this->validateMenuPermission($this->parentMenu, $this->subMenu, $permission, $menusPermissions);
 
         if (!$valid) {

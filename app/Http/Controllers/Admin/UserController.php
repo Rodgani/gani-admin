@@ -8,23 +8,24 @@ use App\Http\Requests\Admin\Users\UserDeleteRequest;
 use App\Http\Requests\Admin\Users\UserIndexRequest;
 use App\Http\Requests\Admin\Users\UserUpdateRequest;
 use App\Models\Admin\User;
-use App\Services\Admin\RoleService;
-use App\Services\Admin\UserService;
+use App\Repositories\Admin\RoleRepository;
+use App\Repositories\Admin\UserRepository;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
     public function __construct(
-        protected UserService $service,
-        protected RoleService $roleService
+        protected UserRepository $userRepository,
+        protected RoleRepository $roleRepository
     ) {
     }
 
     public function userIndex(UserIndexRequest $request)
     {
-        $users = $this->service->users($request);
-        $roles = $this->roleService->roles();
+        $users = $this->userRepository->users($request);
+        $roles = $this->roleRepository->roles();
+
         return Inertia::render('users/index', [
             "users" => $users,
             "roles" => $roles
@@ -34,19 +35,19 @@ class UserController extends Controller
     public function destroy(User $user, UserDeleteRequest $request)
     {
         $request->validated();
-        $this->service->destroy($user);
+        $this->userRepository->destroy($user);
         return Redirect::route('user.index');
     }
 
     public function update(User $user, UserUpdateRequest $request)
     {
-        $this->service->update($user, $request->validated());
+        $this->userRepository->update($user, $request->validated());
         return Redirect::route('user.index');
     }
 
     public function store(UserCreateRequest $request)
     {
-        $this->service->store($request->validated());
+        $this->userRepository->store($request->validated());
         return Redirect::route('user.index');
     }
 }

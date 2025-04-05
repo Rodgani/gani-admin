@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Repositories\Admin;
 
 use App\Constants\AdminConstants;
 use App\Helpers\PaginationHelper;
@@ -8,18 +8,15 @@ use App\Models\Admin\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
-class UserService
+class UserRepository
 {
-    public function __construct(private User $user)
-    {
-    }
     public function users($request): LengthAwarePaginator
     {
         $search = $request->search;
 
         $option = PaginationHelper::pageQueryOptions($request);
 
-        return $this->user->whereNotIn('id', [Auth::id(), AdminConstants::DEFAULT_ADMIN_ID])
+        return User::whereNotIn('id', [Auth::id(), AdminConstants::DEFAULT_ADMIN_ID])
             ->when($search, function ($query, $search) {
                 $query->whereAny(
                     [
@@ -46,6 +43,6 @@ class UserService
 
     public function store($request): User
     {
-        return $this->user->create($request);
+        return User::create($request);
     }
 }

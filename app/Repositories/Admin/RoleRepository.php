@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Repositories\Admin;
 
 use App\Constants\AdminConstants;
 use App\Helpers\PaginationHelper;
 use App\Models\Admin\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
-class RoleService
+class RoleRepository
 {
-    public function __construct(private Role $role)
-    {
-    }
 
-    public function roles()
+    public function roles(): Collection
     {
-        return $this->role->select('slug', 'name')->get();
+        return Role::select('slug', 'name')->get();
     }
 
     public function paginatedRoles($request): LengthAwarePaginator
@@ -23,10 +21,9 @@ class RoleService
         $search = $request->search;
         $option = PaginationHelper::pageQueryOptions($request);
 
-        return $this->role
-            ->when($search, function ($query, $search) {
-                $query->whereAny(['name', 'slug'], 'like', "%{$search}%");
-            })
+        return Role::when($search, function ($query, $search) {
+            $query->whereAny(['name', 'slug'], 'like', "%{$search}%");
+        })
             ->when($request->user()->id != AdminConstants::DEFAULT_ADMIN_ID, function ($query) {
                 $query->whereNot('id', AdminConstants::DEFAULT_ROLE_ID);
             })
@@ -36,7 +33,7 @@ class RoleService
 
     public function store($request): Role
     {
-        return $this->role->create($request);
+        return Role::create($request);
     }
 
     public function update(Role $role, $request): bool

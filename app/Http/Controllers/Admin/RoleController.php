@@ -7,8 +7,8 @@ use App\Http\Requests\Admin\Roles\RoleCreateRequest;
 use App\Http\Requests\Admin\Roles\RoleIndexRequest;
 use App\Http\Requests\Admin\Roles\RoleUpdateRequest;
 use App\Models\Admin\Role;
+use App\Repositories\Admin\RoleRepository;
 use App\Services\Admin\MenusPermissions;
-use App\Services\Admin\RoleService;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -16,7 +16,7 @@ class RoleController extends Controller
 {
 
     public function __construct(
-        protected RoleService $service,
+        protected RoleRepository $roleRepository,
         protected MenusPermissions $menusPermissionsService
     ) {
 
@@ -24,7 +24,7 @@ class RoleController extends Controller
 
     public function roleIndex(RoleIndexRequest $request)
     {
-        $roles = $this->service->paginatedRoles($request);
+        $roles = $this->roleRepository->paginatedRoles($request);
         $defaultMenusPermissions = $this->menusPermissionsService->__invoke();
         return Inertia::render('roles/index', [
             "roles" => $roles,
@@ -34,13 +34,13 @@ class RoleController extends Controller
 
     public function store(RoleCreateRequest $request)
     {
-        $this->service->store($request->validated());
+        $this->roleRepository->store($request->validated());
         return Redirect::route('role.index');
     }
 
     public function update(Role $role, RoleUpdateRequest $request)
     {
-        $this->service->update($role, $request->validated());
+        $this->roleRepository->update($role, $request->validated());
         return Redirect::route('role.index');
     }
 }
