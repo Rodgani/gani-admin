@@ -18,8 +18,8 @@ export default function RoleTable({ roles, handlePageChange, handleEdit }: RoleT
     const { hasPermission } = usePermission();
 
     return (
-        <div className="overflow-auto m-4 border w-sm md:w-auto lg:w-auto">
-            <Table className="table-auto">
+        <div className="m-4 border">
+            <Table>
                 <TableCaption>List of Roles</TableCaption>
                 <TableHeader>
                     <TableRow>
@@ -49,7 +49,7 @@ export default function RoleTable({ roles, handlePageChange, handleEdit }: RoleT
                 </TableBody>
                 <TableFooter>
                     <TableRow>
-                        <TableCell colSpan={7} className="text-center font-medium">
+                        <TableCell colSpan={12} className="text-center font-medium">
                             Showing {data.length} of {total} roles
                         </TableCell>
                     </TableRow>

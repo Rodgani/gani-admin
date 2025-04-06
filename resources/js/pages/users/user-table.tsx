@@ -31,8 +31,8 @@ export default function UserTable({ users, handlePageChange, handleDelete, handl
   const { data, current_page, last_page, total } = users;
 
   return (
-    <div className="overflow-auto m-4 border w-sm md:w-auto lg:w-auto">
-      <Table className="table-auto">
+    <div className="m-4 border">
+      <Table>
         <TableCaption>List of Users</TableCaption>
         <TableHeader>
           <TableRow>
@@ -71,7 +71,7 @@ export default function UserTable({ users, handlePageChange, handleDelete, handl
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={7} className="text-center font-medium">
+            <TableCell colSpan={12} className="text-center font-medium">
               Showing {data.length} of {total} users
             </TableCell>
           </TableRow>
