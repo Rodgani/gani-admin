@@ -14,6 +14,7 @@ import TablePagination from "@/components/table-pagination";
 import { Icon } from "@/components/ui/icon";
 import { SquarePen, Trash2 } from "lucide-react";
 import { usePermission } from "@/hooks/use-permission";
+import { TableBodyItem, TableHeaderItem } from "@/types/table";
 
 interface UserTableProps {
   users: PaginatedUsers;
@@ -28,60 +29,99 @@ export default function UserTable({ users, handlePageChange, handleDelete, handl
 
   const module = "/admin/users";
 
-  const { data, current_page, last_page, total } = users;
+  const { data: userList, current_page, last_page, total } = users;
+
+  const headers: TableHeaderItem[] = [
+    { label: 'ID' },
+    { label: 'Name' },
+    { label: 'Email' },
+    { label: 'Role' },
+    { label: 'Updated At' },
+    { label: 'Created At' },
+    ...(hasAnyPermission(module, ['update', 'delete'])
+      ? [{ label: 'Actions', className: 'text-center' }]
+      : []),
+  ];
+
+  // Define user fields
+  const fields: TableBodyItem<User>[] = [
+    { label: 'ID', value: (user) => user.id },
+    { label: 'Name', value: (user) => user.name },
+    { label: 'Email', value: (user) => user.email },
+    { label: 'Role', value: (user) => user.role?.name },
+    { label: 'Updated At', value: (user) => user.updated_at },
+    { label: 'Created At', value: (user) => user.created_at },
+  ];
+
+  // Define action column for actions like edit and delete
+  const actionColumn: TableBodyItem<User>[] = [
+    {
+      label: 'Actions',
+      render: (user) => (
+        <div className="flex justify-center gap-2">
+          {hasPermission(module, 'update') && (
+            <Button size="sm" variant="ghost" onClick={() => handleEdit(user)}>
+              <Icon iconNode={SquarePen} className="w-4 h-4" />
+            </Button>
+          )}
+          {hasPermission(module, 'delete') && (
+            <Button size="sm" variant="ghost" onClick={() => handleDelete(user.id)}>
+              <Icon iconNode={Trash2} className="w-4 h-4" />
+            </Button>
+          )}
+        </div>
+      ),
+    },
+  ];
+
+  // Combine user fields and action column based on permissions
+  const tableBody: TableBodyItem<User>[] = [
+    ...fields,
+    ...(hasAnyPermission(module, ['update', 'delete']) ? actionColumn : []),
+  ];
 
   return (
-    <div className="m-4 border">
+    <>
       <Table>
         <TableCaption>List of Users</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Updated At</TableHead>
-            <TableHead>Created At</TableHead>
-            {hasAnyPermission(module, ['update', 'delete']) && (
-              <TableHead className="text-center">Actions</TableHead>
-            )}
+            {headers.map((header, index) => (
+              <TableHead key={index} className={header.className || ''}>
+                {header.label}
+              </TableHead>
+            ))}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((user) => (
+          {userList.map((user) => (
             <TableRow key={user.id}>
-              <TableCell>{user.id}</TableCell>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.role_slug}</TableCell>
-              <TableCell>{user.updated_at}</TableCell>
-              <TableCell>{user.created_at}</TableCell>
-              {hasAnyPermission(module, ['update', 'delete']) && (
-                <TableCell className="flex justify-center gap-2">
-                  {hasPermission(module, 'update') && (
-                    <Button size="sm" variant="ghost" onClick={() => handleEdit(user)} className="cursor-pointer"><Icon iconNode={SquarePen} className="w-4 h-4" /></Button>
-                  )}
-                  {hasPermission(module, 'delete') && (
-                    <Button size="sm" variant="ghost" onClick={() => handleDelete(user.id)} className="cursor-pointer "><Icon iconNode={Trash2} className="w-4 h-4" /></Button>
-                  )}
+              {tableBody.map((column, index) => (
+                <TableCell key={index}>
+                  {/* Use render function if available, otherwise use value function */}
+                  {column.render ? column.render(user) : column.value && column.value(user)}
                 </TableCell>
-              )}
+              ))}
             </TableRow>
           ))}
         </TableBody>
         <TableFooter>
           <TableRow>
             <TableCell colSpan={12} className="text-center font-medium">
-              Showing {data.length} of {total} users
+              Showing {userList.length} of {total} users
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan={12} className="text-center font-medium">
+              <TablePagination
+                currentPage={current_page}
+                lastPage={last_page}
+                onPageChange={handlePageChange}
+              />
             </TableCell>
           </TableRow>
         </TableFooter>
       </Table>
-      <TablePagination
-        currentPage={current_page}
-        lastPage={last_page}
-        onPageChange={handlePageChange}
-      />
-    </div>
+    </>
   );
 }

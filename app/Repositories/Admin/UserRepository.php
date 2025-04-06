@@ -16,7 +16,8 @@ class UserRepository
 
         $option = PaginationHelper::pageQueryOptions($request);
 
-        return User::whereNotIn('id', [Auth::id(), AdminConstants::DEFAULT_ADMIN_ID])
+        return User::with('role:slug,name')
+            ->whereNotIn('id', [Auth::id(), AdminConstants::DEFAULT_ADMIN_ID])
             ->when($search, function ($query, $search) {
                 $query->whereAny(
                     [

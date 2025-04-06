@@ -92,8 +92,9 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Roles Management" />
+
             {hasAnyPermission(module, ['search', 'create']) && (
-                <div className="flex items-center py-4 gap-2 m-4">
+                <div className="flex items-center py-4 gap-2">
                     {hasPermission(module, 'search') && (
                         <>
                             <Input
@@ -114,6 +115,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
                     )}
                 </div>
             )}
+
             <RoleTable roles={roles} handlePageChange={handlePageChange} handleEdit={handleEdit} />
 
             {/* 🔥 Lazy-load UserFormModal when needed */}

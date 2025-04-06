@@ -114,8 +114,9 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users Management" />
+
             {hasAnyPermission(module, ['search', 'create']) && (
-                <div className="flex items-center py-4 gap-2 m-4">
+                <div className="flex items-center py-4 gap-2">
                     {hasPermission(module, 'search') && (
                         <>
                             <Input
@@ -136,6 +137,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
                     )}
                 </div>
             )}
+
 
             <UserTable users={users} handlePageChange={handlePageChange} handleDelete={handleDelete} handleEdit={handleEdit} />
 

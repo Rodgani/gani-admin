@@ -22,7 +22,7 @@ class MenusPermissions
                 "permissions" => ["view", "search", "create", "update", "delete"]
             ],
             [
-                "title" => "Admin",
+                "title" => "Users Management",
                 "url" => "#",
                 "icon" => "SquareTerminal",
                 "items" => [
@@ -34,7 +34,7 @@ class MenusPermissions
                     [
                         "title" => "Roles & Permissions",
                         "url" => "/admin/roles",
-                        "permissions" => ["view", "search", "create", "update", "delete"]
+                        "permissions" => ["view", "search", "create", "update"]
                     ]
                 ]
             ],
