@@ -1,10 +1,10 @@
 <?php
 
-namespace App\DataTransferObjects;
+namespace App\Dto;
 
 use Illuminate\Http\Request;
 
-class PaginationDTO
+class PaginationDto
 {
     /**
      * Summary of __construct

@@ -2,14 +2,14 @@
 
 namespace App\Helpers;
 
-use App\DataTransferObjects\PaginationDTO;
+use App\Dto\PaginationDto;
 
 class PaginationHelper
 {
 
-    public static function pageQueryOptions($request): PaginationDTO
+    public static function pageQueryOptions($request): PaginationDto
     {
-        return PaginationDTO::fromRequest($request);
+        return PaginationDto::fromRequest($request);
     }
 }
 
