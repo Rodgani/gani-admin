@@ -21,7 +21,7 @@ class UserController extends Controller
     ) {
     }
 
-    public function userIndex(UserIndexRequest $request)
+    public function index(UserIndexRequest $request)
     {
         $users = $this->userRepository->users($request);
         $roles = $this->roleRepository->roles();

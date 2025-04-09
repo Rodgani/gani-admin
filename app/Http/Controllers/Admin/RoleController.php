@@ -22,7 +22,7 @@ class RoleController extends Controller
 
     }
 
-    public function roleIndex(RoleIndexRequest $request)
+    public function index(RoleIndexRequest $request)
     {
         $roles = $this->roleRepository->paginatedRoles($request);
         $defaultMenusPermissions = $this->menusPermissionsService->__invoke();
