@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Dto\PaginationDto;
+use App\Dtos\PaginationDto;
 
 class PaginationHelper
 {

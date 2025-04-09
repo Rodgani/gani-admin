@@ -22,7 +22,7 @@ class MenusPermissions
                 "permissions" => ["view", "search", "create", "update", "delete"]
             ],
             [
-                "title" => "User Management",
+                "title" => "Admin",
                 "url" => "#",
                 "icon" => "SquareTerminal",
                 "items" => [

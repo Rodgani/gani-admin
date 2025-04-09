@@ -26,7 +26,7 @@ class RoleController extends Controller
     {
         $roles = $this->roleRepository->paginatedRoles($request);
         $defaultMenusPermissions = $this->menusPermissionsService->__invoke();
-        return Inertia::render('roles/index', [
+        return Inertia::render('admin/roles/index', [
             "roles" => $roles,
             "default_menus_permissions" => $defaultMenusPermissions
         ]);
