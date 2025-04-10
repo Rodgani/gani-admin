@@ -11,7 +11,7 @@ import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { Menu, Search } from 'lucide-react';
 import { icons, type LucideIcon } from 'lucide-react'; // For dynamic icons
-
+import { useAppearance } from '@/hooks/use-appearance';
 
 const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
 
@@ -20,6 +20,8 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
+    const { appearance } = useAppearance();
+
     const page = usePage<SharedData>();
     const { auth, menus_permissions } = page.props;
     const getInitials = useInitials();
@@ -136,7 +138,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                         href={item.url}
                                         className={cn(
                                             'flex items-center space-x-2 h-9 rounded-md',
-                                            isActive ? 'px-3' : 'px-0',
+                                            appearance === 'light' || appearance === 'system' ? 'px-0' : isActive ? 'px-3' : 'px-0',
                                             isActive && activeItemStyles
                                         )}
                                     >
@@ -145,6 +147,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                         )}
                                         <span>{item.title}</span>
                                     </Link>
+
                                 );
                             })}
                         </div>
