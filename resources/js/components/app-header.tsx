@@ -13,7 +13,7 @@ import { Menu, Search } from 'lucide-react';
 import { icons, type LucideIcon } from 'lucide-react'; // For dynamic icons
 import { useAppearance } from '@/hooks/use-appearance';
 
-const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
+const activeItemStyles = 'text-neutral-900 dark:text-neutral-100';
 
 interface AppHeaderProps {
     breadcrumbs?: BreadcrumbItem[];
@@ -56,6 +56,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     <div className="flex h-full flex-col justify-between text-sm">
                                         <div className="flex flex-col space-y-4">
                                             {processedMenus.map((item) => {
+                                                const isActive = new URL(item.url, window.location.origin).pathname === new URL(page.url, window.location.origin).pathname;
                                                 return item.items ? (
                                                     // Render dropdown if items exist
                                                     <div key={item.title}>
@@ -68,8 +69,18 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent className="w-56">
                                                                 {item.items.map((subItem, index) => {
+                                                                    const isSubItemActive =
+                                                                        new URL(subItem.url, window.location.origin).pathname ===
+                                                                        new URL(page.url, window.location.origin).pathname;
                                                                     return (
-                                                                        <DropdownMenuItem key={index}>
+                                                                        <DropdownMenuItem key={index}
+                                                                            className={
+                                                                                cn('flex items-center space-x-2 h-9 rounded-md px-3',
+                                                                                    isSubItemActive ? (appearance === 'light' ? 'bg-neutral-100' : 'dark:bg-neutral-800') : "",
+                                                                                    isSubItemActive && activeItemStyles
+                                                                                )
+                                                                            }
+                                                                        >
                                                                             <Link href={subItem.url}>{subItem.title}</Link>
                                                                         </DropdownMenuItem>
                                                                     );
@@ -78,14 +89,20 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                         </DropdownMenu>
                                                     </div>
                                                 ) : (
-                                                    <Link key={item.title} href={item.url} className="flex items-center space-x-2 font-medium">
+                                                    <Link key={item.title} href={item.url}
+
+                                                        className={cn(
+                                                            'flex items-center space-x-2 h-9 rounded-md',
+                                                            isActive ? (appearance === 'light' ? 'bg-neutral-100' : 'dark:bg-neutral-800') : "px-0",
+                                                            isActive && activeItemStyles
+                                                        )}
+                                                    >
                                                         {item.icon && <Icon iconNode={item.icon} className="h-5 w-5" />}
                                                         <span>{item.title}</span>
                                                     </Link>
                                                 );
                                             })}
                                         </div>
-
                                     </div>
                                 </div>
                             </SheetContent>
@@ -123,7 +140,12 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                     return (
                                                         <DropdownMenuItem
                                                             key={subIndex}
-                                                            className={cn(isSubItemActive && activeItemStyles)}
+                                                            className={
+                                                                cn('flex items-center space-x-2 h-9 rounded-md px-3',
+                                                                    isSubItemActive ? (appearance === 'light' ? 'bg-neutral-100' : 'dark:bg-neutral-800') : "",
+                                                                    isSubItemActive && activeItemStyles
+                                                                )
+                                                            }
                                                         >
                                                             <Link href={subItem.url}>{subItem.title}</Link>
                                                         </DropdownMenuItem>
@@ -137,8 +159,8 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                         key={index}
                                         href={item.url}
                                         className={cn(
-                                            'flex items-center space-x-2 h-9 rounded-md',
-                                            appearance === 'light' || appearance === 'system' ? 'px-0' : isActive ? 'px-3' : 'px-0',
+                                            'flex items-center space-x-2 h-9 rounded-md px-3',
+                                            isActive ? (appearance === 'light' ? 'bg-neutral-100' : 'dark:bg-neutral-800') : "px-0",
                                             isActive && activeItemStyles
                                         )}
                                     >
