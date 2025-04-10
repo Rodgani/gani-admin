@@ -3,8 +3,7 @@ import { Icon } from '@/components/icon';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { UserMenuContent } from '@/components/user-menu-content';
 import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
@@ -12,7 +11,6 @@ import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { Menu, Search } from 'lucide-react';
 import { icons, type LucideIcon } from 'lucide-react'; // For dynamic icons
-import AppLogoIcon from './app-logo-icon';
 
 
 const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
@@ -136,7 +134,11 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     <Link
                                         key={index}
                                         href={item.url}
-                                        className={cn('flex items-center space-x-2 h-9 px-3 rounded-md', isActive && activeItemStyles)}
+                                        className={cn(
+                                            'flex items-center space-x-2 h-9 rounded-md',
+                                            isActive ? 'px-3' : 'px-0',
+                                            isActive && activeItemStyles
+                                        )}
                                     >
                                         {item.icon && (
                                             <Icon iconNode={item.icon} className="mr-2 h-4 w-4" />
