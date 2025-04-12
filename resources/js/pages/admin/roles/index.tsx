@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PlusCircle, Search } from "lucide-react";
 import CenteredSkeletonLoader from "@/components/centered-skeleton-loader";
-import { PER_PAGE_DEFAULT } from "@/contants/app";
+import { PER_PAGE_DEFAULT } from "@/constants/app";
 import { useToastMessage } from "@/hooks/use-toast-message";
 import { Icon } from "@/components/icon";
 import { usePermission } from "@/hooks/use-permission";

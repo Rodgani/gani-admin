@@ -5,6 +5,7 @@ namespace Database\Factories\Admin;
 use App\Models\Admin\Role;
 use App\Models\Admin\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -26,7 +27,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
-            'role_slug' => Role::first()?->slug, // Ensure Role exists
+            "timezone" => Config::get('app.timezone'),
+            'role_id' => Role::first()?->id, // Ensure Role exists
         ];
     }
 }

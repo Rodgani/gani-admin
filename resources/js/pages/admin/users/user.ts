@@ -4,11 +4,12 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    role_slug: string,
+    role_id: number,
     email_verified_at: string | null;
-    created_at: string;
-    updated_at: string;
+    created_at: Date;
+    updated_at: Date;
     role?: {
+        id: number,
         slug: string,
         name: string
     }
@@ -19,7 +20,7 @@ export interface UserForm {
     email: string;
     password?: string
     password_confirmation?: string
-    role_slug: string
+    role_id?: number | string;
 }
 /**
  * Type for paginated users

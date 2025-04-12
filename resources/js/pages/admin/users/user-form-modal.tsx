@@ -9,9 +9,9 @@ interface UserFormModalProps {
     isOpen: boolean;
     onClose: () => void;
     user?: User;
-    onSubmit: (formData: { name: string; email: string; password?: string; password_confirmation?: string }, userId?: number) => void;
+    onSubmit: (formData: UserForm, userId?: number) => void;
     errors: UserForm,
-    roles: { name: string; slug: string }[]
+    roles: { name: string; id: number }[]
 }
 
 export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors, roles }: UserFormModalProps) {
@@ -21,30 +21,23 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
         email: '',
         password: '',
         password_confirmation: '',
-        role_slug: ''
+        role_id: ''
     });
-
-    const errorObject = {
-        name: '',
-        email: '',
-        password: '',
-        role_slug: ''
-    }
 
     const resetFormData = {
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
-        role_slug: ''
+        role_id: ''
     }
 
-    const [visibleErrors, setVisibleErrors] = useState<UserForm>(errorObject);
+    const [visibleErrors, setVisibleErrors] = useState<UserForm>(resetFormData);
 
     useEffect(() => {
         setVisibleErrors(errors); // Set errors only when they exist
         if (Object.keys(errors).length > 0) {
-            const timer = setTimeout(() => setVisibleErrors(errorObject), 3000);
+            const timer = setTimeout(() => setVisibleErrors(resetFormData), 3000);
             return () => clearTimeout(timer);
         }
     }, [errors]);
@@ -56,7 +49,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                 email: user.email,
                 password: '', // Keep it empty for existing users
                 password_confirmation: '', // Keep it empty for existing users,
-                role_slug: user.role_slug
+                role_id: user.role_id
             });
         } else {
             setFormData(resetFormData);
@@ -84,7 +77,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
             { name: "password", type: "password", placeholder: "Password", required: true, inputType: "input" },
             { name: "password_confirmation", type: "password", placeholder: "Confirm Password", required: true, inputType: "input" }
         ] : []),
-        { name: "role_slug", type: "text", placeholder: "Select Role", required: true, inputType: "dropdown" }
+        { name: "role_id", type: "number", placeholder: "Select Role", required: true, inputType: "dropdown" }
     ];
 
     return (
@@ -113,14 +106,14 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                             <Select
                                 key={name}
                                 onValueChange={(value) => setFormData((prev) => ({ ...prev, [name]: value }))}
-                                value={formData.role_slug}
+                                value={formData.role_id?.toLocaleString()}
                             >
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select Role" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {roles.map((role) => (
-                                        <SelectItem key={role.slug} value={role.slug}>
+                                        <SelectItem key={role.id} value={role.id.toLocaleString()}>
                                             {role.name}
                                         </SelectItem>
                                     ))}

@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { PlusCircle, Search } from 'lucide-react';
 import CenteredSkeletonLoader from '@/components/centered-skeleton-loader';
-import { PER_PAGE_DEFAULT } from '@/contants/app';
+import { PER_PAGE_DEFAULT } from '@/constants/app';
 import { useToastMessage } from '@/hooks/use-toast-message';
 import { useConfirmToast } from '@/hooks/use-confirm-toast';
 import { Icon } from '@/components/icon';
@@ -26,7 +26,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface UserIndexProps {
     users: PaginatedUsers;
     errors: UserForm;
-    roles: { name: string; slug: string }[]
+    roles: { name: string; id: number }[]
 
 }
 
@@ -45,7 +45,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
         name: '',
         email: '',
         password: '',
-        role_slug: ''
+        role_id: ''
     };
 
     const [formErrors, setFormErrors] = useState<UserForm>(resetForm);

@@ -5,9 +5,8 @@ namespace App\Models\Admin;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Observers\Admin\UserObserver;
-use Carbon\Carbon;
+use App\Traits\HandleTimezone;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,18 +15,13 @@ use Illuminate\Notifications\Notifiable;
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HandleTimezone;
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role_slug'
-    ];
+    protected $guarded = ["id"];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -54,17 +48,7 @@ class User extends Authenticatable
 
     public function role(): BelongsTo
     {
-        return $this->belongsTo(Role::class, 'role_slug', 'slug');
-    }
-
-    protected function createdAt(): Attribute
-    {
-        return Attribute::get(fn($value) => Carbon::parse($value)->format('Y d F h:i A'));
-    }
-
-    protected function updatedAt(): Attribute
-    {
-        return Attribute::get(fn($value) => Carbon::parse($value)->format('Y d F h:i A'));
+        return $this->belongsTo(Role::class);
     }
 
 }
