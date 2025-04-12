@@ -35,12 +35,10 @@ class RoleController extends Controller
     public function store(RoleCreateRequest $request)
     {
         $this->roleRepository->store($request->validated());
-        return Redirect::route('role.index');
     }
 
     public function update(Role $role, RoleUpdateRequest $request)
     {
         $this->roleRepository->update($role, $request->validated());
-        return Redirect::route('role.index');
     }
 }

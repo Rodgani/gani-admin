@@ -36,18 +36,15 @@ class UserController extends Controller
     {
         $request->validated();
         $this->userRepository->destroy($user);
-        return Redirect::route('user.index');
     }
 
     public function update(User $user, UserUpdateRequest $request)
     {
         $this->userRepository->update($user, $request->validated());
-        return Redirect::route('user.index');
     }
 
     public function store(UserCreateRequest $request)
     {
         $this->userRepository->store($request->validated());
-        return Redirect::route('user.index');
     }
 }
