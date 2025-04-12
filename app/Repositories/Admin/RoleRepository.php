@@ -13,7 +13,7 @@ class RoleRepository
 
     public function roles(): Collection
     {
-        return Role::select('slug', 'name')->get();
+        return Role::select('id', 'slug', 'name')->get();
     }
 
     public function paginatedRoles($request): LengthAwarePaginator
