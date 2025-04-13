@@ -18,15 +18,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleSeeder::class);
 
-        User::create([
-            "name" => "Admin",
-            "email" => "admin@gmail.com",
-            "password" => Hash::make("password"),
-            'remember_token' => Str::random(10),
-            "role_id" => Role::first()->id,
-            "timezone" => Config::get('app.timezone')
-        ]);
-
         $this->call([
             UserSeeder::class
         ]);
