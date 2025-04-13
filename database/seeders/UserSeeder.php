@@ -16,18 +16,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::updateOrCreate(
-            ["id" => 1],
-            [
-                "name" => "Admin",
-                "email" => "admin@gmail.com",
-                'email_verified_at' => now(),
-                "password" => Hash::make("password"),
-                'remember_token' => Str::random(10),
-                "role_id" => Role::first()->id,
-                "timezone" => Config::get('app.timezone')
-            ]
-        );
 
         for ($i = 0; $i < 10; $i++) {
             User::create([

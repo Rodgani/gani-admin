@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use Modules\Authentication\Http\Controllers\AuthenticatedSessionController;
 use Modules\Authentication\Http\Controllers\ConfirmablePasswordController;
 use Modules\Authentication\Http\Controllers\EmailVerificationNotificationController;
@@ -36,6 +37,7 @@ Route::middleware('guest')->group(function (): void {
 });
 
 Route::middleware('auth')->group(function (): void {
+
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
