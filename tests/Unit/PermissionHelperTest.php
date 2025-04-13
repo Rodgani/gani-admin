@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Helpers\PermissionHelper;
-use App\Services\Admin\MenusPermissions;
+use App\Services\MenusPermissions;
 use PHPUnit\Framework\TestCase;
 
 class PermissionHelperTest extends TestCase

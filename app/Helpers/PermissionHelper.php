@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Services\Admin\MenusPermissions;
+use App\Services\MenusPermissions;
 
 class PermissionHelper
 {

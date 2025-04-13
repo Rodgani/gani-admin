@@ -2,11 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin\Role;
-use App\Models\Admin\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
+use Modules\Admin\Models\User;
 
 class UserSeeder extends Seeder
 {
