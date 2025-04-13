@@ -1,8 +1,7 @@
 <?php
 
-use Modules\Admin\Providers\AdminServiceProvider;
-
 return [
     App\Providers\AppServiceProvider::class,
-    AdminServiceProvider::class
+    Modules\Admin\Providers\AdminServiceProvider::class,
+    Modules\Authentication\Providers\AuthenticationServiceProvider::class,
 ];
