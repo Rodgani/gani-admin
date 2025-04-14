@@ -12,14 +12,21 @@ class ModuleMakeCommand extends GeneratorCommand
     protected $name = 'module:make';
 
     protected $description = 'Generate a class (controller, model, request, etc.) inside a module.';
+    protected $type;
+    protected $argumentName;
 
     public function handle()
     {
-        $name = $this->argument('name');
-        $type = strtolower($this->option('type'));
-        $module = $this->option('module');
 
-        if (!$type || !$module) {
+        $type = strtolower($this->argument('type') ?? $this->ask('What type of resource are you generating?'));
+        $this->type = $type;
+        $name = $this->argument('name') ?? $this->ask('What is the name of the class?');
+
+        $module = $type !== 'middleware' ? $this->argument('module') ?? $this->ask('Which module do you want to use?') : '';
+
+        $this->argumentName = $name;
+
+        if (!$type) {
             $this->error('Both --type and --module options are required.');
             return;
         }
@@ -59,6 +66,9 @@ class ModuleMakeCommand extends GeneratorCommand
             'provider' => "Modules\\{$module}\\Providers",
             'observer' => "Modules\\{$module}\\Observers",
             'migration' => "Modules\\{$module}\\Database\\Migrations",
+            'job' => "Modules\\{$module}\\Jobs",
+            'enum' => "Modules\\{$module}\\Enums",
+            'middleware' => "Modules\\Middleware",
             default => "Modules\\{$module}"
         };
 
@@ -88,6 +98,9 @@ class ModuleMakeCommand extends GeneratorCommand
             'provider' => 'Providers/',
             'observer' => 'Observers/',
             'migration' => "Database/Migrations/",
+            'job' => "Jobs/",
+            'enum' => "Enums/",
+            'middleware' => 'Middleware/',
             default => '',
         };
 
@@ -107,25 +120,28 @@ class ModuleMakeCommand extends GeneratorCommand
     protected function getArguments()
     {
         return [
+            ['type', InputArgument::REQUIRED, 'The type of class (controller, model, request, etc.)'],
             ['name', InputArgument::REQUIRED, 'The name of the class'],
+            ['module', InputArgument::OPTIONAL, 'The name of the module'],
         ];
     }
 
-    protected function getOptions()
-    {
-        return [
-            ['type', null, InputOption::VALUE_REQUIRED, 'The type of class (controller, model, request, etc.)'],
-            ['module', null, InputOption::VALUE_REQUIRED, 'The name of the module'],
-        ];
-    }
+    // protected function getOptions()
+    // {
+    //     return [
+    //         ['type', null, InputOption::VALUE_REQUIRED, 'The type of class (controller, model, request, etc.)'],
+    //         ['module', null, InputOption::VALUE_REQUIRED, 'The name of the module'],
+    //     ];
+    // }
 
     protected function getStub()
     {
-        $type = strtolower($this->option('type'));
-        $type = match ($type) {
-            'migration' => "{$type}.create",
-            default => $type,
-        };
-        return base_path("/stubs/{$type}.stub");
+        $type = $this->type;
+
+        if ($type === 'migration') {
+            $type .= Str::contains($this->argumentName, 'create') ? '.create' : '.update';
+        }
+
+        return base_path("modules/stubs/{$type}.stub");
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class MakeModuleModelCommand extends ModelMakeCommand
 {
-    protected $name = 'module:model';
+    // protected $name = 'module:model';
 
     protected $description = 'Create a new model inside the Modules directory';
 

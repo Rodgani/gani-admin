@@ -1,10 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Admin\Http\Controllers\PasswordController;
-use Modules\Admin\Http\Controllers\ProfileController;
 use Modules\Admin\Http\Controllers\UserController;
-use Inertia\Inertia;
 
 Route::controller(UserController::class)->prefix('users')
     ->group(function () {
