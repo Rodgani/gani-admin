@@ -2,13 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin\Role;
-use App\Models\Admin\User;
-use App\Services\Admin\MenusPermissions;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Services\MenusPermissions;
 use Illuminate\Database\Seeder;
 
-use function Illuminate\Log\log;
+use Modules\Admin\Models\Role;
 
 class RoleSeeder extends Seeder
 {
