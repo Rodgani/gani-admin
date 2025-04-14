@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Illuminate\Console\Concerns\CreatesMatchingTest;
 class ModuleMakeCommand extends GeneratorCommand
 {
     protected $name = 'module:make';
@@ -32,11 +32,12 @@ class ModuleMakeCommand extends GeneratorCommand
         }
 
         $className = class_basename($name);
-        $namespace = $this->resolveNamespace($type, $module);
+        $namespace = $this->resolveNamespace($type, $module, $name);
 
         $targetPath = $this->resolvePath($type, $module, $name);
 
         $stub = file_get_contents($stubPath);
+
         $content = str_replace(
             ['{{ namespace }}', '{{ class }}'],
             [$namespace, $className],
@@ -49,14 +50,29 @@ class ModuleMakeCommand extends GeneratorCommand
         $this->info("{$type} created at: {$targetPath}");
     }
 
-    protected function resolveNamespace(string $type, string $module): string
+    protected function resolveNamespace(string $type, string $module, string $name): string
     {
-        return match ($type) {
+        $base = match ($type) {
             'controller' => "Modules\\{$module}\\Http\\Controllers",
             'model' => "Modules\\{$module}\\Models",
             'request' => "Modules\\{$module}\\Http\\Requests",
+            'provider' => "Modules\\{$module}\\Providers",
+            'observer' => "Modules\\{$module}\\Observers",
+            'migration' => "Modules\\{$module}\\Database\\Migrations",
             default => "Modules\\{$module}"
         };
+
+        if ($name) {
+            $name = str_replace('/', '\\', $name);
+            $name = Str::studly($name);
+            $segments = explode('\\', $name);
+            array_pop($segments); // Remove class name
+            if (!empty($segments)) {
+                $base .= '\\' . implode('\\', $segments);
+            }
+        }
+
+        return $base;
     }
 
     protected function resolvePath(string $type, string $module, string $name): string
@@ -69,12 +85,23 @@ class ModuleMakeCommand extends GeneratorCommand
             'controller' => 'Http/Controllers/',
             'model' => 'Models/',
             'request' => 'Http/Requests/',
+            'provider' => 'Providers/',
+            'observer' => 'Observers/',
+            'migration' => "Database/Migrations/",
             default => '',
         };
 
         // Convert namespace to path
         $path = str_replace('\\', '/', $name);
-
+        if ($type === "migration") {
+            $dateTime = Carbon::now()->format('Y-m-d H:i:s');
+            // convert to underscore
+            $path = str_replace(['-'], '_', $dateTime) . "_" . Str::snake($path);
+            // remove :
+            $path = str_replace(':', '', $path);
+            // remove space
+            $path = str_replace(' ', '_', $path);
+        }
         return base_path("modules/{$module}/{$relativePath}{$path}.php");
     }
     protected function getArguments()
@@ -95,6 +122,10 @@ class ModuleMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         $type = strtolower($this->option('type'));
+        $type = match ($type) {
+            'migration' => "{$type}.create",
+            default => $type,
+        };
         return base_path("/stubs/{$type}.stub");
     }
 }
