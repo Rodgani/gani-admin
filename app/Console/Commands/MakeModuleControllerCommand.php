@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class MakeModuleControllerCommand extends ControllerMakeCommand
 {
-    // protected $name = 'module:controller';
+    protected $name = 'module:controller';
 
     protected $description = 'Create a new controller inside the Modules directory';
 

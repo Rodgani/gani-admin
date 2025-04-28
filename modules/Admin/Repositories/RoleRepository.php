@@ -10,10 +10,12 @@ use Modules\Admin\Models\Role;
 
 class RoleRepository
 {
-
+    public function __construct(private Role $roleModel)
+    {
+    }
     public function roles(): Collection
     {
-        return Role::select('id', 'slug', 'name')->get();
+        return $this->roleModel->select('id', 'slug', 'name')->get();
     }
 
     public function paginatedRoles($request): LengthAwarePaginator
@@ -33,7 +35,7 @@ class RoleRepository
 
     public function storeRole($request): Role
     {
-        return Role::create($request);
+        return $this->roleModel->create($request);
     }
 
     public function updateRole(Role $role, $request): bool

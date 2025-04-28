@@ -10,13 +10,16 @@ use Modules\Admin\Models\User;
 
 class UserRepository
 {
+    public function __construct(private User $userModel)
+    {
+    }
     public function users($request): LengthAwarePaginator
     {
         $search = $request->search;
 
         $option = PaginationHelper::pageQueryOptions($request);
 
-        return User::with('role')
+        return $this->userModel->with('role')
             ->whereNotIn('id', [Auth::id(), AdminConstants::DEFAULT_ADMIN_ID])
             ->when($search, function ($query, $search) {
                 $query->whereAny(
@@ -44,6 +47,6 @@ class UserRepository
 
     public function storeUser($request): User
     {
-        return User::create($request);
+        return $this->userModel->create($request);
     }
 }
