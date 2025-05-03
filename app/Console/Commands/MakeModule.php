@@ -21,7 +21,7 @@ class MakeModule extends Command
         // ✅ Snapshot app and migration directories
         $appPath = base_path('app');
         $migrationPath = database_path('migrations');
-        
+
         if (!is_dir($migrationPath)) {
             mkdir($migrationPath, 0755, true);
         }
@@ -75,7 +75,7 @@ class MakeModule extends Command
         rename($newFile, $targetPath);
         $this->updateNamespace($targetPath, 'App\\', "Modules\\$module\\");
 
-        $this->info("✅ $type created at: Modules/$module/$relativePath");
+        $this->info("✅ $type move at: Modules/$module/$relativePath");
     }
 
     protected function listPhpFiles($path): array
