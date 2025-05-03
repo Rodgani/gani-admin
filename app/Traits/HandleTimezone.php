@@ -3,10 +3,9 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Auth;
 use Carbon\Carbon;
-use Config;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 trait HandleTimezone
 {

@@ -5,9 +5,8 @@ namespace App\Services;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
-class ScaffoldService
+class ModuleCommandService
 {
-
     public static function resolvePath(string $type, string $module, $name): string
     {
         // Normalize path (convert forward slashes to namespace style)
@@ -24,6 +23,9 @@ class ScaffoldService
             'job' => "Jobs/",
             'enum' => "Enums/",
             'middleware' => 'Middleware/',
+            'interface' => 'Interface/',
+            'trait' => 'Traits/',
+            'resource' => 'Http/Resources/',
             default => '',
         };
 
@@ -53,6 +55,9 @@ class ScaffoldService
             'job' => "Modules\\{$module}\\Jobs",
             'enum' => "Modules\\{$module}\\Enums",
             'middleware' => "Modules\\Middleware",
+            'interface' => "Modules\\{$module}\\Interface",
+            'trait' => "Modules\\{$module}\\Traits",
+            'resource' => "Modules\\{$module}\\Http\\Resources",
             default => "Modules\\{$module}"
         };
 

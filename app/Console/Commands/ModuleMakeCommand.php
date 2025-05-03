@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\ScaffoldService;
+use App\Services\ModuleCommandService;
 use Carbon\Carbon;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
@@ -46,7 +46,7 @@ class ModuleMakeCommand extends GeneratorCommand
 
         $stub = file_get_contents($stubPath);
 
-        $content = ScaffoldService::resolveContent($namespace, $className, $stub);
+        $content = ModuleCommandService::resolveContent($namespace, $className, $stub);
 
         $this->makeDirectory($targetPath);
 
@@ -56,12 +56,12 @@ class ModuleMakeCommand extends GeneratorCommand
 
     protected function resolveNamespace(string $type, string $module, string $name): string
     {
-        return ScaffoldService::resolveNamespace($type, $module, $name);
+        return ModuleCommandService::resolveNamespace($type, $module, $name);
     }
 
     protected function resolvePath(string $type, string $module, string $name): string
     {
-        return ScaffoldService::resolvePath($type, $module, $name);
+        return ModuleCommandService::resolvePath($type, $module, $name);
     }
     protected function getArguments()
     {
