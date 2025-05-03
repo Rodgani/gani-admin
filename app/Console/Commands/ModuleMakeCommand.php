@@ -10,7 +10,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 class ModuleMakeCommand extends GeneratorCommand
 {
-    protected $name = 'module:make';
+    #REFERENCE Custom command
+    protected $signature = 'module:make';
 
     protected $description = 'Generate a class (controller, model, request, etc.) inside a module.';
     protected $type;

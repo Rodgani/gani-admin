@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 
 class ModuleCommandService
 {
+    #REFERENCE Custom command
     public static function resolvePath(string $type, string $module, $name): string
     {
         // Normalize path (convert forward slashes to namespace style)
