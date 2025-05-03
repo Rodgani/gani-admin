@@ -75,7 +75,7 @@ class MakeModule extends Command
         rename($newFile, $targetPath);
         $this->updateNamespace($targetPath, 'App\\', "Modules\\$module\\");
 
-        $this->info("✅ $type move at: Modules/$module/$relativePath");
+        $this->info("✅ " . ucfirst($type) . " move to Modules/$module/$relativePath");
     }
 
     protected function listPhpFiles($path): array
