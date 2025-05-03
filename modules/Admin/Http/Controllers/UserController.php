@@ -17,8 +17,7 @@ class UserController extends BaseController
     public function __construct(
         protected UserRepository $userRepository,
         protected RoleRepository $roleRepository
-    ) {
-    }
+    ) {}
 
     public function index(UserIndexRequest $request)
     {
@@ -35,15 +34,18 @@ class UserController extends BaseController
     {
         $request->validated();
         $this->userRepository->destroyUser($user);
+        return back();
     }
 
     public function update(User $user, UserUpdateRequest $request)
     {
         $this->userRepository->updateUser($user, $request->validated());
+        return back();
     }
 
     public function store(UserCreateRequest $request)
     {
         $this->userRepository->storeUser($request->validated());
+        return back();
     }
 }

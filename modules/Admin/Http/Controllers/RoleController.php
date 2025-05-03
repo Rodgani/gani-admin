@@ -17,9 +17,7 @@ class RoleController extends BaseController
     public function __construct(
         protected RoleRepository $roleRepository,
         protected MenusPermissions $menusPermissionsService
-    ) {
-
-    }
+    ) {}
 
     public function index(RoleIndexRequest $request)
     {
@@ -34,10 +32,12 @@ class RoleController extends BaseController
     public function store(RoleCreateRequest $request)
     {
         $this->roleRepository->storeRole($request->validated());
+        return back();
     }
 
     public function update(Role $role, RoleUpdateRequest $request)
     {
         $this->roleRepository->updateRole($role, $request->validated());
+        return back();
     }
 }
