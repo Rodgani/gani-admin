@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 
-class MakeModule extends Command
+class MakeModuleCommand extends Command
 {
     protected $signature = 'make:module {type} {name} {module}';
     protected $description = 'Generate Laravel class and move it to Modules/{Module}';

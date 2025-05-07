@@ -1,0 +1,61 @@
+<?php
+
+namespace {{ namespace }};
+
+use Modules\BaseController;
+use Illuminate\Http\Request;
+use Modules\{{ module }}\Repositories\{{ repository }};
+use Modules\{{ module }}\Models\{{ model }};
+use Inertia\Inertia;
+
+class {{ class }} extends BaseController
+{
+     public function __construct(
+        protected {{ repository }} $repository,
+    ) {}
+    /**
+     * Display a listing of the resource.
+     */
+    public function index({{ formRequest }} $request)
+    {
+        ${{ pageSubModule }} = $this->repository->{{ pageSubModule }}($request);
+        return Inertia::render("{{ pageModule }}/{{ pageSubModule }}/index", [
+            "{{ pageSubModule }}" => ${{ pageSubModule }},
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store({{ formRequest }} $request)
+    {
+        $this->repository->store{{ model }}($request->validated());
+        return back();
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function find({{ model }} ${{ modelVariable }}, {{ formRequest }} $request)
+    {
+        $request->validated();
+        $this->repository->find{{ model }}(${{ modelVariable }});
+        return back();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}

@@ -1,36 +1,35 @@
-import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { User, UserForm } from './user';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DialogDescription } from '@radix-ui/react-dialog';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { useEffect, useMemo, useState } from 'react';
+import { User, UserForm } from './user';
 interface UserFormModalProps {
     isOpen: boolean;
     onClose: () => void;
     user?: User;
     onSubmit: (formData: UserForm, userId?: number) => void;
-    errors: UserForm,
-    roles: { name: string; id: number }[]
+    errors: UserForm;
+    roles: { name: string; id: number }[];
 }
 
 export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors, roles }: UserFormModalProps) {
-
     const [formData, setFormData] = useState<UserForm>({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
-        role_id: ''
+        role_id: '',
     });
 
-    const resetFormData = {
+    const resetFormData = useMemo(() => ({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
-        role_id: ''
-    }
+        role_id: '',
+      }), []);
 
     const [visibleErrors, setVisibleErrors] = useState<UserForm>(resetFormData);
 
@@ -40,7 +39,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
             const timer = setTimeout(() => setVisibleErrors(resetFormData), 3000);
             return () => clearTimeout(timer);
         }
-    }, [errors]);
+    }, [errors,resetFormData]);
 
     useEffect(() => {
         if (user) {
@@ -49,12 +48,12 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                 email: user.email,
                 password: '', // Keep it empty for existing users
                 password_confirmation: '', // Keep it empty for existing users,
-                role_id: user.role_id
+                role_id: user.role_id,
             });
         } else {
             setFormData(resetFormData);
         }
-    }, [user]);
+    }, [user,resetFormData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({
@@ -71,13 +70,15 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
     };
 
     const fields = [
-        { name: "name", type: "text", placeholder: "Name", required: true, inputType: "input" },
-        { name: "email", type: "email", placeholder: "Email", required: true, inputType: "input" },
-        ...(!user ? [
-            { name: "password", type: "password", placeholder: "Password", required: true, inputType: "input" },
-            { name: "password_confirmation", type: "password", placeholder: "Confirm Password", required: true, inputType: "input" }
-        ] : []),
-        { name: "role_id", type: "number", placeholder: "Select Role", required: true, inputType: "dropdown" }
+        { name: 'name', type: 'text', placeholder: 'Name', required: true, inputType: 'input' },
+        { name: 'email', type: 'email', placeholder: 'Email', required: true, inputType: 'input' },
+        ...(!user
+            ? [
+                  { name: 'password', type: 'password', placeholder: 'Password', required: true, inputType: 'input' },
+                  { name: 'password_confirmation', type: 'password', placeholder: 'Confirm Password', required: true, inputType: 'input' },
+              ]
+            : []),
+        { name: 'role_id', type: 'number', placeholder: 'Select Role', required: true, inputType: 'dropdown' },
     ];
 
     return (
@@ -85,14 +86,12 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{user ? 'Edit User' : 'Create User'}</DialogTitle>
-                    <DialogDescription>
-                        {user ? "Update the user details below." : "Fill in the details to create a new user."}
-                    </DialogDescription>
+                    <DialogDescription>{user ? 'Update the user details below.' : 'Fill in the details to create a new user.'}</DialogDescription>
                 </DialogHeader>
 
                 <div className="space-y-4">
-                    {fields.map(({ name, type, placeholder, required, inputType }) => (
-                        inputType === "input" ? (
+                    {fields.map(({ name, type, placeholder, required, inputType }) =>
+                        inputType === 'input' ? (
                             <Input
                                 key={name}
                                 name={name}
@@ -119,23 +118,29 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                                     ))}
                                 </SelectContent>
                             </Select>
-                        )
-                    ))}
+                        ),
+                    )}
                 </div>
 
                 <div>
                     {Object.keys(visibleErrors).length > 0 && (
-                        <div className="text-red-500">
-                            {Object.entries(visibleErrors).map(([key, error]) => (
-                                error && <p key={key}>{error}</p>
-                            ))}
-                        </div>
+                        <div className="text-red-500">{Object.entries(visibleErrors).map(([key, error]) => error && <p key={key}>{error}</p>)}</div>
                     )}
                 </div>
 
                 <DialogFooter>
-                    <Button onClick={() => { onClose() }} variant="outline" className="cursor-pointer">Cancel</Button>
-                    <Button onClick={handleSubmit} className='cursor-pointer'>Save</Button>
+                    <Button
+                        onClick={() => {
+                            onClose();
+                        }}
+                        variant="outline"
+                        className="cursor-pointer"
+                    >
+                        Cancel
+                    </Button>
+                    <Button onClick={handleSubmit} className="cursor-pointer">
+                        Save
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

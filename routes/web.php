@@ -14,8 +14,8 @@ Route::middleware(['auth'])->group(function (): void {
 
     Route::middleware('scaffold')->group(function (): void {
         Route::controller(ScaffoldController::class)->prefix('scaffold')->group(function () {
-            Route::get("/", "index");
+            Route::get('/', 'index');
+            Route::post('/', 'generate')->name('scaffold.generate');
         });
     });
 });
-

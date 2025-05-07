@@ -1,30 +1,29 @@
-import AppLayout from "@/layouts/app-layout";
-import { BreadcrumbItem } from "@/types";
-import { Head } from "@inertiajs/react";
+import AppLayout from '@/layouts/app-layout';
+import { BreadcrumbItem } from '@/types';
+import { Head, router } from '@inertiajs/react';
 
 import { useState } from 'react';
 
-import { Trash2, Plus } from 'lucide-react';
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Plus, Trash2 } from 'lucide-react';
+import { useToastMessage } from '@/hooks/use-toast-message';
 
 interface Field {
-    id: number;
     name: string;
-    type: any;
+    type: string;
     nullable: boolean;
-    key: string;
     defaultValue: string;
     comment: string;
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Scaffold', href: "/scaffold" },
-];
+const breadcrumbs: BreadcrumbItem[] = [{ title: 'Scaffold', href: '/scaffold' }];
 
 const fieldTypes = [
+    'string',
     'bigIncrements',
     'bigInteger',
     'binary',
@@ -66,7 +65,6 @@ const fieldTypes = [
     'smallInteger',
     'softDeletes',
     'softDeletesTz',
-    'string',
     'text',
     'time',
     'timeTz',
@@ -83,34 +81,27 @@ const fieldTypes = [
     'unsignedSmallInteger',
     'unsignedTinyInteger',
     'year',
-    'image'
+    'image',
 ];
 
 export default function ScaffoldIndex() {
 
-    const [fields, setFields] = useState<Field[]>([{
-        id: 1,
-        name: '',
-        type: '',
-        nullable: true,
-        key: '',
-        defaultValue: '',
-        comment: '',
-    }]);
+     const { showToast } = useToastMessage();
+
+    const [fields, setFields] = useState<Field[]>([
+        {
+            name: '',
+            type: '',
+            nullable: false,
+            defaultValue: '',
+            comment: '',
+        },
+    ]);
 
     const [config, setConfig] = useState({
-        moduleName: '',
-        tableName: '',
-        model: '',
-        controller: '',
-        createMigration: true,
-        createModel: true,
-        createController: true,
-        runMigrate: true,
-        createMenu: true,
-        timestamps: true,
-        softDeletes: false,
-        primaryKey: 'id',
+        module: '',
+        table: '',
+        form_request: true,
     });
 
     const handleFieldChange = <K extends keyof Field>(index: number, key: K, value: Field[K]) => {
@@ -120,57 +111,117 @@ export default function ScaffoldIndex() {
     };
 
     const addField = () => {
-        setFields([...fields, {
-            id: Date.now(),
-            name: '',
-            type: '',
-            nullable: true,
-            key: '',
-            defaultValue: '',
-            comment: '',
-        }]);
+        setFields([
+            ...fields,
+            {
+                name: '',
+                type: '',
+                nullable: false,
+
+                defaultValue: '',
+                comment: '',
+            },
+        ]);
     };
 
     const removeField = (index: number) => {
         setFields(fields.filter((_, i) => i !== index));
     };
 
+    const handleSubmit = () => {
+
+        const payload = {
+            ...config,
+            fields: JSON.stringify(fields),
+        };
+
+        router.post(route('scaffold.generate'), payload, {
+            onSuccess: () => {
+                showToast('success', { message: 'Created successfully!' });
+            },
+            onError: (errors) => {
+                showToast('error', errors);
+            },
+        });
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Scaffold Management" />
-            <div className="p-6 space-y-6">
+            <div className="space-y-6 p-6">
                 <h1 className="text-2xl font-semibold">Scaffold</h1>
 
                 <div className="grid grid-cols-1 gap-4">
-                    <Input placeholder="Module" value={config.moduleName} onChange={(e) => setConfig({ ...config, moduleName: e.target.value })} />
-                    <Input placeholder="Table name" value={config.tableName} onChange={(e) => setConfig({ ...config, tableName: e.target.value })} />
+                    <Input
+                        placeholder="Module"
+                        required
+                        value={config.module}
+                        onChange={(e) => setConfig({ ...config, module: e.target.value })}
+                    />
+                    <Input
+                        placeholder="Table name"
+                        required
+                        value={config.table}
+                        onChange={(e) => setConfig({ ...config, table: e.target.value })}
+                    />
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="formRequest"
+                            checked={config.form_request}
+                            onCheckedChange={(val) => setConfig({ ...config, form_request: val as boolean })}
+                        />
+                        <Label
+                            htmlFor="formRequest"
+                            className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                            Create Form Request
+                        </Label>
+                    </div>
                 </div>
 
                 <h2 className="text-xl font-semibold">Fields</h2>
                 <div className="space-y-2">
                     {fields.map((field, index) => (
-                        <div key={field.id} className="grid grid-cols-5 gap-2 items-center">
-                            <Input
-                                placeholder="Field name"
-                                value={field.name}
-                                onChange={(e) => handleFieldChange(index, 'name', e.target.value)}
-                            />
-                            <Select
-                                value={field.type}
-                                onValueChange={(val) => handleFieldChange(index, 'type', val)}
-                            >
+                        <div key={index} className="grid grid-cols-6 gap-2">
+                            <Input placeholder="Field name" value={field.name} onChange={(e) => handleFieldChange(index, 'name', e.target.value)} />
+                            <Select value={field.type} onValueChange={(val) => handleFieldChange(index, 'type', val)}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select type" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {fieldTypes.map((t) => (
-                                        <SelectItem key={t} value={t}>{t}</SelectItem>
+                                        <SelectItem key={t} value={t}>
+                                            {t}
+                                        </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
-                            <Input placeholder="Default value" value={field.defaultValue} onChange={(e) => handleFieldChange(index, 'defaultValue', e.target.value)} />
-                            <Input placeholder="Comment" value={field.comment} onChange={(e) => handleFieldChange(index, 'comment', e.target.value)} />
-                            <Button variant="destructive" onClick={() => removeField(index)}><Trash2 size={16} /></Button>
+                            <Input
+                                placeholder="Default value"
+                                value={field.defaultValue}
+                                onChange={(e) => handleFieldChange(index, 'defaultValue', e.target.value)}
+                            />
+                            <Input
+                                placeholder="Comment"
+                                value={field.comment}
+                                onChange={(e) => handleFieldChange(index, 'comment', e.target.value)}
+                            />
+                            <div className="flex items-center space-x-2">
+                                <Checkbox
+                                    id="nullable"
+                                    checked={field.nullable}
+                                    onCheckedChange={(val) => handleFieldChange(index, 'nullable', val as boolean)}
+                                />
+                                <Label
+                                    htmlFor="nullable"
+                                    className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                    Nullable
+                                </Label>
+                            </div>
+                            <Button variant="destructive" onClick={() => removeField(index)}>
+                                <Trash2 size={16} />
+                            </Button>
                         </div>
                     ))}
                 </div>
@@ -180,10 +231,11 @@ export default function ScaffoldIndex() {
                 </Button>
 
                 <div className="mt-6">
-                    <Button className="w-full">Generate Scaffold</Button>
+                    <Button className="w-full" onClick={handleSubmit}>
+                        Generate Scaffold
+                    </Button>
                 </div>
             </div>
-        </AppLayout >
+        </AppLayout>
     );
-
 }
