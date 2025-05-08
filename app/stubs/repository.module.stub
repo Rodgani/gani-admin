@@ -1,46 +1,50 @@
 <?php
 
 namespace {{ namespace }};
-
+use App\Helpers\PaginationHelper;
+use Modules\{{ module }}\Models\{{ modelNamespace }};
 class {{ class }}
 {
+    public function __construct(private {{ model }} $model){}
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function {{ list }}($request)
     {
-        //
+         $option = PaginationHelper::pageQueryOptions($request);
+         return $this->model->orderBy($option->column, $option->direction)
+            ->paginate($option->perPage);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store($request)
+    public function store{{ model }}($request)
     {
-        //
+        return $this->model->create($request);
     }
 
     /**
      * Display the specified resource.
      */
-    public function find(string $id)
+    public function find{{ model }}(int $id)
     {
-        //
+        return $this->model->findOrFail($id);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update($request, string $id)
+    public function update{{ model }}(int $id, $request)
     {
-        //
+        return $this->model->where('id',$id)->update($request);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy{{ model }}(int $id)
     {
-        //
+        return $this->model->findOrFail($id)->delete();
     }
 }

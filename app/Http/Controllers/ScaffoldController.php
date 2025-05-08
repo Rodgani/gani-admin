@@ -17,6 +17,6 @@ class ScaffoldController extends Controller
     public function generate(ScaffoldGenerateRequest $request)
     {
         $this->service->generate($request);
-        return back();
+        return redirect()->route('scaffold.index');
     }
 }

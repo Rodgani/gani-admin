@@ -2,17 +2,15 @@
 
 namespace {{ namespace }};
 
-use Modules\BaseController;
+use Modules\Controller;
 use Illuminate\Http\Request;
-use Modules\{{ module }}\Repositories\{{ repository }};
-use Modules\{{ module }}\Models\{{ model }};
+use Modules\{{ module }}\Repositories\{{ repositoryNamespace }};
 use Inertia\Inertia;
 
-class {{ class }} extends BaseController
+class {{ class }} extends Controller
 {
-     public function __construct(
-        protected {{ repository }} $repository,
-    ) {}
+    public function __construct(private {{ repository }} $repository) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -36,26 +34,29 @@ class {{ class }} extends BaseController
     /**
      * Display the specified resource.
      */
-    public function find({{ model }} ${{ modelVariable }}, {{ formRequest }} $request)
+    public function find(int $id,{{ formRequest }} $request)
     {
         $request->validated();
-        $this->repository->find{{ model }}(${{ modelVariable }});
+        $this->repository->find{{ model }}($id);
         return back();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(int $id, {{ formRequest }} $request)
     {
-        //
+        $this->repository->update{{ model }}($id, $request->validated());
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $id, {{ formRequest }} $request)
     {
-        //
+        $request->validated();
+        $this->repository->destroy{{ model }}($id);
+        return back();
     }
 }

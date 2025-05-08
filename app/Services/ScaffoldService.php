@@ -13,13 +13,14 @@ class ScaffoldService
 
     private const CONTROLLER = "controller";
     private const MODEL = "model";
-
-    public function generate($request): mixed
+    private const REPOSITORY = "repository";
+    public function generate($request): void
     {
         $module = $request->module;
         $this->module = $module;
 
         $table = $request->table;
+       
         $this->table = $table;
 
         $fields = $request->fields;
@@ -36,11 +37,11 @@ class ScaffoldService
         $this->createFile($type,$module, $modelClass);
 
          // repository
-         $type = "repository";
+         $type = self::REPOSITORY;
          $repositoryClass = $name.ucfirst($type);
          $this->createFile($type,$module, $repositoryClass);
 
-        return true;
+         // migration
     }
 
     private function createFile(string $type, string $module, $name): void
@@ -51,6 +52,12 @@ class ScaffoldService
         $namespace = $this->resolveNamespace($type, $module, $name);
 
         $targetPath = $this->resolvePath($type, $module, $name);
+
+        if (file_exists($targetPath)) {
+            throw ValidationException::withMessages([
+                'failed' => "⚠️ File already exists at: $targetPath",
+            ]);
+        }
 
         $stub = file_get_contents($stubPath);
 
@@ -112,18 +119,22 @@ class ScaffoldService
 
         return $base;
     }
-
+    
     private function resolveContent(string $namespace, string $className, $stub, string $type)
     {
         $search = [];
         $replace = [];
+        $model = $this->table;
+        $modelVariable = Str::lower($this->table);
+        $module = $this->module;
+        $modelNamespacePath = Str::replace('/', '\\', $this->table); 
+        $lastTableSegment = Str::afterLast($this->table, '/');
 
         if ($type === self::CONTROLLER) {
-            $model = $this->table;
-            $module = $this->module;
-            $repository = Str::ucfirst($this->table) . "Repository";
-            $modelVariable = Str::lower($this->table);
-            $subModule = Str::lower(Str::plural($model));
+           
+            $repository = Str::ucfirst($lastTableSegment) . Str::ucfirst(self::REPOSITORY);
+            $repositoryNamespace = Str::ucfirst($modelNamespacePath) . Str::ucfirst(self::REPOSITORY);
+            $subModule = Str::lower(Str::plural($lastTableSegment));
             $formRequest = "Request";
 
             $search = [
@@ -135,7 +146,8 @@ class ScaffoldService
                 '{{ pageModule }}',
                 '{{ formRequest }}',
                 '{{ modelVariable }}',
-                '{{ pageSubModule }}'
+                '{{ pageSubModule }}',
+                '{{ repositoryNamespace }}'
             ];
            
             $replace = [
@@ -143,11 +155,34 @@ class ScaffoldService
                 $namespace,
                 $className,
                 $repository,
-                $model,
+                $lastTableSegment,
                 Str::lower($module),
                 $formRequest,
                 $modelVariable,
-                $subModule
+                $subModule,
+                $repositoryNamespace
+            ];
+        }else if($type===self::REPOSITORY){
+           
+            $list = Str::lower(Str::plural($lastTableSegment));
+          
+            $search = [
+                '{{ module }}',
+                '{{ namespace }}',
+                '{{ class }}',
+                '{{ list }}',
+                '{{ model }}',
+                '{{ modelVariable }}',
+                '{{ modelNamespace }}'
+            ];
+            $replace = [
+                $module,
+                $namespace,
+                $className,
+                $list,
+                $lastTableSegment,
+                $modelVariable,
+                $modelNamespacePath
             ];
         }else{
             $search = [
@@ -169,7 +204,6 @@ class ScaffoldService
 
     private function getStub(string $type)
     {
-
         return base_path("app/stubs/{$type}.module.stub");
     }
 }

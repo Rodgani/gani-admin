@@ -10,9 +10,9 @@ use Modules\Admin\Models\User;
 use Inertia\Inertia;
 use Modules\Admin\Repositories\RoleRepository;
 use Modules\Admin\Repositories\UserRepository;
-use Modules\BaseController;
+use Modules\Controller;
 
-class UserController extends BaseController
+class UserController extends Controller
 {
     public function __construct(
         protected UserRepository $userRepository,

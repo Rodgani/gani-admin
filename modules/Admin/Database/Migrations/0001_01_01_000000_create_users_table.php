@@ -19,13 +19,13 @@ return new class extends Migration {
             $table->integer('role_id');
             $table->string("timezone")->nullable();
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestampsTz();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
-            $table->timestamp('created_at')->nullable();
+            $table->timestampTz('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {

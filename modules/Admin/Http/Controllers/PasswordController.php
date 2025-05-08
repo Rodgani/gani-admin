@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Inertia\Response;
-use Modules\BaseController;
+use Modules\Controller;
 
-class PasswordController extends BaseController
+class PasswordController extends Controller
 {
     /**
      * Show the user's password settings page.

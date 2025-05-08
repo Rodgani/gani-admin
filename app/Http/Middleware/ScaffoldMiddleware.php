@@ -18,10 +18,11 @@ class ScaffoldMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $scaffold = config("app.scaffold");
-        if (!$scaffold) {
+      
+        if (!$scaffold || app()->environment()!="local") {
             throw new HttpException(404, 'Scaffolding not available.');
         }
-
+        
         return $next($request);
     }
 }

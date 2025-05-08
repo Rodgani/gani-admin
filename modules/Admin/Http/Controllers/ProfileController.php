@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Modules\Admin\Http\Requests\Users\UserProfileUpdateRequest;
-use Modules\BaseController;
+use Modules\Controller;
 
-class ProfileController extends BaseController
+class ProfileController extends Controller
 {
     /**
      * Show the user's profile settings page.

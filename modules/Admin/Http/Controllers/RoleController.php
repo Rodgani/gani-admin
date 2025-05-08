@@ -9,9 +9,9 @@ use Modules\Admin\Http\Requests\Roles\RoleIndexRequest;
 use Modules\Admin\Http\Requests\Roles\RoleUpdateRequest;
 use Modules\Admin\Models\Role;
 use Modules\Admin\Repositories\RoleRepository;
-use Modules\BaseController;
+use Modules\Controller;
 
-class RoleController extends BaseController
+class RoleController extends Controller
 {
 
     public function __construct(

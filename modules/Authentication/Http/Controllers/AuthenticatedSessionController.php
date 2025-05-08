@@ -9,9 +9,9 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Modules\Authentication\Http\Requests\LoginRequest;
 use Modules\Authentication\Services\AuthenticationService;
-use Modules\BaseController;
+use Modules\Controller;
 
-class AuthenticatedSessionController extends BaseController
+class AuthenticatedSessionController extends Controller
 {
     /**
      * Show the login page.
