@@ -10,20 +10,21 @@ class ScaffoldService
 {
     private $module;
     private $table;
-
+    private $migrationFields;
     private const CONTROLLER = "controller";
     private const MODEL = "model";
     private const REPOSITORY = "repository";
+    private const MIGRATION = "migration";
     public function generate($request): void
     {
         $module = $request->module;
         $this->module = $module;
 
         $table = $request->table;
-       
+
         $this->table = $table;
 
-        $fields = $request->fields;
+        $this->migrationFields = $request->fields;
         $name = ucfirst($table);
 
         // controller
@@ -34,14 +35,17 @@ class ScaffoldService
         // model
         $type = self::MODEL;
         $modelClass = $name;
-        $this->createFile($type,$module, $modelClass);
+        $this->createFile($type, $module, $modelClass);
 
-         // repository
-         $type = self::REPOSITORY;
-         $repositoryClass = $name.ucfirst($type);
-         $this->createFile($type,$module, $repositoryClass);
+        // repository
+        $type = self::REPOSITORY;
+        $repositoryClass = $name . ucfirst($type);
+        $this->createFile($type, $module, $repositoryClass);
 
-         // migration
+        // migration
+        $type = self::MIGRATION;
+        $migrationClass = $name;
+        $this->createFile($type, $module, $migrationClass);
     }
 
     private function createFile(string $type, string $module, $name): void
@@ -80,19 +84,24 @@ class ScaffoldService
             'controller' => 'Http/Controllers/',
             'model' => 'Models/',
             'repository' => 'Repositories/',
+            'migration' => "Database/Migrations/",
             default => '',
         };
 
         // Convert namespace to path
         $path = str_replace('\\', '/', $name);
         if ($type === "migration") {
+
+            $lastTableSegment = Str::afterLast($name, '/');
+            $path = str_replace('\\', '/', Str::lower(Str::plural("create_".$lastTableSegment)));
+
             $dateTime = Carbon::now()->format('Y-m-d H:i:s');
             // convert to underscore
             $path = str_replace(['-'], '_', $dateTime) . "_" . Str::snake($path);
             // remove :
             $path = str_replace(':', '', $path);
             // remove space
-            $path = str_replace(' ', '_', $path);
+            $path = str_replace(' ', '_', $path) . "_table";
         }
 
         return base_path("modules/{$module}/{$relativePath}{$path}.php");
@@ -104,6 +113,7 @@ class ScaffoldService
             'controller' => "Modules\\{$module}\\Http\\Controllers",
             'model' => "Modules\\{$module}\\Models",
             'repository' => "Modules\\$module\\Repositories",
+            'migration' => "Modules\\{$module}\\Database\\Migrations",
             default => "Modules\\{$module}"
         };
 
@@ -119,81 +129,135 @@ class ScaffoldService
 
         return $base;
     }
-    
+
     private function resolveContent(string $namespace, string $className, $stub, string $type)
     {
         $search = [];
         $replace = [];
         $model = $this->table;
-        $modelVariable = Str::lower($this->table);
+        $modelVariable = Str::lower($model);
         $module = $this->module;
-        $modelNamespacePath = Str::replace('/', '\\', $this->table); 
-        $lastTableSegment = Str::afterLast($this->table, '/');
+        $modelNamespacePath = Str::replace('/', '\\', $model);
+        $lastTableSegment = Str::afterLast($model, '/');
+        $pluralTable = Str::lower(Str::plural($lastTableSegment));
 
-        if ($type === self::CONTROLLER) {
-           
-            $repository = Str::ucfirst($lastTableSegment) . Str::ucfirst(self::REPOSITORY);
-            $repositoryNamespace = Str::ucfirst($modelNamespacePath) . Str::ucfirst(self::REPOSITORY);
-            $subModule = Str::lower(Str::plural($lastTableSegment));
-            $formRequest = "Request";
+        [$search, $replace] = match ($type) {
 
-            $search = [
-                '{{ module }}',
-                '{{ namespace }}',
-                '{{ class }}',
-                '{{ repository }}',
-                '{{ model }}',
-                '{{ pageModule }}',
-                '{{ formRequest }}',
-                '{{ modelVariable }}',
-                '{{ pageSubModule }}',
-                '{{ repositoryNamespace }}'
-            ];
-           
-            $replace = [
+            self::CONTROLLER => (function () use (
                 $module,
                 $namespace,
                 $className,
-                $repository,
                 $lastTableSegment,
-                Str::lower($module),
-                $formRequest,
+                $modelNamespacePath,
                 $modelVariable,
-                $subModule,
-                $repositoryNamespace
-            ];
-        }else if($type===self::REPOSITORY){
-           
-            $list = Str::lower(Str::plural($lastTableSegment));
-          
-            $search = [
-                '{{ module }}',
-                '{{ namespace }}',
-                '{{ class }}',
-                '{{ list }}',
-                '{{ model }}',
-                '{{ modelVariable }}',
-                '{{ modelNamespace }}'
-            ];
-            $replace = [
+                $pluralTable,
+            ) {
+                $repository = Str::ucfirst($lastTableSegment) . Str::ucfirst(self::REPOSITORY);
+                $repositoryNamespace = Str::ucfirst($modelNamespacePath) . Str::ucfirst(self::REPOSITORY);
+                $subModule = $pluralTable;
+                $formRequest = "Request";
+
+                return [
+                    [
+                        '{{ module }}',
+                        '{{ namespace }}',
+                        '{{ class }}',
+                        '{{ repository }}',
+                        '{{ model }}',
+                        '{{ pageModule }}',
+                        '{{ formRequest }}',
+                        '{{ modelVariable }}',
+                        '{{ pageSubModule }}',
+                        '{{ repositoryNamespace }}'
+                    ],
+                    [
+                        $module,
+                        $namespace,
+                        $className,
+                        $repository,
+                        $lastTableSegment,
+                        Str::lower($module),
+                        $formRequest,
+                        $modelVariable,
+                        $subModule,
+                        $repositoryNamespace
+                    ]
+                ];
+            })(),
+
+            self::REPOSITORY => (function () use (
                 $module,
                 $namespace,
                 $className,
-                $list,
                 $lastTableSegment,
                 $modelVariable,
-                $modelNamespacePath
-            ];
-        }else{
-            $search = [
-                '{{ namespace }}',
-                '{{ class }}',
-            ];
-            $replace = [
-                $namespace,
-                $className,
-            ];
-        }
+                $modelNamespacePath,
+                $pluralTable,
+            ) {
+                $list = $pluralTable;
+
+                return [
+                    [
+                        '{{ module }}',
+                        '{{ namespace }}',
+                        '{{ class }}',
+                        '{{ list }}',
+                        '{{ model }}',
+                        '{{ modelVariable }}',
+                        '{{ modelNamespace }}'
+                    ],
+                    [
+                        $module,
+                        $namespace,
+                        $className,
+                        $list,
+                        $lastTableSegment,
+                        $modelVariable,
+                        $modelNamespacePath
+                    ]
+                ];
+            })(),
+
+            self::MIGRATION => (function () use (
+                $pluralTable,
+            ) {
+                $table = $pluralTable;
+                $fieldLines = collect($this->migrationFields)->map(function ($field) {
+                    $line = '$table->' . $field['type'] . "('{$field['name']}')";
+                
+                    if (!empty($field['defaultValue'])) {
+                        $default = is_numeric($field['defaultValue']) ? $field['defaultValue'] : "'{$field['defaultValue']}'";
+                        $line .= "->default({$default})";
+                    }
+                
+                    if ($field['nullable']) {
+                        $line .= '->nullable()';
+                    }
+                
+                    if (!empty($field['comment'])) {
+                        $line .= "->comment('{$field['comment']}')";
+                    }
+                
+                    return $line . ';';
+                })->implode("\n            "); 
+                
+                return [
+                    [
+                      '{{ table }}',
+                      '{{ fields }}'
+                    ],
+                    [
+                        $table,
+                        $fieldLines
+                    ]
+                ];
+            })(),
+            
+            default => [
+                ['{{ namespace }}', '{{ class }}'],
+                [$namespace, $className]
+            ]
+        };
 
         return str_replace(
             $search,
