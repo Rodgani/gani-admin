@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Modules\Admin\Database\Factories\UserFactory;
 use Modules\Admin\Observers\UserObserver;
 
 #[ObservedBy([UserObserver::class])]
@@ -50,4 +51,8 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
+    }
 }
