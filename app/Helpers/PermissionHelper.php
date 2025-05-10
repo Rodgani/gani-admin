@@ -21,7 +21,7 @@ class PermissionHelper
         return $this;
     }
 
-    public function forUser($user): static
+    public function forUser(object $user): static
     {
         $this->userMenusPermissions = collect(json_decode($user->role->menus_permissions, true));
         return $this;

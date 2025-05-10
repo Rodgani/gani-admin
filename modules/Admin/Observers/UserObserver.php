@@ -23,7 +23,7 @@ class UserObserver
         if (Auth::user()->id === $user->id) {
 
             throw ValidationException::withMessages([
-                'user' => 'The user who is currently authenticated cannot be deleted.',
+                'user' => 'The current authenticated user cannot be deleted.',
             ]);
         }
 
