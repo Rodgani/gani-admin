@@ -3,6 +3,7 @@
 namespace Tests\Feature\Auth;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Admin\Models\Role;
 use Modules\Admin\Models\User;
 use Tests\TestCase;
 
@@ -19,11 +20,15 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen()
     {
-        $user = User::factory(1)->create();
+        Role::factory()->create();
+        $user = User::factory()->create();
+
+        $response = $this->get('/login'); // This initializes the session & CSRF token
 
         $response = $this->post('/login', [
             'email' => $user->email,
             'password' => 'password',
+            '_token' => csrf_token(), // optional, Laravel handles it if session is active
         ]);
 
         $this->assertAuthenticated();
@@ -32,6 +37,7 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_password()
     {
+        Role::factory()->create();
         $user = User::factory()->create();
 
         $this->post('/login', [
@@ -44,9 +50,15 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_logout()
     {
+        Role::factory()->create();
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post('/logout');
+        // Visit any page to initiate session and CSRF
+        $this->actingAs($user)->get('/');
+
+        $response = $this->post('/logout', [
+            '_token' => csrf_token(), // include CSRF token
+        ]);
 
         $this->assertGuest();
         $response->assertRedirect('/');
