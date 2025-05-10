@@ -23,6 +23,6 @@ trait HandleTimezone
         $timezone = Auth::check() && Auth::user()->timezone ? Auth::user()->timezone : Config::get('app.timezone');
         return Carbon::parse($value)
             ->timezone($timezone)
-            ->format('Y d F h:i A');
+            ->format('Y F d h:i A');
     }
 }
