@@ -12,7 +12,7 @@ import CenteredSkeletonLoader from "@/components/centered-skeleton-loader";
 import { PER_PAGE_DEFAULT } from "@/constants/app";
 import { useToastMessage } from "@/hooks/use-toast-message";
 import { Icon } from "@/components/icon";
-import { usePermission } from "@/hooks/use-permission";
+import { userPermissions } from "@/hooks/use-permission";
 
 const module = "/admin/roles"
 const breadcrumbs: BreadcrumbItem[] = [
@@ -29,8 +29,8 @@ const RoleFormModal = lazy(() => import('./role-form-modal'));
 
 export default function RoleIndex({ roles, default_menus_permissions }: RoleIndexProps) {
 
-    const { hasPermission } = usePermission();
-    const { hasAnyPermission } = usePermission();
+    const { hasPermission } = userPermissions();
+    const { hasAnyPermission } = userPermissions();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRole, setSelectedRole] = useState<Role | undefined>(undefined);

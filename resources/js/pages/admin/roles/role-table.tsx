@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import TablePagination from "@/components/table-pagination";
 import { Icon } from "@/components/ui/icon";
 import { SquarePen } from "lucide-react";
-import { usePermission } from "@/hooks/use-permission";
+import { userPermissions } from "@/hooks/use-permission";
 import { TableBodyItem, TableHeaderItem } from "@/types/table";
 
 
@@ -17,7 +17,7 @@ interface RoleTableProps {
 export default function RoleTable({ roles, handlePageChange, handleEdit }: RoleTableProps) {
     const { data: roleList, current_page, last_page, total } = roles;
 
-    const { hasPermission } = usePermission();
+    const { hasPermission } = userPermissions();
     const module = "/admin/roles";
 
     const headers: TableHeaderItem[] = [

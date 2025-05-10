@@ -19,7 +19,7 @@ class {{ class }}
     /**
      * Store a newly created resource in storage.
      */
-    public function store{{ model }}($request)
+    public function store{{ model }}(array $request)
     {
         return $this->model->create($request);
     }
@@ -35,7 +35,7 @@ class {{ class }}
     /**
      * Update the specified resource in storage.
      */
-    public function update{{ model }}(int $id, $request)
+    public function update{{ model }}(int $id, array $request)
     {
         return $this->model->where('id',$id)->update($request);
     }

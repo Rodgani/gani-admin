@@ -156,33 +156,21 @@ class ScaffoldService
                 $repositoryNamespace = Str::ucfirst($modelNamespacePath) . Str::ucfirst(self::REPOSITORY);
                 $subModule = $pluralTable;
                 $formRequest = "Request";
+                $model = $lastTableSegment;
+                $pageModule = Str::lower($module);
 
-                return [
-                    [
-                        '{{ module }}',
-                        '{{ namespace }}',
-                        '{{ class }}',
-                        '{{ repository }}',
-                        '{{ model }}',
-                        '{{ pageModule }}',
-                        '{{ formRequest }}',
-                        '{{ modelVariable }}',
-                        '{{ pageSubModule }}',
-                        '{{ repositoryNamespace }}'
-                    ],
-                    [
-                        $module,
-                        $namespace,
-                        $className,
-                        $repository,
-                        $lastTableSegment,
-                        Str::lower($module),
-                        $formRequest,
-                        $modelVariable,
-                        $subModule,
-                        $repositoryNamespace
-                    ]
-                ];
+                return StubService::controller(
+                    $module,
+                    $namespace,
+                    $className,
+                    $repository,
+                    $model,
+                    $pageModule,
+                    $formRequest,
+                    $modelVariable,
+                    $subModule,
+                    $repositoryNamespace
+                );
             })(),
 
             self::REPOSITORY => (function () use (
@@ -195,62 +183,23 @@ class ScaffoldService
                 $pluralTable,
             ) {
                 $list = $pluralTable;
-
-                return [
-                    [
-                        '{{ module }}',
-                        '{{ namespace }}',
-                        '{{ class }}',
-                        '{{ list }}',
-                        '{{ model }}',
-                        '{{ modelVariable }}',
-                        '{{ modelNamespace }}'
-                    ],
-                    [
-                        $module,
-                        $namespace,
-                        $className,
-                        $list,
-                        $lastTableSegment,
-                        $modelVariable,
-                        $modelNamespacePath
-                    ]
-                ];
+                $model = $lastTableSegment;
+                return StubService::repository(
+                    $module,
+                    $namespace,
+                    $className,
+                    $list,
+                    $model,
+                    $modelVariable,
+                    $modelNamespacePath
+                );
             })(),
 
             self::MIGRATION => (function () use (
                 $pluralTable,
             ) {
                 $table = $pluralTable;
-                $fieldLines = collect($this->migrationFields)->map(function ($field) {
-                    $line = '$table->' . $field['type'] . "('{$field['name']}')";
-                
-                    if (!empty($field['defaultValue'])) {
-                        $default = is_numeric($field['defaultValue']) ? $field['defaultValue'] : "'{$field['defaultValue']}'";
-                        $line .= "->default({$default})";
-                    }
-                
-                    if ($field['nullable']) {
-                        $line .= '->nullable()';
-                    }
-                
-                    if (!empty($field['comment'])) {
-                        $line .= "->comment('{$field['comment']}')";
-                    }
-                
-                    return $line . ';';
-                })->implode("\n            "); 
-                
-                return [
-                    [
-                      '{{ table }}',
-                      '{{ fields }}'
-                    ],
-                    [
-                        $table,
-                        $fieldLines
-                    ]
-                ];
+                return StubService::migration($table,$this->migrationFields);
             })(),
             
             default => [

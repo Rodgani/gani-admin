@@ -34,10 +34,9 @@ class {{ class }} extends Controller
     /**
      * Display the specified resource.
      */
-    public function find(int $id,{{ formRequest }} $request)
+    public function find({{ formRequest }} $request)
     {
-        $request->validated();
-        $this->repository->find{{ model }}($id);
+        $this->repository->find{{ model }}($request->id);
         return back();
     }
 
@@ -53,10 +52,9 @@ class {{ class }} extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id, {{ formRequest }} $request)
+    public function destroy({{ formRequest }} $request)
     {
-        $request->validated();
-        $this->repository->destroy{{ model }}($id);
+        $this->repository->destroy{{ model }}($request->id);
         return back();
     }
 }

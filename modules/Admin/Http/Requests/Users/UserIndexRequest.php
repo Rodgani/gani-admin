@@ -12,12 +12,12 @@ class UserIndexRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $permissionService = app(PermissionHelper::class);
-        $userPermissions = $permissionService->userPermissions($this->user());
+        $permissionHelper = app(PermissionHelper::class);
 
-        return $permissionService
+        return $permissionHelper
+            ->forUser($this->user())
             ->subMenu("/admin/users")
-            ->authorize("view", $userPermissions);
+            ->can("view");
     }
 
     /**

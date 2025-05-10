@@ -1,23 +1,17 @@
 <?php
 
-namespace Modules\Admin\Http\Requests\Roles;
+namespace {{ namespace }};
 
-use App\Helpers\PermissionHelper;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RoleUpdateRequest extends FormRequest
+class {{ class }} extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        $permissionHelper = app(PermissionHelper::class);
-
-        return $permissionHelper
-            ->forUser($this->user())
-            ->subMenu("/admin/roles")
-            ->can("update");
+        return false;
     }
 
     /**
@@ -28,8 +22,7 @@ class RoleUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required",
-            "menus_permissions" => "required|json"
+            //
         ];
     }
 }

@@ -8,12 +8,7 @@ class PermissionHelper
 {
     private ?string $parentMenu = "#";
     private ?string $subMenu = null;
-
-    public function userPermissions($auth)
-    {
-        return collect(json_decode($auth->role->menus_permissions, true));
-    }
-
+    private $userMenusPermissions;
     public function parentMenu(string $parentMenu): self
     {
         $this->parentMenu = $parentMenu;
@@ -26,20 +21,24 @@ class PermissionHelper
         return $this;
     }
 
-    public function authorize(string $permission, $userPermissions): bool
+    public function forUser($user): static
     {
-        // Use app() to resolve the singleton instance of MenusPermissions
-        $menusPermissions = collect(app(MenusPermissions::class)());
-        $valid = $this->validateMenuPermission($this->parentMenu, $this->subMenu, $permission, $menusPermissions);
+        $this->userMenusPermissions = collect(json_decode($user->role->menus_permissions, true));
+        return $this;
+    }
+    public function can(string $action): bool
+    {
+        $defaultMenusPermissions = collect(app(MenusPermissions::class)());
+        $valid = $this->validateMenuPermission($this->parentMenu, $this->subMenu, $action, $defaultMenusPermissions);
 
         if (!$valid) {
             return false;
         }
 
-        return $this->validateMenuPermission($this->parentMenu, $this->subMenu, $permission, $userPermissions);
+        return $this->validateMenuPermission($this->parentMenu, $this->subMenu, $action,$this->userMenusPermissions);
     }
 
-    private function validateMenuPermission(string $parentMenuUrl, ?string $subMenuUrl, string $permission, $menusPermissions): bool
+    private function validateMenuPermission(string $parentMenuUrl, ?string $subMenuUrl, string $action, $menusPermissions): bool
     {
         if (!$subMenuUrl) {
             // Find parent by URL
@@ -48,7 +47,7 @@ class PermissionHelper
                 return false;
             }
 
-            return collect($parent['permissions'] ?? [])->contains($permission);
+            return collect($parent['permissions'] ?? [])->contains($action);
         } else {
             // Find parent with url = '#' that contains the submenu with $subMenuUrl
             $parentWithSubmenu = $menusPermissions->first(function ($menu) use ($parentMenuUrl, $subMenuUrl) {
@@ -64,7 +63,7 @@ class PermissionHelper
 
             // Find submenu by URL and check permission
             $submenu = collect($parentWithSubmenu['items'])->firstWhere('url', $subMenuUrl);
-            return collect($submenu['permissions'] ?? [])->contains($permission);
+            return collect($submenu['permissions'] ?? [])->contains($action);
         }
     }
 

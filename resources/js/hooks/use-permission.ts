@@ -8,7 +8,7 @@ interface PermissionItem {
   items?: PermissionItem[];
 }
 
-export function usePermission() {
+export function userPermissions() {
     const { menus_permissions: menus } = usePage<{ menus_permissions: PermissionItem[] }>().props;
 
   const hasPermission = (url: string, permission: string): boolean => {

@@ -13,7 +13,7 @@ import { PaginatedUsers, User } from "./user";
 import TablePagination from "@/components/table-pagination";
 import { Icon } from "@/components/ui/icon";
 import { SquarePen, Trash2 } from "lucide-react";
-import { usePermission } from "@/hooks/use-permission";
+import { userPermissions } from "@/hooks/use-permission";
 import { TableBodyItem, TableHeaderItem } from "@/types/table";
 
 interface UserTableProps {
@@ -24,8 +24,8 @@ interface UserTableProps {
 }
 
 export default function UserTable({ users, handlePageChange, handleDelete, handleEdit }: UserTableProps) {
-  const { hasPermission } = usePermission();
-  const { hasAnyPermission } = usePermission();
+  const { hasPermission } = userPermissions();
+  const { hasAnyPermission } = userPermissions();
 
   const module = "/admin/users";
 

@@ -13,7 +13,7 @@ import { PER_PAGE_DEFAULT } from '@/constants/app';
 import { useToastMessage } from '@/hooks/use-toast-message';
 import { useConfirmToast } from '@/hooks/use-confirm-toast';
 import { Icon } from '@/components/icon';
-import { usePermission } from '@/hooks/use-permission';
+import { userPermissions } from '@/hooks/use-permission';
 
 // 🔥 Lazy load the modal
 const UserFormModal = lazy(() => import('./user-form-modal'))
@@ -32,8 +32,8 @@ interface UserIndexProps {
 
 export default function UserIndex({ users, roles }: UserIndexProps) {
 
-    const { hasPermission } = usePermission();
-    const { hasAnyPermission } = usePermission();
+    const { hasPermission } = userPermissions();
+    const { hasAnyPermission } = userPermissions();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);

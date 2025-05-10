@@ -12,12 +12,12 @@ class UserCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $permissionService = app(PermissionHelper::class);
-        $userPermissions = $permissionService->userPermissions($this->user());
-
-        return $permissionService
+        $permissionHelper = app(PermissionHelper::class);
+        
+        return $permissionHelper
+            ->forUser($this->user())
             ->subMenu("/admin/users")
-            ->authorize("create", $userPermissions);
+            ->can("create");
     }
 
     /**
