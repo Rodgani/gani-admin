@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Modules\Admin\Database\Factories\UserFactory;
 use Modules\Admin\Observers\UserObserver;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
 #[ObservedBy([UserObserver::class])]
 class User extends Authenticatable
 {
@@ -54,5 +54,15 @@ class User extends Authenticatable
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
+    }
+
+    protected function createdAt(): Attribute
+    {
+        return Attribute::get(fn($value) => $this->convertTimezoneToUserTimezone($value));
+    }
+
+    protected function updatedAt(): Attribute
+    {
+        return Attribute::get(fn($value) => $this->convertTimezoneToUserTimezone($value));
     }
 }

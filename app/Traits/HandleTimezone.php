@@ -9,20 +9,14 @@ use Illuminate\Support\Facades\Config;
 
 trait HandleTimezone
 {
-    protected function createdAt(): Attribute
+    protected function convertTimezoneToUserTimezone($value, ?string $format = 'Y F d h:i A')
     {
-        return Attribute::get(fn($value) => $this->convertTimezoneToUserTimezone($value));
-    }
-
-    protected function updatedAt(): Attribute
-    {
-        return Attribute::get(fn($value) => $this->convertTimezoneToUserTimezone($value));
-    }
-    protected function convertTimezoneToUserTimezone($value)
-    {
+        if (!$value) {
+            return null;
+        }
+        
         $timezone = Auth::check() && Auth::user()->timezone ? Auth::user()->timezone : Config::get('app.timezone');
         return Carbon::parse($value)
-            ->timezone($timezone)
-            ->format('Y F d h:i A');
+            ->timezone($timezone)->format($format);
     }
 }
