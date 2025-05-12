@@ -1,20 +1,14 @@
 <?php
 
-namespace App\Services;
+namespace App\Helpers;
 
 class MenusPermissions
 {
-    /**
-     * Icons reference https://lucide.dev/icons/
-     */
+    protected array $menus;
 
-    /**
-     * Summary of __invoke
-     * @return array[]
-     */
-    public function __invoke()
+    public function __construct()
     {
-        $menus = [
+        $this->menus = [
             [
                 "title" => "Dashboard",
                 "url" => "/dashboard",
@@ -39,8 +33,10 @@ class MenusPermissions
                 ]
             ],
         ];
-
-        return $menus;
     }
 
+    public function __invoke(): array
+    {
+        return $this->menus;
+    }
 }

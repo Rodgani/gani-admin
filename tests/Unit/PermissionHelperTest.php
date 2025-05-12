@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Helpers\PermissionHelper;
-use App\Services\MenusPermissions;
 use Modules\Admin\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;

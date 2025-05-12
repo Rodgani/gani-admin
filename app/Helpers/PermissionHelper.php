@@ -2,8 +2,6 @@
 
 namespace App\Helpers;
 
-use App\Services\MenusPermissions;
-
 class PermissionHelper
 {
     private ?string $parentMenu = "#";

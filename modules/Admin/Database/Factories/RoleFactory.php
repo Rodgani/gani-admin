@@ -2,7 +2,7 @@
 
 namespace Modules\Admin\Database\Factories;
 
-use App\Services\MenusPermissions;
+use App\Helpers\MenusPermissions;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Admin\Models\Role;
 
