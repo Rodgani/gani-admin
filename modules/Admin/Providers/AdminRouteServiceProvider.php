@@ -9,7 +9,6 @@ class AdminRouteServiceProvider extends BaseRouteServiceProvider
 {
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
         $this->routes(function () {
             Route::middleware('web')->group(__DIR__ . '/../Routes/admin.routes.php');
         });
