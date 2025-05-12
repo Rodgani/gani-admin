@@ -5,7 +5,6 @@ namespace App\Helpers;
 class MenusPermissions
 {
     protected array $menus;
-
     public function __construct()
     {
         $this->menus = [
