@@ -10,7 +10,7 @@ use Modules\Admin\Models\User;
 
 class UserRepository
 {
-    public function __construct(private User $userModel)
+    public function __construct(private User $model)
     {
     }
     public function users($request): LengthAwarePaginator
@@ -19,7 +19,7 @@ class UserRepository
 
         $option = PaginationHelper::pageQueryOptions($request);
 
-        return $this->userModel->with('role')
+        return $this->model->with('role')
             ->whereNotIn('id', [AdminConstants::DEFAULT_ADMIN_ID])
             ->when($search, function ($query, $search) {
                 $query->whereAny(
@@ -35,18 +35,18 @@ class UserRepository
             ->paginate($option->perPage);
     }
 
-    public function destroyUser(User $user): bool|null
+    public function destroyUser(int $id): bool|null
     {
-        return $user->delete();
+        return $this->model->findOrFail($id)->delete();
     }
 
-    public function updateUser(User $user, $request): bool
+    public function updateUser(int $id, $request): bool
     {
-        return $user->update($request);
+        return $this->model->findOrFail($id)->update($request);
     }
 
     public function storeUser($request): User
     {
-        return $this->userModel->create($request);
+        return $this->model->create($request);
     }
 }

@@ -10,12 +10,12 @@ use Modules\Admin\Models\Role;
 
 class RoleRepository
 {
-    public function __construct(private Role $roleModel)
+    public function __construct(private Role $model)
     {
     }
     public function roles(): Collection
     {
-        return $this->roleModel->select('id', 'slug', 'name')->get();
+        return $this->model->select('id', 'slug', 'name')->get();
     }
 
     public function paginatedRoles($request): LengthAwarePaginator
@@ -23,7 +23,7 @@ class RoleRepository
         $search = $request->search;
         $option = PaginationHelper::pageQueryOptions($request);
 
-        return Role::when($search, function ($query, $search) {
+        return $this->model->when($search, function ($query, $search) {
             $query->whereAny(['name', 'slug'], 'like', "%{$search}%");
         })
             ->when($request->user()->id != AdminConstants::DEFAULT_ADMIN_ID, function ($query) {
@@ -35,12 +35,12 @@ class RoleRepository
 
     public function storeRole($request): Role
     {
-        return $this->roleModel->create($request);
+        return $this->model->create($request);
     }
 
-    public function updateRole(Role $role, $request): bool
+    public function updateRole(int $id, $request): bool
     {
         // here you are updating an existing Role instance
-        return $role->update($request);
+        return $this->model->findOrFail($id)->update($request);
     }
 }

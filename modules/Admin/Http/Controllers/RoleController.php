@@ -35,9 +35,9 @@ class RoleController extends Controller
         return back();
     }
 
-    public function update(Role $role, RoleUpdateRequest $request)
+    public function update(int $id, RoleUpdateRequest $request)
     {
-        $this->roleRepository->updateRole($role, $request->validated());
+        $this->roleRepository->updateRole($id, $request->validated());
         return back();
     }
 }

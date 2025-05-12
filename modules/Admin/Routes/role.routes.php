@@ -7,5 +7,5 @@ Route::controller(RoleController::class)->prefix('roles')
     ->group(function () {
         Route::get('/', 'index')->name('role.index');
         Route::post('/', 'store')->name('role.store');
-        Route::put('/{role}', 'update')->name('role.update');
+        Route::put('/{id}', 'update')->name('role.update');
     });
