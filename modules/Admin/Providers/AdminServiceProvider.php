@@ -2,13 +2,16 @@
 
 namespace Modules\Admin\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Route;
 
-class AdminServiceProvider extends ServiceProvider
+class AdminServiceProvider extends RouteServiceProvider
 {
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
-        $this->app->register(AdminRouteServiceProvider::class);
+        $this->routes(function () {
+            Route::middleware('web')->group(__DIR__ . '/../Routes/admin.routes.php');
+        });
     }
 }

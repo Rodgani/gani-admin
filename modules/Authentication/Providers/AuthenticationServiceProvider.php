@@ -2,12 +2,15 @@
 
 namespace Modules\Authentication\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Route;
 
-class AuthenticationServiceProvider extends ServiceProvider
+class AuthenticationServiceProvider extends RouteServiceProvider
 {
     public function boot()
     {
-        $this->app->register(AuthenticationRouteServiceProvider::class);
+        $this->routes(function () {
+            Route::middleware('web')->group(__DIR__ . '/../Routes/auth.routes.php');
+        });
     }
 }
