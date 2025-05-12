@@ -36,8 +36,10 @@ class {{ class }} extends Controller
      */
     public function find({{ formRequest }} $request)
     {
-        $this->repository->find{{ model }}($request->id);
-        return back();
+        ${{ findVariable }} = $this->repository->find{{ model }}($request->id);
+        return Inertia::render("{{ pageModule }}/{{ pageSubModule }}/show", [
+            "{{ findVariable }}" => ${{ findVariable }},
+        ]);
     }
 
     /**

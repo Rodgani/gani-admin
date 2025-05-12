@@ -158,6 +158,7 @@ class ScaffoldService
                 $formRequest = "Request";
                 $model = $lastTableSegment;
                 $pageModule = Str::lower($module);
+                $findVariable = Str::lower($model);
 
                 return StubService::controller(
                     $module,
@@ -169,7 +170,8 @@ class ScaffoldService
                     $formRequest,
                     $modelVariable,
                     $subModule,
-                    $repositoryNamespace
+                    $repositoryNamespace,
+                    $findVariable
                 );
             })(),
 

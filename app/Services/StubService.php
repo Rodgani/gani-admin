@@ -14,7 +14,8 @@ class StubService
         string $formRequest,
         string $modelVariable,
         string $subModule,
-        string $repositoryNamespace
+        string $repositoryNamespace,
+        string $findVariable
     ) {
         return [
             [
@@ -27,7 +28,8 @@ class StubService
                 '{{ formRequest }}',
                 '{{ modelVariable }}',
                 '{{ pageSubModule }}',
-                '{{ repositoryNamespace }}'
+                '{{ repositoryNamespace }}',
+                '{{ findVariable }}'
             ],
             [
                 $module,
@@ -39,7 +41,8 @@ class StubService
                 $formRequest,
                 $modelVariable,
                 $subModule,
-                $repositoryNamespace
+                $repositoryNamespace,
+                $findVariable
             ]
         ];
     }

@@ -37,7 +37,7 @@ class {{ class }}
      */
     public function update{{ model }}(int $id, array $request)
     {
-        return $this->model->where('id',$id)->update($request);
+       return $this->model->findOrFail($id)->update($request);
     }
 
     /**
