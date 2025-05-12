@@ -13,7 +13,7 @@ class UserUpdateRequest extends FormRequest
     public function authorize(): bool
     {
         $permissionHelper = app(PermissionHelper::class);
-        
+
         return $permissionHelper
             ->forUser($this->user())
             ->subMenu("/admin/users")
@@ -25,14 +25,20 @@ class UserUpdateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'id' => $this->route('id'),
+        ]);
+    }
     public function rules(): array
     {
-        $id = $this->route('id');
-       
         return [
-            "name" => "required",
-            "email" => "required|email|unique:users,email,$id,id",
-            "role_id" => "required"
+            'id' => 'required|exists:users,id',
+            'name' => 'required',
+            'email' => "required|email|unique:users,email,{$this->id},id",
+            'role_id' => 'required',
         ];
     }
 }

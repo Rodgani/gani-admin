@@ -11,10 +11,12 @@ class ScaffoldService
     private $module;
     private $table;
     private $migrationFields;
+    private $formRequest;
     private const CONTROLLER = "controller";
     private const MODEL = "model";
     private const REPOSITORY = "repository";
     private const MIGRATION = "migration";
+    private const FORM_REQUEST = "form_request";
     public function generate($request): void
     {
         $module = $request->module;
@@ -25,8 +27,21 @@ class ScaffoldService
         $this->table = $table;
 
         $this->migrationFields = $request->fields;
+
+        $this->formRequest = $request->form_request;
+
         $name = ucfirst($table);
 
+        // form request
+        if(!empty($this->formRequest)){
+            $type = self::FORM_REQUEST;
+            $forms = [
+                "{$table}IndexRequest",
+                "{$table}CreateRequest",
+                "{$table}UpdateRequest",
+                "{$table}DestroyRequest",
+            ];
+        }
         // controller
         $type = self::CONTROLLER;
         $controllerClass = $name . ucfirst($type);

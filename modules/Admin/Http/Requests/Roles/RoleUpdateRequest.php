@@ -25,9 +25,17 @@ class RoleUpdateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'id' => $this->route('id'),
+        ]);
+    }
     public function rules(): array
     {
         return [
+            "id" => "required|exists:users,id",
             "name" => "required",
             "menus_permissions" => "required|json"
         ];
