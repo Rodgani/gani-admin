@@ -38,10 +38,20 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
     const { showToast } = useToastMessage();
 
     const handleSearch = () => {
-        router.get(route('role.index'),
-            { search, page: roles.current_page, per_page: PER_PAGE_DEFAULT },
-            { preserveScroll: true, preserveState: true }
-        )
+
+        const params: { [key: string]: string | number } = {
+            page: roles.current_page,
+            per_page: PER_PAGE_DEFAULT
+        };
+    
+        if (search) {
+            params.search = search;
+        }
+    
+        router.get(route('role.index'), params, {
+            preserveScroll: true,
+            preserveState: true
+        });
     };
 
     const handlePageChange = (page: number) => {

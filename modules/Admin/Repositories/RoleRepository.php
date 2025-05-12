@@ -20,7 +20,7 @@ class RoleRepository
 
     public function paginatedRoles($request): LengthAwarePaginator
     {
-        $search = $request->search;
+        $search = $request->search ?? null;
         $option = PaginationHelper::pageQueryOptions($request);
 
         return $this->model->when($search, function ($query, $search) {

@@ -19,48 +19,41 @@ class ScaffoldService
     private const FORM_REQUEST = "form_request";
     public function generate($request): void
     {
-        $module = $request->module;
-        $this->module = $module;
-
-        $table = $request->table;
-
-        $this->table = $table;
-
+        $this->module = Str::ucfirst($request->module);
+        $this->table = Str::studly($request->table);
         $this->migrationFields = $request->fields;
-
         $this->formRequest = $request->form_request;
-
-        $name = ucfirst($table);
+        $name = ucfirst($this->table);
 
         // form request
         if(!empty($this->formRequest)){
             $type = self::FORM_REQUEST;
             $forms = [
-                "{$table}IndexRequest",
-                "{$table}CreateRequest",
-                "{$table}UpdateRequest",
-                "{$table}DestroyRequest",
+                "{$this->table}IndexRequest",
+                "{$this->table}CreateRequest",
+                "{$this->table}UpdateRequest",
+                "{$this->table}DestroyRequest",
             ];
         }
         // controller
         $type = self::CONTROLLER;
         $controllerClass = $name . ucfirst($type);
-        $this->createFile($type, $module, $controllerClass);
+        $this->createFile($type, $this->module, $controllerClass);
 
         // model
         $type = self::MODEL;
         $modelClass = $name;
-        $this->createFile($type, $module, $modelClass);
+        $this->createFile($type, $this->module, $modelClass);
 
         // repository
         $type = self::REPOSITORY;
         $repositoryClass = $name . ucfirst($type);
-        $this->createFile($type, $module, $repositoryClass);
+        $this->createFile($type, $this->module, $repositoryClass);
 
         // migration
         $type = self::MIGRATION;
         $migrationClass = $name;
-        $this->createFile($type, $module, $migrationClass);
+        $this->createFile($type, $this->module, $migrationClass);
     }
 
     private function createFile(string $type, string $module, $name): void
@@ -107,7 +100,7 @@ class ScaffoldService
         $path = str_replace('\\', '/', $name);
         if ($type === "migration") {
 
-            $lastTableSegment = Str::afterLast($name, '/');
+            $lastTableSegment = Str::afterLast(Str::snake($name), '/');
             $path = str_replace('\\', '/', Str::lower(Str::plural("create_".$lastTableSegment)));
 
             $dateTime = Carbon::now()->format('Y-m-d H:i:s');
@@ -213,9 +206,9 @@ class ScaffoldService
             })(),
 
             self::MIGRATION => (function () use (
-                $pluralTable,
+                $lastTableSegment,
             ) {
-                $table = $pluralTable;
+                $table = Str::lower(Str::plural(Str::snake($lastTableSegment)));
                 return StubService::migration($table,$this->migrationFields);
             })(),
             

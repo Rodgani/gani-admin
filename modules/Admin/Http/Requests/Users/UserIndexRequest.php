@@ -3,10 +3,12 @@
 namespace Modules\Admin\Http\Requests\Users;
 
 use App\Helpers\PermissionHelper;
+use App\Traits\ValidatedAsObject;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserIndexRequest extends FormRequest
 {
+    use ValidatedAsObject;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -28,6 +30,8 @@ class UserIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "search"    => "sometimes|string",
+            "page"      => "sometimes|integer",
             "paginated" => "sometimes|boolean",
             "per_page" => "sometimes|integer|min:1",
             "order_by" => "sometimes|string|in:name,email,updated_at,created_at",

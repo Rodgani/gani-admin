@@ -15,8 +15,7 @@ class UserRepository
     }
     public function users($request): LengthAwarePaginator
     {
-        $search = $request->search;
-
+        $search = $request->search ?? null;
         $option = PaginationHelper::pageQueryOptions($request);
 
         return $this->model->with('role')

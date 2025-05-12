@@ -28,8 +28,8 @@ class ScaffoldGenerateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "module" => 'required|string',
-            "table" => 'required|string',
+            "module" => ['required', 'string', 'not_regex:/\//'],
+            "table" => ['required', 'string', 'not_regex:/\//'],
             "form_request" => 'sometimes|boolean',
             "fields" => 'required|array',
             "fields.*.name" => 'required|string',

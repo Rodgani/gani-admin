@@ -2,8 +2,6 @@
 
 namespace App\Dtos;
 
-use Illuminate\Http\Request;
-
 class PaginationDto
 {
     /**
@@ -21,10 +19,10 @@ class PaginationDto
     ) {
     }
 
-    public static function fromRequest(Request $request): self
+    public static function fromRequest($request): self
     {
         return new self(
-            filter_var($request->paginated, FILTER_VALIDATE_BOOLEAN),
+            (bool) ($request->paginated ?? false),
             (int) ($request->per_page ?? 10),
             (string) ($request->order_by ?? 'updated_at'),
             (string) ($request->order_direction ?? 'desc')

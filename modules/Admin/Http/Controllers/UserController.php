@@ -21,7 +21,7 @@ class UserController extends Controller
 
     public function index(UserIndexRequest $request)
     {
-        $users = $this->userRepository->users($request);
+        $users = $this->userRepository->users($request->validatedAsObject());
         $roles = $this->roleRepository->roles();
 
         return Inertia::render('admin/users/index', [

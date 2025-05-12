@@ -51,10 +51,20 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
     const [formErrors, setFormErrors] = useState<UserForm>(resetForm);
 
     const handleSearch = () => {
-        router.get(route('user.index'),
-            { search, page: users.current_page, per_page: PER_PAGE_DEFAULT },
-            { preserveScroll: true, preserveState: true }
-        )
+
+        const params: { [key: string]: string | number } = {
+            page: users.current_page,
+            per_page: PER_PAGE_DEFAULT
+        };
+    
+        if (search) {
+            params.search = search;
+        }
+    
+        router.get(route('user.index'), params, {
+            preserveScroll: true,
+            preserveState: true
+        });
     };
 
     const handlePageChange = (page: number) => {
