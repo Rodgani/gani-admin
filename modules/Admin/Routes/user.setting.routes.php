@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Modules\Admin\Http\Controllers\PasswordController;
 use Modules\Admin\Http\Controllers\ProfileController;
