@@ -61,7 +61,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
             params.search = search;
         }
     
-        router.get(route('user.index'), params, {
+        router.get(route('users.index'), params, {
             preserveScroll: true,
             preserveState: true
         });
@@ -69,7 +69,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
 
     const handlePageChange = (page: number) => {
         if (page >= 1 && page <= users.last_page) {
-            router.get(route('user.index'),
+            router.get(route('users.index'),
                 { page, per_page: PER_PAGE_DEFAULT },
                 { preserveScroll: true, preserveState: true }
             )
@@ -80,7 +80,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
         confirmToast({
             message: "Are you sure you want to delete this?",
             onConfirm: () => {
-                router.delete(route("user.destroy", { id }), {
+                router.delete(route("users.destroy", { id }), {
                     preserveScroll: true,
                     onSuccess: () => showToast("success", { message: "Deleted successfully!" }),
                     onError: (errors) => {
@@ -105,7 +105,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
 
     const handleSubmit = (formData: { name: string; email: string }, userId?: number) => {
         if (userId) {
-            router.put(route('user.update', { id: userId }), formData, {
+            router.put(route('users.update', { id: userId }), formData, {
                 onSuccess: () => {
                     closeModal()
                     showToast("success", { message: "Updated successfully!" })
@@ -115,7 +115,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
                 },
             });
         } else {
-            router.post(route('user.store'), formData, {
+            router.post(route('users.store'), formData, {
                 onSuccess: () => {
                     setFormErrors(resetForm); // ✅ Reset errors on success
                     showToast("success", { message: "Created successfully!" })

@@ -6,6 +6,7 @@ use Modules\Controller;
 use Illuminate\Http\Request;
 use Modules\{{ module }}\Repositories\{{ repositoryNamespace }};
 use Inertia\Inertia;
+{{ import requests }}
 
 class {{ class }} extends Controller
 {
@@ -14,7 +15,7 @@ class {{ class }} extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index({{ formRequest }} $request)
+    public function index({{ indexFormRequest }} $request)
     {
         ${{ pageSubModule }} = $this->repository->{{ pageSubModule }}($request);
         return Inertia::render("{{ pageModule }}/{{ pageSubModule }}/index", [
@@ -25,38 +26,27 @@ class {{ class }} extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store({{ formRequest }} $request)
+    public function store({{ storeFormRequest }} $request)
     {
         $this->repository->store{{ model }}($request->validated());
-        return back();
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function find({{ formRequest }} $request)
-    {
-        ${{ findVariable }} = $this->repository->find{{ model }}($request->id);
-        return Inertia::render("{{ pageModule }}/{{ pageSubModule }}/show", [
-            "{{ findVariable }}" => ${{ findVariable }},
-        ]);
+        return redirect()->route('{{ pageSubModule }}.index');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(int $id, {{ formRequest }} $request)
+    public function update(int $id, {{ updateFormRequest }} $request)
     {
         $this->repository->update{{ model }}($id, $request->validated());
-        return back();
+        return redirect()->route('{{ pageSubModule }}.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy({{ formRequest }} $request)
+    public function destroy({{ destroyFormRequest }} $request)
     {
         $this->repository->destroy{{ model }}($request->id);
-        return back();
+        return redirect()->route('{{ pageSubModule }}.index');
     }
 }

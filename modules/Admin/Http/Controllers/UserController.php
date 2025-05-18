@@ -6,7 +6,6 @@ use Modules\Admin\Http\Requests\Users\UserCreateRequest;
 use Modules\Admin\Http\Requests\Users\UserDeleteRequest;
 use Modules\Admin\Http\Requests\Users\UserIndexRequest;
 use Modules\Admin\Http\Requests\Users\UserUpdateRequest;
-use Modules\Admin\Models\User;
 use Inertia\Inertia;
 use Modules\Admin\Repositories\RoleRepository;
 use Modules\Admin\Repositories\UserRepository;
@@ -30,22 +29,22 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy(int $id, UserDeleteRequest $request)
+    public function destroy(UserDeleteRequest $request)
     {
-        $request->validated();
-        $this->userRepository->destroyUser($id);
-        return back();
+        $this->userRepository->destroyUser($request->validated()['id']);
+        return redirect()->route('users.index');
     }
 
-    public function update(int $id, UserUpdateRequest $request)
+    public function update(UserUpdateRequest $request)
     {
-        $this->userRepository->updateUser($id, $request->validated());
-        return back();
+        $validated = $request->validated();
+        $this->userRepository->updateUser($validated['id'], $validated);
+        return redirect()->route('users.index');
     }
 
     public function store(UserCreateRequest $request)
     {
         $this->userRepository->storeUser($request->validated());
-        return back();
+        return redirect()->route('users.index');
     }
 }

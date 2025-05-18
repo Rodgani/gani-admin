@@ -11,12 +11,26 @@ class StubService
         string $repository,
         string $model,
         string $pageModule,
-        string $formRequest,
+        mixed $formRequest,
         string $modelVariable,
         string $subModule,
         string $repositoryNamespace,
         string $findVariable
     ) {
+
+        // Use index positions with fallback
+        $indexFormRequest   = $formRequest[0] ?? 'Request';
+        $storeFormRequest   = $formRequest[1] ?? 'Request';
+        $updateFormRequest  = $formRequest[2] ?? 'Request';
+        $destroyFormRequest = $formRequest[3] ?? 'Request';
+        if (is_array($formRequest)) {
+            $importRequests = collect($formRequest)->map(function ($request) use ($module) {
+                return "use Modules\\$module\\Http\\Requests\\$request;";
+            })->implode("\n");
+        }else{
+            $importRequests = "";
+        }
+
         return [
             [
                 '{{ module }}',
@@ -25,11 +39,15 @@ class StubService
                 '{{ repository }}',
                 '{{ model }}',
                 '{{ pageModule }}',
-                '{{ formRequest }}',
                 '{{ modelVariable }}',
                 '{{ pageSubModule }}',
                 '{{ repositoryNamespace }}',
-                '{{ findVariable }}'
+                '{{ findVariable }}',
+                '{{ indexFormRequest }}',
+                '{{ storeFormRequest }}',
+                '{{ updateFormRequest }}',
+                '{{ destroyFormRequest }}',
+                '{{ import requests }}'
             ],
             [
                 $module,
@@ -38,11 +56,15 @@ class StubService
                 $repository,
                 $model,
                 $pageModule,
-                $formRequest,
                 $modelVariable,
                 $subModule,
                 $repositoryNamespace,
-                $findVariable
+                $findVariable,
+                $indexFormRequest,
+                $storeFormRequest,
+                $updateFormRequest,
+                $destroyFormRequest,
+                $importRequests
             ]
         ];
     }
