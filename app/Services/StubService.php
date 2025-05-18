@@ -23,6 +23,7 @@ class StubService
         $storeFormRequest   = $formRequest[1] ?? 'Request';
         $updateFormRequest  = $formRequest[2] ?? 'Request';
         $destroyFormRequest = $formRequest[3] ?? 'Request';
+        
         if (is_array($formRequest)) {
             $importRequests = collect($formRequest)->map(function ($request) use ($module) {
                 return "use Modules\\$module\\Http\\Requests\\$request;";

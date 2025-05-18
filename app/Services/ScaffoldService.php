@@ -170,9 +170,7 @@ class ScaffoldService
                 $repositoryNamespace = Str::ucfirst($modelNamespacePath) . Str::ucfirst(self::REPOSITORY);
                 $subModule = $pluralTable;
 
-                $formRequest = is_array($this->formRequest)
-                    ? $this->formRequest
-                    : 'Request';
+                $formRequest = $this->formRequest;
 
                 $model = $lastTableSegment;
                 $pageModule = Str::lower($module);
