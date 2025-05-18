@@ -7,7 +7,7 @@ use App\Dtos\PaginationDto;
 class PaginationHelper
 {
 
-    public static function pageQueryOptions($request): PaginationDto
+    public static function pageQueryOptions(object $request): PaginationDto
     {
         return PaginationDto::make($request);
     }
