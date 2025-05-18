@@ -9,7 +9,7 @@ trait ValidatedAsObject
     /**
      * Convert the validated data array to a stdClass object (deep conversion).
      */
-    public function validatedAsObject(): stdClass
+    public function validatedObject(): stdClass
     {
         $validated = $this->validated();
 

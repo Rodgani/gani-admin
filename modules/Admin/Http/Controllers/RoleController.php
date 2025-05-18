@@ -20,7 +20,7 @@ class RoleController extends Controller
 
     public function index(RoleIndexRequest $request)
     {
-        $roles = $this->roleRepository->paginatedRoles($request->validatedAsObject());
+        $roles = $this->roleRepository->paginatedRoles($request->validatedObject());
         $defaultMenusPermissions = ($this->menusPermissions)();
         return Inertia::render('admin/roles/index', [
             "roles" => $roles,
