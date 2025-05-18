@@ -9,7 +9,7 @@ class PaginationHelper
 
     public static function pageQueryOptions($request): PaginationDto
     {
-        return PaginationDto::fromRequest($request);
+        return PaginationDto::make($request);
     }
 }
 

@@ -19,7 +19,7 @@ class PaginationDto
     ) {
     }
 
-    public static function fromRequest($request): self
+    public static function make($request): self
     {
         return new self(
             (bool) ($request->paginated ?? false),
