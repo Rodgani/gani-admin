@@ -11,7 +11,7 @@ use Symfony\Component\Finder\Finder;
 class MakeModuleCommand extends Command
 {
     protected $signature = 'make:module {type} {name} {module}';
-    protected $description = 'Generate Laravel class and move it to Modules/{Module}';
+    protected $description = 'Generate Laravel class and move it to Modules';
 
     private $type;
     public function handle()
