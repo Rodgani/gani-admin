@@ -30,16 +30,16 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy(int $id, UserDeleteRequest $request)
+    public function destroy(UserDeleteRequest $request)
     {
-        $request->validated();
-        $this->userRepository->destroyUser($id);
+        $this->userRepository->destroyUser($request->validated()['id']);
         return back();
     }
 
-    public function update(int $id, UserUpdateRequest $request)
+    public function update(UserUpdateRequest $request)
     {
-        $this->userRepository->updateUser($id, $request->validated());
+        $validated = $request->validated();
+        $this->userRepository->updateUser($validated['id'], $validated);
         return back();
     }
 

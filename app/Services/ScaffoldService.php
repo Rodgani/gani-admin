@@ -16,7 +16,7 @@ class ScaffoldService
     private const MODEL = "model";
     private const REPOSITORY = "repository";
     private const MIGRATION = "migration";
-    private const FORM_REQUEST = "form_request";
+    private const FORM_REQUEST = "request";
     public function generate($request): void
     {
         $this->module = Str::ucfirst($request->module);
@@ -26,14 +26,18 @@ class ScaffoldService
         $name = ucfirst($this->table);
 
         // form request
-        if(!empty($this->formRequest)){
+        if (!empty($this->formRequest)) {
             $type = self::FORM_REQUEST;
-            $forms = [
+            $this->formRequest = [
                 "{$this->table}IndexRequest",
                 "{$this->table}CreateRequest",
                 "{$this->table}UpdateRequest",
                 "{$this->table}DestroyRequest",
             ];
+
+            foreach ($this->formRequest as $formRequestClass) {
+                $this->createFile($type, $this->module, $formRequestClass);
+            }
         }
         // controller
         $type = self::CONTROLLER;
@@ -89,6 +93,7 @@ class ScaffoldService
         $name = Str::studly($name); // Capitalize segments
 
         $relativePath = match ($type) {
+            'request' => 'Http/Requests/',
             'controller' => 'Http/Controllers/',
             'model' => 'Models/',
             'repository' => 'Repositories/',
@@ -101,7 +106,7 @@ class ScaffoldService
         if ($type === "migration") {
 
             $lastTableSegment = Str::afterLast(Str::snake($name), '/');
-            $path = str_replace('\\', '/', Str::lower(Str::plural("create_".$lastTableSegment)));
+            $path = str_replace('\\', '/', Str::lower(Str::plural("create_" . $lastTableSegment)));
 
             $dateTime = Carbon::now()->format('Y-m-d H:i:s');
             // convert to underscore
@@ -118,6 +123,7 @@ class ScaffoldService
     private function resolveNamespace(string $type, string $module, string $name): string
     {
         $base = match ($type) {
+            'request' => "Modules\\{$module}\\Http\\Requests",
             'controller' => "Modules\\{$module}\\Http\\Controllers",
             'model' => "Modules\\{$module}\\Models",
             'repository' => "Modules\\$module\\Repositories",
@@ -163,7 +169,11 @@ class ScaffoldService
                 $repository = Str::ucfirst($lastTableSegment) . Str::ucfirst(self::REPOSITORY);
                 $repositoryNamespace = Str::ucfirst($modelNamespacePath) . Str::ucfirst(self::REPOSITORY);
                 $subModule = $pluralTable;
-                $formRequest = "Request";
+
+                $formRequest = is_array($this->formRequest)
+                    ? $this->formRequest
+                    : 'Request';
+
                 $model = $lastTableSegment;
                 $pageModule = Str::lower($module);
                 $findVariable = Str::lower($model);
@@ -209,9 +219,9 @@ class ScaffoldService
                 $lastTableSegment,
             ) {
                 $table = Str::lower(Str::plural(Str::snake($lastTableSegment)));
-                return StubService::migration($table,$this->migrationFields);
+                return StubService::migration($table, $this->migrationFields);
             })(),
-            
+
             default => [
                 ['{{ namespace }}', '{{ class }}'],
                 [$namespace, $className]

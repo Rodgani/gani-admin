@@ -20,7 +20,7 @@ trait ValidatedAsObject
     /**
      * Recursively convert array to stdClass.
      */
-    protected function toObject(array $array): stdClass
+    private function toObject(array $array): stdClass
     {
         $object = new stdClass();
 

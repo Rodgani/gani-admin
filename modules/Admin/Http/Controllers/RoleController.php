@@ -20,7 +20,7 @@ class RoleController extends Controller
 
     public function index(RoleIndexRequest $request)
     {
-        $roles = $this->roleRepository->paginatedRoles($request);
+        $roles = $this->roleRepository->paginatedRoles($request->validatedAsObject());
         $defaultMenusPermissions = ($this->menusPermissions)();
         return Inertia::render('admin/roles/index', [
             "roles" => $roles,
@@ -34,9 +34,10 @@ class RoleController extends Controller
         return back();
     }
 
-    public function update(int $id, RoleUpdateRequest $request)
+    public function update(RoleUpdateRequest $request)
     {
-        $this->roleRepository->updateRole($id, $request->validated());
+        $validated = $request->validated();
+        $this->roleRepository->updateRole($validated['id'], $validated);
         return back();
     }
 }
