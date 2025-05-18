@@ -2,7 +2,7 @@
 
 namespace Modules\Admin\Database\Seeders;
 
-use App\Services\MenusPermissions;
+use App\Helpers\MenusPermissions;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Modules\Admin\Models\Role;
