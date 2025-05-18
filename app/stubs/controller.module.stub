@@ -17,7 +17,7 @@ class {{ class }} extends Controller
      */
     public function index({{ indexFormRequest }} $request)
     {
-        ${{ pageSubModule }} = $this->repository->{{ pageSubModule }}($request->validatedAsObject());
+        ${{ pageSubModule }} = $this->repository->{{ pageSubModule }}($request);
         return Inertia::render("{{ pageModule }}/{{ pageSubModule }}/index", [
             "{{ pageSubModule }}" => ${{ pageSubModule }},
         ]);
