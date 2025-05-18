@@ -13,7 +13,7 @@ class UserRepository
     public function __construct(private User $model)
     {
     }
-    public function users($request): LengthAwarePaginator
+    public function users(object $request): LengthAwarePaginator
     {
         $search = $request->search ?? null;
         $option = PaginationHelper::pageQueryOptions($request);
@@ -39,12 +39,12 @@ class UserRepository
         return $this->model->findOrFail($id)->delete();
     }
 
-    public function updateUser(int $id, $request): bool
+    public function updateUser(int $id, array $request): bool
     {
         return $this->model->findOrFail($id)->update($request);
     }
 
-    public function storeUser($request): User
+    public function storeUser(array $request): User
     {
         return $this->model->create($request);
     }

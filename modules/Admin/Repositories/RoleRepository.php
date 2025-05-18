@@ -19,7 +19,7 @@ class RoleRepository
         return $this->model->select('id', 'slug', 'name')->get();
     }
 
-    public function paginatedRoles($request): LengthAwarePaginator
+    public function paginatedRoles(object $request): LengthAwarePaginator
     {
         $search = $request->search ?? null;
         $option = PaginationHelper::pageQueryOptions($request);
@@ -34,14 +34,13 @@ class RoleRepository
             ->paginate($option->perPage);
     }
 
-    public function storeRole($request): Role
+    public function storeRole(array $request): Role
     {
         return $this->model->create($request);
     }
 
-    public function updateRole(int $id, $request): bool
+    public function updateRole(int $id, array $request): bool
     {
-        // here you are updating an existing Role instance
         return $this->model->findOrFail($id)->update($request);
     }
 }

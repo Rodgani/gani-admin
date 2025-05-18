@@ -48,7 +48,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
             params.search = search;
         }
     
-        router.get(route('role.index'), params, {
+        router.get(route('roles.index'), params, {
             preserveScroll: true,
             preserveState: true
         });
@@ -56,7 +56,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
 
     const handlePageChange = (page: number) => {
         if (page >= 1 && page <= roles.last_page) {
-            router.get(route('role.index'),
+            router.get(route('roles.index'),
                 { page, per_page: PER_PAGE_DEFAULT },
                 { preserveScroll: true, preserveState: true }
             )
@@ -83,7 +83,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
         };
 
         if (roleId) {
-            router.put(route('role.update', { id: roleId }), payload, {
+            router.put(route('roles.update', { id: roleId }), payload, {
                 onSuccess: () => {
                     closeModal()
                     showToast("success", { message: "Updated successfully!" })
@@ -93,7 +93,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
                 },
             });
         } else {
-            router.post(route('role.store'), payload, {
+            router.post(route('roles.store'), payload, {
                 onSuccess: () => {
                     closeModal()
                     showToast("success", { message: "Created successfully!" })

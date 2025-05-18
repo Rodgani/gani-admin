@@ -29,7 +29,7 @@ class {{ class }} extends Controller
     public function store({{ storeFormRequest }} $request)
     {
         $this->repository->store{{ model }}($request->validated());
-        return back();
+        return redirect()->route('{{ pageSubModule }}.index');
     }
 
     /**
@@ -38,7 +38,7 @@ class {{ class }} extends Controller
     public function update(int $id, {{ updateFormRequest }} $request)
     {
         $this->repository->update{{ model }}($id, $request->validated());
-        return back();
+        return redirect()->route('{{ pageSubModule }}.index');
     }
 
     /**
@@ -47,6 +47,6 @@ class {{ class }} extends Controller
     public function destroy({{ destroyFormRequest }} $request)
     {
         $this->repository->destroy{{ model }}($request->id);
-        return back();
+        return redirect()->route('{{ pageSubModule }}.index');
     }
 }

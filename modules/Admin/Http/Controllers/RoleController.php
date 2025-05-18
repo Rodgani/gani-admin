@@ -31,13 +31,13 @@ class RoleController extends Controller
     public function store(RoleCreateRequest $request)
     {
         $this->roleRepository->storeRole($request->validated());
-        return back();
+        return redirect()->route('roles.index');
     }
 
     public function update(RoleUpdateRequest $request)
     {
         $validated = $request->validated();
         $this->roleRepository->updateRole($validated['id'], $validated);
-        return back();
+        return redirect()->route('roles.index');
     }
 }
