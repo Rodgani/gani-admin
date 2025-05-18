@@ -17,7 +17,7 @@ class {{ class }} extends Controller
      */
     public function index({{ indexFormRequest }} $request)
     {
-        ${{ pageSubModule }} = $this->repository->{{ pageSubModule }}($request);
+        ${{ pageSubModule }} = $this->repository->{{ pageSubModule }}($request->validatedAsObject());
         return Inertia::render("{{ pageModule }}/{{ pageSubModule }}/index", [
             "{{ pageSubModule }}" => ${{ pageSubModule }},
         ]);
@@ -35,9 +35,10 @@ class {{ class }} extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(int $id, {{ updateFormRequest }} $request)
+    public function update({{ updateFormRequest }} $request)
     {
-        $this->repository->update{{ model }}($id, $request->validated());
+        $validated = $request->validated();
+        $this->repository->update{{ model }}($validated['id'], $request->validated());
         return redirect()->route('{{ pageSubModule }}.index');
     }
 
@@ -46,7 +47,8 @@ class {{ class }} extends Controller
      */
     public function destroy({{ destroyFormRequest }} $request)
     {
-        $this->repository->destroy{{ model }}($request->id);
+        $validated = $request->validated();
+        $this->repository->destroy{{ model }}($validated['id']);
         return redirect()->route('{{ pageSubModule }}.index');
     }
 }

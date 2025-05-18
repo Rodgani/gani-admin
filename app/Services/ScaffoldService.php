@@ -154,6 +154,8 @@ class ScaffoldService
         $modelNamespacePath = Str::replace('/', '\\', $model);
         $lastTableSegment = Str::afterLast($model, '/');
         $pluralTable = Str::lower(Str::plural($lastTableSegment));
+        $formRequest = $this->formRequest;
+        $migrationFields = $this->migrationFields;
 
         [$search, $replace] = match ($type) {
 
@@ -165,12 +167,11 @@ class ScaffoldService
                 $modelNamespacePath,
                 $modelVariable,
                 $pluralTable,
+                $formRequest,
             ) {
                 $repository = Str::ucfirst($lastTableSegment) . Str::ucfirst(self::REPOSITORY);
                 $repositoryNamespace = Str::ucfirst($modelNamespacePath) . Str::ucfirst(self::REPOSITORY);
                 $subModule = $pluralTable;
-
-                $formRequest = $this->formRequest;
 
                 $model = $lastTableSegment;
                 $pageModule = Str::lower($module);
@@ -214,10 +215,18 @@ class ScaffoldService
             })(),
 
             self::MIGRATION => (function () use (
+                $migrationFields,
                 $lastTableSegment,
             ) {
                 $table = Str::lower(Str::plural(Str::snake($lastTableSegment)));
-                return StubService::migration($table, $this->migrationFields);
+                return StubService::migration($table, $migrationFields);
+            })(),
+            self::FORM_REQUEST => (function () use (
+                $namespace,
+                $className,
+                $migrationFields,
+            ) {
+                return StubService::formRequest($namespace, $className,$migrationFields);
             })(),
 
             default => [
