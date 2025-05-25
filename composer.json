@@ -9,8 +9,8 @@
     ],
     "repositories": [
         {
-            "type": "path",
-            "url": "packages/Rodgani/ModuleMaker"
+            "type": "vcs",
+            "url": "https://github.com/Rodgani/laravel-module-maker"
         }
     ],
     "license": "MIT",
@@ -19,7 +19,6 @@
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "rodgani/module-maker": "dev-master",
         "tightenco/ziggy": "^2.4"
     },
     "require-dev": {
@@ -30,7 +29,8 @@
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
-        "phpunit/phpunit": "^11.5.3"
+        "phpunit/phpunit": "^11.5.3",
+        "rodgani/laravel-module-maker": "^1.0"
     },
     "autoload": {
         "psr-4": {
