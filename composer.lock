@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f3464f026e5c4e8fe94060240a961af2",
+    "content-hash": "16dc46248e21164b38d450c6b39d95ee",
     "packages": [
         {
             "name": "brick/math",
@@ -3353,6 +3353,35 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
+        },
+        {
+            "name": "rodgani/module-maker",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "packages/Rodgani/ModuleMaker",
+                "reference": "f7c9c49395af9c783896ae58471e0fefc9f43ef1"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Rodgani\\ModuleMaker\\ModuleMakerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rodgani\\ModuleMaker\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A simple Laravel modular",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "symfony/clock",
@@ -8359,12 +8388,14 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "rodgani/module-maker": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }
