@@ -9,8 +9,8 @@
     ],
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/Rodgani/laravel-module-maker"
+            "type": "path",
+            "url": "packages/laravel-module-maker"
         }
     ],
     "license": "MIT",
