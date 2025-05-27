@@ -24,6 +24,3 @@ yarn-error.log
 /.zed
 /stubs
 /packages
-
-# Composer
-composer.lock
