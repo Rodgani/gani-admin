@@ -51,3 +51,12 @@ php artisan migrate --seed
 
 # Build assets
 npm run dev
+```
+
+🧪 Usage
+Use the following Artisan command to create Laravel classes inside your module:
+```
+php artisan make:module {type} {name} {module}
+
+php artisan make:module controller UserController Blog
+```
