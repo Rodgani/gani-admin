@@ -8,14 +8,13 @@ import { Icon } from '@/components/icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { userPermissions } from '@/hooks/use-permission';
-import { useToastMessage } from '@/hooks/use-toast-message';
 import { PlusCircle, Search } from 'lucide-react';
 import UserTable from './components/user-table';
 import { useDeleteUser } from './hooks/use-delete-user';
 import { useUserPagination } from './hooks/use-user-pagination';
-import { submitUserForm } from './services/user-service';
 import { UserIndexProps } from './types/user-props.types';
 import { User, UserForm } from './types/user.types';
+import { useSubmitUserForm } from './hooks/use-submit-form-user';
 
 // 🔥 Lazy load the modal
 const UserFormModal = lazy(() => import('./components/user-form-modal'));
@@ -29,7 +28,6 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
-    const { showToast } = useToastMessage();
     const [searchTerm, setSearchTerm] = useState('');
     const { handleSearch, handlePageChange } = useUserPagination(users.current_page, searchTerm);
     const { handleDelete } = useDeleteUser();
@@ -54,20 +52,11 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
         setSelectedUser(undefined);
     };
 
-    const handleSubmit = (formData: UserForm, userId?: number) => {
-        submitUserForm(formData, userId, {
-            onSuccess: () => {
-                if (userId) {
-                    closeModal(); // close modal only when updating
-                }
-                showToast('success', { message: userId ? 'Updated successfully!' : 'Created successfully!' });
-                setFormErrors(resetForm);
-            },
-            onError: (errors) => {
-                setFormErrors({ ...resetForm, ...errors });
-            },
-        });
-    };
+    const { handleSubmit } = useSubmitUserForm({
+        closeModal,
+        resetForm,
+        setFormErrors: (errors) => setFormErrors({ ...resetForm, ...errors })
+    });
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
