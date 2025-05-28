@@ -2,12 +2,7 @@ import { useToastMessage } from '@/hooks/use-toast-message';
 import { useCallback } from 'react';
 import { submitUserForm } from '../services/user-service';
 import { UserForm } from '../types/user.types';
-
-interface UseSubmitUserFormOptions {
-    closeModal?: () => void;
-    resetForm: UserForm;
-    setFormErrors: (errors: Partial<UserForm>) => void;
-}
+import { UseSubmitUserFormOptions } from '../types/user-props.types';
 
 export function useSubmitUserForm({ closeModal, resetForm, setFormErrors }: UseSubmitUserFormOptions) {
     const { showToast } = useToastMessage();

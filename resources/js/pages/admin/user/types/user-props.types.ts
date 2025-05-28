@@ -14,3 +14,9 @@ export interface UserFormModalProps {
     errors: UserForm;
     roles: { name: string; id: number }[];
 }
+
+export interface UseSubmitUserFormOptions {
+    closeModal?: () => void;
+    resetForm: UserForm;
+    setFormErrors: (errors: Partial<UserForm>) => void;
+}
