@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { PaginatedUsers, User } from "./user";
+import { PaginatedUsers, User } from "../types/user.types";
 import TablePagination from "@/components/table-pagination";
 import { Icon } from "@/components/ui/icon";
 import { SquarePen, Trash2 } from "lucide-react";

@@ -1,4 +1,5 @@
 import { LaravelPagination } from "@/types/laravel-paginate";
+import type { FormDataConvertible } from '@inertiajs/core'; 
 
 export interface User {
     id: number;
@@ -15,7 +16,7 @@ export interface User {
     }
 }
 
-export interface UserForm {
+export interface UserForm extends Record<string, FormDataConvertible> {
     name: string;
     email: string;
     password?: string

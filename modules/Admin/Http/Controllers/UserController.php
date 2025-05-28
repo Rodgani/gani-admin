@@ -23,7 +23,7 @@ class UserController extends Controller
         $users = $this->userRepository->users($request->validatedObject());
         $roles = $this->roleRepository->roles();
 
-        return Inertia::render('admin/users/index', [
+        return Inertia::render('admin/user/index', [
             "users" => $users,
             "roles" => $roles
         ]);

@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DialogDescription } from '@radix-ui/react-dialog';
 import { useEffect, useMemo, useState } from 'react';
-import { User, UserForm } from './user';
+import { User, UserForm } from '../types/user.types';
 interface UserFormModalProps {
     isOpen: boolean;
     onClose: () => void;
