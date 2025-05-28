@@ -4,15 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DialogDescription } from '@radix-ui/react-dialog';
 import { useEffect, useMemo, useState } from 'react';
-import { User, UserForm } from '../types/user.types';
-interface UserFormModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    user?: User;
-    onSubmit: (formData: UserForm, userId?: number) => void;
-    errors: UserForm;
-    roles: { name: string; id: number }[];
-}
+import { UserFormModalProps } from '../types/user-props.types';
+import { UserForm } from '../types/user.types';
 
 export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors, roles }: UserFormModalProps) {
     const [formData, setFormData] = useState<UserForm>({
@@ -23,13 +16,16 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
         role_id: '',
     });
 
-    const resetFormData = useMemo(() => ({
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        role_id: '',
-      }), []);
+    const resetFormData = useMemo(
+        () => ({
+            name: '',
+            email: '',
+            password: '',
+            password_confirmation: '',
+            role_id: '',
+        }),
+        [],
+    );
 
     const [visibleErrors, setVisibleErrors] = useState<UserForm>(resetFormData);
 
@@ -39,7 +35,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
             const timer = setTimeout(() => setVisibleErrors(resetFormData), 3000);
             return () => clearTimeout(timer);
         }
-    }, [errors,resetFormData]);
+    }, [errors, resetFormData]);
 
     useEffect(() => {
         if (user) {
@@ -53,7 +49,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
         } else {
             setFormData(resetFormData);
         }
-    }, [user,resetFormData]);
+    }, [user, resetFormData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({
@@ -90,13 +86,16 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                 </DialogHeader>
 
                 <div className="space-y-4">
-                    {fields.map(({ name, type, placeholder, required, inputType }) =>
-                        inputType === 'input' ? (
+                    {fields.map(({ name, type, placeholder, required, inputType }) => {
+                        const rawValue = formData[name as keyof typeof formData];
+                        const normalizedValue = typeof rawValue === 'string' ? rawValue : rawValue != null ? String(rawValue) : '';
+
+                        return inputType === 'input' ? (
                             <Input
                                 key={name}
                                 name={name}
                                 type={type}
-                                value={formData[name as keyof typeof formData] ?? ''}
+                                value={normalizedValue}
                                 onChange={handleChange}
                                 placeholder={placeholder}
                                 required={required}
@@ -104,27 +103,39 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                         ) : (
                             <Select
                                 key={name}
+                                value={normalizedValue?.toString() ?? ''}
                                 onValueChange={(value) => setFormData((prev) => ({ ...prev, [name]: value }))}
-                                value={formData.role_id?.toLocaleString()}
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Select Role" />
+                                    <SelectValue placeholder={`${placeholder ?? name}`} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {roles.map((role) => (
-                                        <SelectItem key={role.id} value={role.id.toLocaleString()}>
+                                        <SelectItem key={role.id} value={String(role.id)}>
                                             {role.name}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
-                        ),
-                    )}
+                        );
+                    })}
                 </div>
 
                 <div>
                     {Object.keys(visibleErrors).length > 0 && (
-                        <div className="text-red-500">{Object.entries(visibleErrors).map(([key, error]) => error && <p key={key}>{error}</p>)}</div>
+                        <div className="space-y-1 text-red-500">
+                            {Object.entries(visibleErrors).map(([key, error]) => {
+                                if (typeof error === 'string') {
+                                    return <p key={key}>{error}</p>;
+                                }
+
+                                if (Array.isArray(error)) {
+                                    return error.map((err, i) => (typeof err === 'string' ? <p key={`${key}-${i}`}>{err}</p> : null));
+                                }
+
+                                return null; // Fallback: skip any non-string errors
+                            })}
+                        </div>
                     )}
                 </div>
 

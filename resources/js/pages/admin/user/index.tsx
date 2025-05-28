@@ -14,7 +14,7 @@ import UserTable from './components/user-table';
 import { useDeleteUser } from './hooks/use-delete-user';
 import { useUserPagination } from './hooks/use-user-pagination';
 import { submitUserForm } from './services/user-service';
-import { UserIndexProps } from './types/user-index-props.types';
+import { UserIndexProps } from './types/user-props.types';
 import { User, UserForm } from './types/user.types';
 
 // 🔥 Lazy load the modal
