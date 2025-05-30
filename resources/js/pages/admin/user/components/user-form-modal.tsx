@@ -5,10 +5,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { DialogDescription } from '@radix-ui/react-dialog';
 import { useEffect, useMemo, useState } from 'react';
 import { UserFormModalProps } from '../types/user-props.types';
-import { UserForm } from '../types/user.types';
+import { UserForm, UserPayload } from '../types/user.types';
 
 export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors, roles }: UserFormModalProps) {
-    const [formData, setFormData] = useState<UserForm>({
+    const [formData, setFormData] = useState<UserPayload>({
         name: '',
         email: '',
         password: '',

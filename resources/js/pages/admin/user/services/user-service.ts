@@ -1,7 +1,6 @@
 import { router } from '@inertiajs/react';
-import { UserForm } from '../types/user.types';
+import { UserPayload } from '../types/user.types';
 
-// services/user.service.ts
 export function fetchUsers(params: Record<string, string | number>) {
     return router.get(route('users.index'), params, {
         preserveScroll: true,
@@ -15,7 +14,6 @@ export const deleteUser = async (
   onError?: (errors: Record<string, string[] | string>) => void
 ) => {
   router.delete(route('users.destroy', { id }), {
-    preserveScroll: true,
     onSuccess,
     onError,
   });
@@ -27,7 +25,7 @@ export interface RequestCallbacks {
 }
 
 export function submitUserForm(
-  formData: UserForm,
+  formData: UserPayload,
   userId?: number,
   callbacks?: RequestCallbacks
 ) {

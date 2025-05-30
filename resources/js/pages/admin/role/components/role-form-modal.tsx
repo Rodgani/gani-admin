@@ -1,23 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@/components/ui/dialog";
-import { MenusPermissions, Role, RoleForm } from "./role";
+import { RoleForm } from "../types/role.types";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";  // assuming you have a Checkbox component
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-
-interface RoleFormProps {
-    isOpen: boolean;
-    onClose: () => void;
-    role?: Role;
-    defaultMenusPermissions: MenusPermissions;
-    onSubmit: (formData: {
-        name: string;
-        slug: string;
-        menus_permissions: MenusPermissions
-    }, roleId?: number) => void;
-}
+import { RoleFormProps } from "../types/role-props.types";
 
 export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermissions, onSubmit }: RoleFormProps) {
     const [menusPermissionsState, setMenusPermissionsState] = useState<{ [key: string]: string[] }>({});
@@ -52,6 +42,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                     slug: role.slug,
                 });
             } catch (error) {
+                console.log(error)
                 setMenusPermissionsState({});
             }
         } else {
@@ -63,47 +54,6 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
         return menusPermissionsState[url]?.includes(permission) ?? false;
     };
 
-    // const togglePermission = (url: string, permission: string) => {
-    //     setMenusPermissionsState((prev) => {
-    //         const currentPermissions = prev[url] || [];
-    //         const isChecked = currentPermissions.includes(permission);
-
-    //         // If toggling "view" off, remove all permissions
-    //         if (permission === "view" && isChecked) {
-    //             return {
-    //                 ...prev,
-    //                 [url]: []
-    //             };
-    //         }
-
-    //         // If toggling "view" on, just add "view"
-    //         if (permission === "view" && !isChecked) {
-    //             return {
-    //                 ...prev,
-    //                 [url]: [...currentPermissions, "view"]
-    //             };
-    //         }
-
-    //         // If toggling other permissions, only allow if "view" is present
-    //         if (permission !== "view") {
-    //             if (!currentPermissions.includes("view")) {
-    //                 // Don't allow adding other permissions without view
-    //                 return prev;
-    //             }
-
-    //             const updatedPermissions = isChecked
-    //                 ? currentPermissions.filter((p) => p !== permission)
-    //                 : [...currentPermissions, permission];
-
-    //             return {
-    //                 ...prev,
-    //                 [url]: updatedPermissions
-    //             };
-    //         }
-
-    //         return prev;
-    //     });
-    // };
     const togglePermission = (url: string, permission: string) => {
         setMenusPermissionsState((prev) => {
             const currentPermissions = prev[url] || [];

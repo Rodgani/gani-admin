@@ -16,13 +16,21 @@ export interface Menu {
 
 export type MenusPermissions = Menu[];
 
-export interface RoleForm {
+export interface RoleForm{
     name: string;
     slug: string;
 }
 
-export interface Role extends RoleForm {
+export interface RolePayload {
+  name: string;
+  slug: string;
+  menus_permissions: MenusPermissions;
+}
+
+export interface Role {
     id: number;
+    name: string;
+    slug: string;
     menus_permissions: MenusPermissions;
     created_at: string;
     updated_at: string;

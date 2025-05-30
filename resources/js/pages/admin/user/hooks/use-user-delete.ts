@@ -3,7 +3,7 @@ import { useToastMessage } from "@/hooks/use-toast-message";
 import { deleteUser } from "../services/user-service";
 
 
-export function useDeleteUser() {
+export function useUserDelete() {
   const { showToast } = useToastMessage();
   const confirmToast = useConfirmToast();
 

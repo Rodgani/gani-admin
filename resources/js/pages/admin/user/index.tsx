@@ -10,11 +10,11 @@ import { Input } from '@/components/ui/input';
 import { userPermissions } from '@/hooks/use-permission';
 import { PlusCircle, Search } from 'lucide-react';
 import UserTable from './components/user-table';
-import { useDeleteUser } from './hooks/use-delete-user';
+import { useUserDelete } from './hooks/use-user-delete';
 import { useUserPagination } from './hooks/use-user-pagination';
 import { UserIndexProps } from './types/user-props.types';
 import { User, UserForm } from './types/user.types';
-import { useSubmitUserForm } from './hooks/use-submit-form-user';
+import { useUserFormSubmit } from './hooks/use-user-form-submit';
 
 // 🔥 Lazy load the modal
 const UserFormModal = lazy(() => import('./components/user-form-modal'));
@@ -30,7 +30,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
     const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
     const [searchTerm, setSearchTerm] = useState('');
     const { handleSearch, handlePageChange } = useUserPagination(users.current_page, searchTerm);
-    const { handleDelete } = useDeleteUser();
+    const { handleDelete } = useUserDelete();
 
     const resetForm: UserForm = {
         name: '',
@@ -52,7 +52,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
         setSelectedUser(undefined);
     };
 
-    const { handleSubmit } = useSubmitUserForm({
+    const { handleSubmit } = useUserFormSubmit({
         closeModal,
         resetForm,
         setFormErrors: (errors) => setFormErrors({ ...resetForm, ...errors })
