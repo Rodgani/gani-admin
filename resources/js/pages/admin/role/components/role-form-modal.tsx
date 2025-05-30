@@ -152,13 +152,12 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
     };
 
     const fields = useMemo(() => {
-        const baseFields = [
+        return [
             { name: 'name', type: 'text', placeholder: 'Name', required: true },
             { name: 'slug', type: 'slug', placeholder: 'Slug', required: true, readOnly: !!role },
         ];
-        return baseFields;
     }, [role]);
-    
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({
             ...prev!,
