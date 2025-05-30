@@ -1,13 +1,13 @@
 import { useToastMessage } from '@/hooks/use-toast-message';
 import { useCallback } from 'react';
 import { submitUserForm } from '../services/user-service';
-import { UserPayload } from '../types/user.types';
+import { UserForm } from '../types/user.types';
 import { SubmitUserFormHandlers } from '../types/user-props.types';
 
 export function useUserFormSubmit({ closeModal, resetForm, setFormErrors }: SubmitUserFormHandlers) {
     const { showToast } = useToastMessage();
     const handleSubmit = useCallback(
-        (formData: UserPayload, userId?: number) => {
+        (formData: UserForm, userId?: number) => {
             submitUserForm(formData, userId, {
                 onSuccess: () => {
                     if (userId && closeModal) {

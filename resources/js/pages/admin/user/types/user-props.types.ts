@@ -1,4 +1,4 @@
-import { PaginatedUsers, User, UserForm, UserPayload } from "./user.types";
+import { PaginatedUsers, User, UserForm } from "./user.types";
 
 export interface UserIndexProps {
     users: PaginatedUsers;
@@ -10,7 +10,7 @@ export interface UserFormModalProps {
     isOpen: boolean;
     onClose: () => void;
     user?: User;
-    onSubmit: (formData: UserPayload, userId?: number) => void;
+    onSubmit: (formData: UserForm, userId?: number) => void;
     errors: UserForm;
     roles: { name: string; id: number }[];
 }

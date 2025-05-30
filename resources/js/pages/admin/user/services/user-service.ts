@@ -1,5 +1,5 @@
 import { router } from '@inertiajs/react';
-import { UserPayload } from '../types/user.types';
+import { UserForm } from '../types/user.types';
 
 export function fetchUsers(params: Record<string, string | number>) {
     return router.get(route('users.index'), params, {
@@ -25,7 +25,7 @@ export interface RequestCallbacks {
 }
 
 export function submitUserForm(
-  formData: UserPayload,
+  formData: UserForm,
   userId?: number,
   callbacks?: RequestCallbacks
 ) {
