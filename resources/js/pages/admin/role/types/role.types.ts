@@ -14,7 +14,7 @@ export interface Menu {
     items?: MenuItem[];
 }
 
-export type MenusPermissions = Menu[];
+export type MenuManager = Menu[];
 
 export interface RoleForm{
     name: string;
@@ -24,14 +24,14 @@ export interface RoleForm{
 export interface RolePayload {
   name: string;
   slug: string;
-  menus_permissions: MenusPermissions;
+  menus_permissions: MenuManager;
 }
 
 export interface Role {
     id: number;
     name: string;
     slug: string;
-    menus_permissions: MenusPermissions;
+    menus_permissions: MenuManager;
     created_at: string;
     updated_at: string;
 }

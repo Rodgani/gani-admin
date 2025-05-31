@@ -40,7 +40,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
         setSelectedRole(undefined);
     };
     const { handleSubmit } = useRoleFormSubmit({ closeModal });
-    // const handleSubmit = (formData: { name: string; slug: string; menus_permissions: MenusPermissions }, roleId?: number) => {
+    // const handleSubmit = (formData: { name: string; slug: string; menus_permissions: MenuManager }, roleId?: number) => {
     //     const payload = {
     //         name: formData.name,
     //         slug: formData.slug,
@@ -108,7 +108,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
                         isOpen={isModalOpen}
                         onClose={closeModal}
                         role={selectedRole}
-                        defaultMenusPermissions={default_menus_permissions}
+                        defaultMenuManager={default_menus_permissions}
                         onSubmit={handleSubmit}
                     />
                 )}

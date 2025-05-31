@@ -2,7 +2,7 @@
 
 namespace Modules\Admin\Http\Controllers;
 
-use App\Helpers\MenusPermissions;
+use App\Helpers\MenuManager;
 use Inertia\Inertia;
 use Modules\Admin\Http\Requests\Roles\RoleCreateRequest;
 use Modules\Admin\Http\Requests\Roles\RoleIndexRequest;
@@ -15,16 +15,15 @@ class RoleController extends Controller
 
     public function __construct(
         protected RoleRepository $roleRepository,
-        protected MenusPermissions $menusPermissions
+        protected MenuManager $MenuManager
     ) {}
 
     public function index(RoleIndexRequest $request)
     {
         $roles = $this->roleRepository->paginatedRoles($request->validatedObject());
-        $defaultMenusPermissions = ($this->menusPermissions)();
         return Inertia::render('admin/role/index', [
             "roles" => $roles,
-            "default_menus_permissions" => $defaultMenusPermissions
+            "default_menus_permissions" => $this->MenuManager->getAllMenus()
         ]);
     }
 

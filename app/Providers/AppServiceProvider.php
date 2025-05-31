@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Helpers\MenusPermissions;
+use App\Helpers\MenuManager;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

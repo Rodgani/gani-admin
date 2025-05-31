@@ -2,7 +2,7 @@
 
 namespace Modules\Admin\Database\Factories;
 
-use App\Helpers\MenusPermissions;
+use App\Helpers\MenuManager;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Admin\Models\Role;
 
@@ -20,11 +20,11 @@ class RoleFactory extends Factory
     protected $model = Role::class;
     public function definition(): array
     {
-        $menusPermissions = new MenusPermissions();
+        $MenuManager = new MenuManager();
         return [
             'name' => fake()->name(),
             'slug' => fake()->unique()->slug(),
-            'menus_permissions' => json_encode($menusPermissions(), true)
+            'menus_permissions' => json_encode($MenuManager->getAllMenus(), true)
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Modules\Admin\Database\Seeders;
 
-use App\Helpers\MenusPermissions;
+use App\Helpers\MenuManager;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Modules\Admin\Models\Role;
@@ -14,11 +14,11 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $menusPermissions = new MenusPermissions();
+        $MenuManager = new MenuManager();
         Role::create([
             "name" => "Administrator",
             "slug" => "admin",
-            "menus_permissions" => json_encode($menusPermissions(), true)
+            "menus_permissions" => json_encode($MenuManager->getAllMenus(), true)
         ]);
 
     }

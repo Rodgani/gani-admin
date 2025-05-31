@@ -9,8 +9,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { RoleFormProps } from '../types/role-props.types';
 import { RoleForm } from '../types/role.types';
 
-export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermissions, onSubmit }: RoleFormProps) {
-    const [menusPermissionsState, setMenusPermissionsState] = useState<{ [key: string]: string[] }>({});
+export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManager, onSubmit }: RoleFormProps) {
+    const [MenuManagerState, setMenuManagerState] = useState<{ [key: string]: string[] }>({});
 
     const [formData, setFormData] = useState<RoleForm>({
         name: '',
@@ -34,26 +34,26 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                     }
                 });
 
-                setMenusPermissionsState(mappedState);
+                setMenuManagerState(mappedState);
                 setFormData({
                     name: role.name,
                     slug: role.slug,
                 });
             } catch (error) {
                 console.log(error);
-                setMenusPermissionsState({});
+                setMenuManagerState({});
             }
         } else {
-            setMenusPermissionsState({});
+            setMenuManagerState({});
         }
-    }, [role, isOpen, defaultMenusPermissions]);
+    }, [role, isOpen, defaultMenuManager]);
 
     const hasPermission = (url: string, permission: string): boolean => {
-        return menusPermissionsState[url]?.includes(permission) ?? false;
+        return MenuManagerState[url]?.includes(permission) ?? false;
     };
 
     const togglePermission = (url: string, permission: string) => {
-        setMenusPermissionsState((prev) => {
+        setMenuManagerState((prev) => {
             const currentPermissions = prev[url] || [];
             const isChecked = currentPermissions.includes(permission);
 
@@ -84,14 +84,14 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
     };
 
     const handleSubmit = () => {
-        const menusPermissions = defaultMenusPermissions
+        const MenuManager = defaultMenuManager
             .map((menu) => {
                 if (menu.items) {
                     const filteredItems = menu.items
                         .map((subItem) => ({
                             title: subItem.title,
                             url: subItem.url,
-                            permissions: menusPermissionsState[subItem.url] || [],
+                            permissions: MenuManagerState[subItem.url] || [],
                         }))
                         .filter((subItem) => subItem.permissions.length > 0);
 
@@ -107,7 +107,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
 
                     return null; // if no sub-items left
                 } else {
-                    const permissions = menusPermissionsState[menu.url] || [];
+                    const permissions = MenuManagerState[menu.url] || [];
                     return permissions.length > 0
                         ? {
                               title: menu.title,
@@ -122,7 +122,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
 
         const mergedData = {
             ...formData,
-            menus_permissions: menusPermissions,
+            menus_permissions: MenuManager,
         };
 
         onSubmit(mergedData, role?.id);
@@ -133,11 +133,11 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
     const handleToggleAll = () => {
         if (checkAll) {
             // Uncheck all
-            setMenusPermissionsState({});
+            setMenuManagerState({});
         } else {
             // Check all
             const allCheckedState: { [key: string]: string[] } = {};
-            defaultMenusPermissions.forEach((menu) => {
+            defaultMenuManager.forEach((menu) => {
                 if (menu.items) {
                     menu.items.forEach((item) => {
                         allCheckedState[item.url] = item.permissions || [];
@@ -146,7 +146,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                     allCheckedState[menu.url] = menu.permissions || [];
                 }
             });
-            setMenusPermissionsState(allCheckedState);
+            setMenuManagerState(allCheckedState);
         }
         setCheckAll(!checkAll);
     };
@@ -192,7 +192,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenusPermi
                         />
                     ))}
                     <Accordion type="multiple" className="w-full">
-                        {defaultMenusPermissions.map((menu, index) => (
+                        {defaultMenuManager.map((menu, index) => (
                             <AccordionItem key={index} value={`item-${index}`}>
                                 <AccordionTrigger>{menu.title}</AccordionTrigger>
                                 <AccordionContent>
