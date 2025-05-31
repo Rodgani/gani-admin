@@ -93,7 +93,7 @@ class ScaffoldService
         $name = Str::studly($name); // Capitalize segments
 
         $relativePath = match ($type) {
-            'request' => 'Http/Requests/',
+            'request' => 'Http/Requests/' . Str::plural(Str::afterLast(Str::studly($this->table), '/')) . '/',
             'controller' => 'Http/Controllers/',
             'model' => 'Models/',
             'repository' => 'Repositories/',
@@ -105,8 +105,8 @@ class ScaffoldService
         $path = str_replace('\\', '/', $name);
         if ($type === "migration") {
 
-            $lastTableSegment = Str::afterLast(Str::snake($name), '/');
-            $path = str_replace('\\', '/', Str::lower(Str::plural("create_" . $lastTableSegment)));
+            $table = Str::afterLast(Str::snake($name), '/');
+            $path = str_replace('\\', '/', Str::lower(Str::plural("create_" . $table)));
 
             $dateTime = Carbon::now()->format('Y-m-d H:i:s');
             // convert to underscore
@@ -123,7 +123,7 @@ class ScaffoldService
     private function resolveNamespace(string $type, string $module, string $name): string
     {
         $base = match ($type) {
-            'request' => "Modules\\{$module}\\Http\\Requests",
+            'request' => "Modules\\{$module}\\Http\\Requests\\" . Str::plural(Str::afterLast(Str::studly($this->table), '/')),
             'controller' => "Modules\\{$module}\\Http\\Controllers",
             'model' => "Modules\\{$module}\\Models",
             'repository' => "Modules\\$module\\Repositories",
@@ -152,8 +152,8 @@ class ScaffoldService
         $modelVariable = Str::lower($model);
         $module = $this->module;
         $modelNamespacePath = Str::replace('/', '\\', $model);
-        $lastTableSegment = Str::afterLast($model, '/');
-        $pluralTable = Str::lower(Str::plural($lastTableSegment));
+        $table = Str::afterLast($model, '/');
+        $pluralTable = Str::lower(Str::plural($table));
         $formRequest = $this->formRequest;
         $migrationFields = $this->migrationFields;
 
@@ -163,21 +163,20 @@ class ScaffoldService
                 $module,
                 $namespace,
                 $className,
-                $lastTableSegment,
+                $table,
                 $modelNamespacePath,
-                $modelVariable,
                 $pluralTable,
                 $formRequest,
             ) {
-                $repository = Str::ucfirst($lastTableSegment) . Str::ucfirst(self::REPOSITORY);
+                $repository = Str::ucfirst($table) . Str::ucfirst(self::REPOSITORY);
                 $repositoryNamespace = Str::ucfirst($modelNamespacePath) . Str::ucfirst(self::REPOSITORY);
-               
 
-                $model = $lastTableSegment;
+
+                $model = $table;
                 $pageModule = Str::lower($module);
                 $subModule = Str::lower($model);
                 $pluralVariable = $pluralTable;
-                
+
                 return StubService::controller(
                     $module,
                     $namespace,
@@ -186,7 +185,6 @@ class ScaffoldService
                     $model,
                     $pageModule,
                     $formRequest,
-                    $modelVariable,
                     $subModule,
                     $repositoryNamespace,
                     $pluralVariable
@@ -197,29 +195,27 @@ class ScaffoldService
                 $module,
                 $namespace,
                 $className,
-                $lastTableSegment,
-                $modelVariable,
+                $table,
                 $modelNamespacePath,
                 $pluralTable,
             ) {
                 $list = $pluralTable;
-                $model = $lastTableSegment;
+                $model = $table;
                 return StubService::repository(
                     $module,
                     $namespace,
                     $className,
                     $list,
                     $model,
-                    $modelVariable,
                     $modelNamespacePath
                 );
             })(),
 
             self::MIGRATION => (function () use (
                 $migrationFields,
-                $lastTableSegment,
+                $table,
             ) {
-                $table = Str::lower(Str::plural(Str::snake($lastTableSegment)));
+                $table = Str::lower(Str::plural(Str::snake($table)));
                 return StubService::migration($table, $migrationFields);
             })(),
             self::FORM_REQUEST => (function () use (
@@ -227,7 +223,7 @@ class ScaffoldService
                 $className,
                 $migrationFields,
             ) {
-                return StubService::formRequest($namespace, $className,$migrationFields);
+                return StubService::formRequest($namespace, $className, $migrationFields);
             })(),
 
             default => [

@@ -14,7 +14,6 @@ class StubService
         string $model,
         string $pageModule,
         mixed $formRequest,
-        string $modelVariable,
         string $subModule,
         string $repositoryNamespace,
         string $pluralVariable
@@ -27,8 +26,9 @@ class StubService
         $destroyFormRequest = $formRequest[3] ?? 'Request';
 
         if (is_array($formRequest)) {
-            $importRequests = collect($formRequest)->map(function ($request) use ($module) {
-                return "use Modules\\$module\\Http\\Requests\\$request;";
+            $importRequests = collect($formRequest)->map(function ($request) use ($module, $model) {
+                $pluralModel = Str::plural($model);
+                return "use Modules\\$module\\Http\\Requests\\$pluralModel\\$request;";
             })->implode("\n");
         } else {
             $importRequests = "";
@@ -42,7 +42,6 @@ class StubService
                 '{{ repository }}',
                 '{{ model }}',
                 '{{ pageModule }}',
-                '{{ modelVariable }}',
                 '{{ pageSubModule }}',
                 '{{ repositoryNamespace }}',
                 '{{ indexFormRequest }}',
@@ -59,7 +58,6 @@ class StubService
                 $repository,
                 $model,
                 $pageModule,
-                $modelVariable,
                 $subModule,
                 $repositoryNamespace,
                 $indexFormRequest,
@@ -78,7 +76,6 @@ class StubService
         string $className,
         string $list,
         string $model,
-        string $modelVariable,
         string $modelNamespacePath
     ) {
         return [
@@ -88,7 +85,6 @@ class StubService
                 '{{ class }}',
                 '{{ list }}',
                 '{{ model }}',
-                '{{ modelVariable }}',
                 '{{ modelNamespace }}'
             ],
             [
@@ -97,7 +93,6 @@ class StubService
                 $className,
                 $list,
                 $model,
-                $modelVariable,
                 $modelNamespacePath
             ]
         ];
