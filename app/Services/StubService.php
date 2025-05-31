@@ -17,7 +17,7 @@ class StubService
         string $modelVariable,
         string $subModule,
         string $repositoryNamespace,
-        string $findVariable
+        string $pluralVariable
     ) {
 
         // Use index positions with fallback
@@ -45,12 +45,12 @@ class StubService
                 '{{ modelVariable }}',
                 '{{ pageSubModule }}',
                 '{{ repositoryNamespace }}',
-                '{{ findVariable }}',
                 '{{ indexFormRequest }}',
                 '{{ storeFormRequest }}',
                 '{{ updateFormRequest }}',
                 '{{ destroyFormRequest }}',
-                '{{ import requests }}'
+                '{{ import requests }}',
+                '{{ pluralVariable }}'
             ],
             [
                 $module,
@@ -62,12 +62,12 @@ class StubService
                 $modelVariable,
                 $subModule,
                 $repositoryNamespace,
-                $findVariable,
                 $indexFormRequest,
                 $storeFormRequest,
                 $updateFormRequest,
                 $destroyFormRequest,
-                $importRequests
+                $importRequests,
+                $pluralVariable
             ]
         ];
     }
@@ -209,11 +209,11 @@ class StubService
             }
 
             $validations = "return [\n   " .
-            "        " . implode(",\n           ", $rules) . ",\n" .
-            "        ];";
+                "        " . implode(",\n           ", $rules) . ",\n" .
+                "        ];";
         }
 
-        if(Str::contains($classLower, 'destroy')){
+        if (Str::contains($classLower, 'destroy')) {
             $preValidation = <<<PHP
             protected function prepareForValidation(): void
                 {
@@ -225,13 +225,20 @@ class StubService
             $rules[] = '"id" => "required"';
 
             $validations = "return [\n   " .
-            "        " . implode(",\n           ", $rules) . ",\n" .
-            "        ];";
+                "        " . implode(",\n           ", $rules) . ",\n" .
+                "        ];";
         }
 
+        if (Str::contains($classLower, 'index')) {
+            $importValidatedAsObject = "use App\Traits\ValidatedAsObject;";
+            $useValidatedAsObject = "use ValidatedAsObject;";
+        } else {
+            $importValidatedAsObject = "";
+            $useValidatedAsObject = "";
+        }
         return [
-            ['{{ namespace }}', '{{ class }}', '{{ validations }}', '{{ preValidation }}'],
-            [$namespace, $className, $validations, $preValidation]
+            ['{{ namespace }}', '{{ class }}', '{{ validations }}', '{{ preValidation }}', '{{ importValidatedAsObject }}', '{{ ValidatedAsObject }}'],
+            [$namespace, $className, $validations, $preValidation, $importValidatedAsObject, $useValidatedAsObject]
         ];
     }
 }

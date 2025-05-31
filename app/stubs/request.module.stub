@@ -1,12 +1,12 @@
 <?php
 
 namespace {{ namespace }};
-use App\Traits\ValidatedAsObject;
 use Illuminate\Foundation\Http\FormRequest;
+{{ importValidatedAsObject }}
 
 class {{ class }} extends FormRequest
 {
-    use ValidatedAsObject;
+    {{ ValidatedAsObject }}
     /**
      * Determine if the user is authorized to make this request.
      */

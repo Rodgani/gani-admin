@@ -60,7 +60,7 @@ class ScaffoldService
         $this->createFile($type, $this->module, $migrationClass);
     }
 
-    private function createFile(string $type, string $module, $name): void
+    private function createFile(string $type, string $module, string $name): void
     {
         $stubPath = $this->getStub($type);
 
@@ -171,12 +171,13 @@ class ScaffoldService
             ) {
                 $repository = Str::ucfirst($lastTableSegment) . Str::ucfirst(self::REPOSITORY);
                 $repositoryNamespace = Str::ucfirst($modelNamespacePath) . Str::ucfirst(self::REPOSITORY);
-                $subModule = $pluralTable;
+               
 
                 $model = $lastTableSegment;
                 $pageModule = Str::lower($module);
-                $findVariable = Str::lower($model);
-
+                $subModule = Str::lower($model);
+                $pluralVariable = $pluralTable;
+                
                 return StubService::controller(
                     $module,
                     $namespace,
@@ -188,7 +189,7 @@ class ScaffoldService
                     $modelVariable,
                     $subModule,
                     $repositoryNamespace,
-                    $findVariable
+                    $pluralVariable
                 );
             })(),
 

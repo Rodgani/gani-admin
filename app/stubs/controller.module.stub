@@ -17,9 +17,9 @@ class {{ class }} extends Controller
      */
     public function index({{ indexFormRequest }} $request)
     {
-        ${{ pageSubModule }} = $this->repository->{{ pageSubModule }}($request);
+        ${{ pluralVariable }} = $this->repository->{{ pluralVariable }}($request->validatedObject());
         return Inertia::render("{{ pageModule }}/{{ pageSubModule }}/index", [
-            "{{ pageSubModule }}" => ${{ pageSubModule }},
+            "{{ pluralVariable }}" => ${{ pluralVariable }},
         ]);
     }
 
@@ -29,7 +29,7 @@ class {{ class }} extends Controller
     public function store({{ storeFormRequest }} $request)
     {
         $this->repository->store{{ model }}($request->validated());
-        return redirect()->route('{{ pageSubModule }}.index');
+        return redirect()->route('{{ pluralVariable }}.index');
     }
 
     /**
@@ -39,7 +39,7 @@ class {{ class }} extends Controller
     {
         $validated = $request->validated();
         $this->repository->update{{ model }}($validated['id'], $request->validated());
-        return redirect()->route('{{ pageSubModule }}.index');
+        return redirect()->route('{{ pluralVariable }}.index');
     }
 
     /**
@@ -49,6 +49,6 @@ class {{ class }} extends Controller
     {
         $validated = $request->validated();
         $this->repository->destroy{{ model }}($validated['id']);
-        return redirect()->route('{{ pageSubModule }}.index');
+        return redirect()->route('{{ pluralVariable }}.index');
     }
 }
