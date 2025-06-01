@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox'; // assuming you have a Checkbox component
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 import { useEffect, useMemo, useState } from 'react';
 import { RoleFormProps } from '../types/role-props.types';
@@ -43,6 +44,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
                 console.log(error);
                 setMenuManagerState({});
             }
+            setCheckAll(true)
         } else {
             setMenuManagerState({});
         }
@@ -191,49 +193,54 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
                             {...(readOnly ? { readOnly: true } : {})}
                         />
                     ))}
-                    <Accordion type="multiple" className="w-full">
-                        {defaultMenuManager.map((menu, index) => (
-                            <AccordionItem key={index} value={`item-${index}`}>
-                                <AccordionTrigger>{menu.title}</AccordionTrigger>
-                                <AccordionContent>
-                                    {menu.items ? (
-                                        <ul className="space-y-2 pl-4">
-                                            {menu.items.map((subItem, subIndex) => (
-                                                <li key={subIndex}>
-                                                    <div className="mb-1 font-medium">{subItem.title}</div>
-                                                    <div className="flex flex-col gap-2 pl-2">
-                                                        {subItem.permissions?.map((permission) => (
-                                                            <label key={permission} className="flex items-center gap-1">
-                                                                <Checkbox
-                                                                    checked={hasPermission(subItem.url, permission)}
-                                                                    disabled={permission !== 'view' && !hasPermission(subItem.url, 'view')}
-                                                                    onCheckedChange={() => togglePermission(subItem.url, permission)}
-                                                                />
-                                                                <span className="text-sm capitalize">{permission}</span>
-                                                            </label>
-                                                        ))}
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <div className="flex flex-col gap-2 pl-2">
-                                            {menu.permissions?.map((permission) => (
-                                                <label key={permission} className="flex items-center gap-1">
-                                                    <Checkbox
-                                                        checked={hasPermission(menu.url, permission)}
-                                                        disabled={permission !== 'view' && !hasPermission(menu.url, 'view')}
-                                                        onCheckedChange={() => togglePermission(menu.url, permission)}
-                                                    />
-                                                    <span className="text-sm capitalize">{permission}</span>
-                                                </label>
-                                            ))}
-                                        </div>
-                                    )}
-                                </AccordionContent>
-                            </AccordionItem>
-                        ))}
-                    </Accordion>
+                    <ScrollArea className="w-full rounded-lg">
+                        <div className='max-h-[400px] space-y-4 pr-2'>
+                            <Accordion type="multiple" className="w-full">
+                                {defaultMenuManager.map((menu, index) => (
+                                    <AccordionItem key={index} value={`item-${index}`}>
+                                        <AccordionTrigger>{menu.title}</AccordionTrigger>
+                                        <AccordionContent>
+                                            {menu.items ? (
+                                                <ul className="space-y-2 pl-4">
+                                                    {menu.items.map((subItem, subIndex) => (
+                                                        <li key={subIndex}>
+                                                            <div className="mb-1 font-medium">{subItem.title}</div>
+                                                            <div className="flex flex-col gap-2 pl-2">
+                                                                {subItem.permissions?.map((permission) => (
+                                                                    <label key={permission} className="flex items-center gap-1">
+                                                                        <Checkbox
+                                                                            checked={hasPermission(subItem.url, permission)}
+                                                                            disabled={permission !== 'view' && !hasPermission(subItem.url, 'view')}
+                                                                            onCheckedChange={() => togglePermission(subItem.url, permission)}
+                                                                        />
+                                                                        <span className="text-sm capitalize">{permission}</span>
+                                                                    </label>
+                                                                ))}
+                                                            </div>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <div className="flex flex-col gap-2 pl-2">
+                                                    {menu.permissions?.map((permission) => (
+                                                        <label key={permission} className="flex items-center gap-1">
+                                                            <Checkbox
+                                                                checked={hasPermission(menu.url, permission)}
+                                                                disabled={permission !== 'view' && !hasPermission(menu.url, 'view')}
+                                                                onCheckedChange={() => togglePermission(menu.url, permission)}
+                                                            />
+                                                            <span className="text-sm capitalize">{permission}</span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                ))}
+                            </Accordion>
+                        </div>
+                        <ScrollBar orientation="vertical" />
+                    </ScrollArea>
                 </div>
 
                 <DialogFooter>
