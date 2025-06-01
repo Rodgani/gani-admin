@@ -6,6 +6,8 @@ use Modules\Controller;
 use Illuminate\Http\Request;
 use Modules\{{ module }}\Repositories\{{ repositoryNamespace }};
 use Inertia\Inertia;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Response;
 {{ import requests }}
 
 class {{ class }} extends Controller
@@ -15,7 +17,7 @@ class {{ class }} extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index({{ indexFormRequest }} $request)
+    public function index({{ indexFormRequest }} $request): Response
     {
         ${{ pluralVariable }} = $this->repository->{{ pluralVariable }}($request->validatedObject());
         return Inertia::render("{{ pageModule }}/{{ pageSubModule }}/index", [
@@ -26,7 +28,7 @@ class {{ class }} extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store({{ storeFormRequest }} $request)
+    public function store({{ storeFormRequest }} $request): RedirectResponse
     {
         $this->repository->store{{ model }}($request->validated());
         return redirect()->route('{{ pluralVariable }}.index');
@@ -35,7 +37,7 @@ class {{ class }} extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update({{ updateFormRequest }} $request)
+    public function update({{ updateFormRequest }} $request): RedirectResponse
     {
         $validated = $request->validated();
         $this->repository->update{{ model }}($validated['id'], $request->validated());
@@ -45,7 +47,7 @@ class {{ class }} extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy({{ destroyFormRequest }} $request)
+    public function destroy({{ destroyFormRequest }} $request): RedirectResponse
     {
         $validated = $request->validated();
         $this->repository->destroy{{ model }}($validated['id']);

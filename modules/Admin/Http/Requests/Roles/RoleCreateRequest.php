@@ -12,9 +12,9 @@ class RoleCreateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $permissionHelper = app(PermissionHelper::class);
+        $permission = app(PermissionHelper::class);
         
-        return $permissionHelper
+        return $permission
             ->forUser($this->user())
             ->subMenu("/admin/roles")
             ->can("create");

@@ -3,7 +3,9 @@
 namespace Modules\Admin\Http\Controllers;
 
 use App\Helpers\MenuManager;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 use Modules\Admin\Http\Requests\Roles\RoleCreateRequest;
 use Modules\Admin\Http\Requests\Roles\RoleIndexRequest;
 use Modules\Admin\Http\Requests\Roles\RoleUpdateRequest;
@@ -18,7 +20,7 @@ class RoleController extends Controller
         protected MenuManager $MenuManager
     ) {}
 
-    public function index(RoleIndexRequest $request)
+    public function index(RoleIndexRequest $request): Response
     {
         $roles = $this->roleRepository->paginatedRoles($request->validatedObject());
         return Inertia::render('admin/role/index', [
@@ -27,13 +29,13 @@ class RoleController extends Controller
         ]);
     }
 
-    public function store(RoleCreateRequest $request)
+    public function store(RoleCreateRequest $request): RedirectResponse
     {
         $this->roleRepository->storeRole($request->validated());
         return redirect()->route('roles.index');
     }
 
-    public function update(RoleUpdateRequest $request)
+    public function update(RoleUpdateRequest $request): RedirectResponse
     {
         $validated = $request->validated();
         $this->roleRepository->updateRole($validated['id'], $validated);
