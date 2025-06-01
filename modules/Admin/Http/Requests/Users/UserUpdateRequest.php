@@ -4,6 +4,7 @@ namespace Modules\Admin\Http\Requests\Users;
 
 use App\Helpers\PermissionHelper;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserUpdateRequest extends FormRequest
 {
@@ -35,10 +36,14 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:users,id',
-            'name' => 'required',
-            'email' => "required|email|unique:users,email,{$this->id},id",
-            'role_id' => 'required',
+            "id" => 'required|exists:users,id',
+            "name" => 'required',
+            "email" => "required|email|unique:users,email,{$this->id},id",
+             "role_id" => "required|exists:roles,id",
+             "timezone" => [
+                "required",
+                Rule::in(config('app.supported_timezones')),
+            ],
         ];
     }
 }

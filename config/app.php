@@ -66,6 +66,23 @@ return [
     */
 
     'timezone' => 'UTC',
+    'supported_timezones' => [
+        "Asia/Manila",        // Philippines
+        "Asia/Bangkok",       // Thailand
+        "Asia/Ho_Chi_Minh",   // Vietnam
+        "Asia/Phnom_Penh",    // Cambodia
+        "Asia/Vientiane",     // Laos (shares with Bangkok)
+        "Asia/Yangon",        // Myanmar
+        "Asia/Jakarta",       // Indonesia (western)
+        "Asia/Pontianak",     // Indonesia (central)
+        "Asia/Makassar",      // Indonesia (central)
+        "Asia/Jayapura",      // Indonesia (eastern)
+        "Asia/Kuala_Lumpur",  // Malaysia
+        "Asia/Kuching",       // Malaysia (Borneo)
+        "Asia/Singapore",     // Singapore
+        "Asia/Brunei",        // Brunei
+        "Asia/Dili",          // Timor-Leste
+    ],
 
     /*
     |--------------------------------------------------------------------------

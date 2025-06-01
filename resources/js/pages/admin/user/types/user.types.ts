@@ -13,6 +13,7 @@ export interface User {
         slug: string;
         name: string;
     };
+    timezone: string;
 }
 
 export interface UserForm {
@@ -21,6 +22,7 @@ export interface UserForm {
     password?: string;
     password_confirmation?: string;
     role_id?: number | string;
+    timezone: string;
     [key: string]: string | number | string[] | undefined;
 }
 

@@ -25,7 +25,8 @@ class UserController extends Controller
 
         return Inertia::render('admin/user/index', [
             "users" => $users,
-            "roles" => $roles
+            "roles" => $roles,
+            "timezones" => config('app.supported_timezones')
         ]);
     }
 
