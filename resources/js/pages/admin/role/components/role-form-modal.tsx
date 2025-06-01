@@ -44,7 +44,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
                 console.log(error);
                 setMenuManagerState({});
             }
-            setCheckAll(true)
+            setCheckAll(true);
         } else {
             setMenuManagerState({});
         }
@@ -85,8 +85,8 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
         });
     };
 
-    const handleSubmit = () => {
-        const MenuManager = defaultMenuManager
+    const computedMenuManager = useMemo(() => {
+        return defaultMenuManager
             .map((menu) => {
                 if (menu.items) {
                     const filteredItems = menu.items
@@ -97,37 +97,24 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
                         }))
                         .filter((subItem) => subItem.permissions.length > 0);
 
-                    // Only include parent if it still has items
-                    if (filteredItems.length > 0) {
-                        return {
-                            title: menu.title,
-                            url: menu.url,
-                            icon: menu.icon,
-                            items: filteredItems,
-                        };
-                    }
-
-                    return null; // if no sub-items left
-                } else {
-                    const permissions = MenuManagerState[menu.url] || [];
-                    return permissions.length > 0
+                    return filteredItems.length > 0
                         ? {
                               title: menu.title,
                               url: menu.url,
                               icon: menu.icon,
-                              permissions,
+                              items: filteredItems,
                           }
                         : null;
+                } else {
+                    const permissions = MenuManagerState[menu.url] || [];
+                    return permissions.length > 0 ? { title: menu.title, url: menu.url, icon: menu.icon, permissions } : null;
                 }
             })
-            .filter((menu) => menu !== null); // remove empty parents
-
-        const mergedData = {
-            ...formData,
-            menus_permissions: MenuManager,
-        };
-
-        onSubmit(mergedData, role?.id);
+            .filter((menu) => menu !== null);
+    }, [MenuManagerState, defaultMenuManager]);
+    
+    const handleSubmit = () => {
+        onSubmit({ ...formData, menus_permissions: computedMenuManager }, role?.id);
     };
 
     const [checkAll, setCheckAll] = useState(false);
@@ -153,12 +140,10 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
         setCheckAll(!checkAll);
     };
 
-    const fields = useMemo(() => {
-        return [
-            { name: 'name', type: 'text', placeholder: 'Name', required: true },
-            { name: 'slug', type: 'slug', placeholder: 'Slug', required: true, readOnly: !!role },
-        ];
-    }, [role]);
+    const fields = [
+        { name: 'name', type: 'text', placeholder: 'Name', required: true },
+        { name: 'slug', type: 'slug', placeholder: 'Slug', required: true, readOnly: !!role },
+    ];
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({
@@ -194,7 +179,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
                         />
                     ))}
                     <ScrollArea className="w-full rounded-lg">
-                        <div className='max-h-[400px] space-y-4 pr-2'>
+                        <div className="max-h-[400px] space-y-4 pr-2">
                             <Accordion type="multiple" className="w-full">
                                 {defaultMenuManager.map((menu, index) => (
                                     <AccordionItem key={index} value={`item-${index}`}>
