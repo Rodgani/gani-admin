@@ -9,8 +9,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Trash2 } from 'lucide-react';
 import { useToastMessage } from '@/hooks/use-toast-message';
+import { Plus, Trash2 } from 'lucide-react';
 
 interface Field {
     name: string;
@@ -19,79 +19,19 @@ interface Field {
     defaultValue: string;
     comment: string;
 }
+interface ScaffoldIndexProps {
+    fieldTypes: string[]; // assuming you’re passing this from the server
+}
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Scaffold', href: '/scaffold' }];
 
-const fieldTypes = [
-    'string',
-    'bigIncrements',
-    'bigInteger',
-    'binary',
-    'boolean',
-    'char',
-    'date',
-    'dateTime',
-    'dateTimeTz',
-    'decimal',
-    'double',
-    'enum',
-    'float',
-    'geometry',
-    'geometryCollection',
-    'increments',
-    'integer',
-    'ipAddress',
-    'json',
-    'jsonb',
-    'lineString',
-    'longText',
-    'macAddress',
-    'mediumIncrements',
-    'mediumInteger',
-    'mediumText',
-    'morphs',
-    'uuidMorphs',
-    'multiLineString',
-    'multiPoint',
-    'multiPolygon',
-    'nullableMorphs',
-    'nullableUuidMorphs',
-    'nullableTimestamps',
-    'point',
-    'polygon',
-    'rememberToken',
-    'set',
-    'smallIncrements',
-    'smallInteger',
-    'softDeletes',
-    'softDeletesTz',
-    'text',
-    'time',
-    'timeTz',
-    'timestamp',
-    'timestampTz',
-    'timestamps',
-    'timestampsTz',
-    'tinyIncrements',
-    'tinyInteger',
-    'unsignedBigInteger',
-    'unsignedDecimal',
-    'unsignedInteger',
-    'unsignedMediumInteger',
-    'unsignedSmallInteger',
-    'unsignedTinyInteger',
-    'year',
-    'image',
-];
-
-export default function ScaffoldIndex() {
-
-     const { showToast } = useToastMessage();
-
+export default function ScaffoldIndex({ fieldTypes }: ScaffoldIndexProps) {
+    const { showToast } = useToastMessage();
+    
     const [fields, setFields] = useState<Field[]>([
         {
             name: '',
-            type: '',
+            type: fieldTypes?.[0],
             nullable: false,
             defaultValue: '',
             comment: '',
@@ -115,7 +55,7 @@ export default function ScaffoldIndex() {
             ...fields,
             {
                 name: '',
-                type: '',
+                type: fieldTypes?.[0],
                 nullable: false,
 
                 defaultValue: '',
@@ -129,7 +69,6 @@ export default function ScaffoldIndex() {
     };
 
     const handleSubmit = () => {
-
         const payload = {
             ...config,
             fields: JSON.stringify(fields),
@@ -152,18 +91,8 @@ export default function ScaffoldIndex() {
                 <h1 className="text-2xl font-semibold">Scaffold</h1>
 
                 <div className="grid grid-cols-1 gap-4">
-                    <Input
-                        placeholder="Module"
-                        required
-                        value={config.module}
-                        onChange={(e) => setConfig({ ...config, module: e.target.value })}
-                    />
-                    <Input
-                        placeholder="Table name"
-                        required
-                        value={config.table}
-                        onChange={(e) => setConfig({ ...config, table: e.target.value })}
-                    />
+                    <Input placeholder="Module" required value={config.module} onChange={(e) => setConfig({ ...config, module: e.target.value })} />
+                    <Input placeholder="Table name" required value={config.table} onChange={(e) => setConfig({ ...config, table: e.target.value })} />
                     <div className="flex items-center space-x-2">
                         <Checkbox
                             id="formRequest"

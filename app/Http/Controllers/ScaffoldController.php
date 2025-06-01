@@ -11,7 +11,9 @@ class ScaffoldController extends Controller
     public function __construct(protected ScaffoldService $service) {}
     public function index()
     {
-        return Inertia::render('scaffold/index');
+        return Inertia::render('scaffold/index',[
+            "fieldTypes" => config('scaffold.fields')
+        ]);
     }
 
     public function generate(ScaffoldGenerateRequest $request)
