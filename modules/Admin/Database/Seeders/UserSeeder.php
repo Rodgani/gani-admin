@@ -4,7 +4,6 @@ namespace Modules\Admin\Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Modules\Admin\Models\Role;
@@ -25,7 +24,7 @@ class UserSeeder extends Seeder
                 "password" => Hash::make("password"),
                 'remember_token' => Str::random(10),
                 "role_id" => Role::first()->id,
-                "timezone" => Config::get('app.timezone')
+                "timezone" => "Asia/Manila"
             ]
         );
 

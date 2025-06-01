@@ -39,36 +39,8 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
         setIsModalOpen(false);
         setSelectedRole(undefined);
     };
-    const { handleSubmit } = useRoleFormSubmit({ closeModal });
-    // const handleSubmit = (formData: { name: string; slug: string; menus_permissions: MenuManager }, roleId?: number) => {
-    //     const payload = {
-    //         name: formData.name,
-    //         slug: formData.slug,
-    //         menus_permissions: JSON.stringify(formData.menus_permissions),
-    //     };
 
-    //     if (roleId) {
-    //         router.put(route('roles.update', { id: roleId }), payload, {
-    //             onSuccess: () => {
-    //                 closeModal();
-    //                 showToast('success', { message: 'Updated successfully!' });
-    //             },
-    //             onError: (errors) => {
-    //                 showToast('error', errors);
-    //             },
-    //         });
-    //     } else {
-    //         router.post(route('roles.store'), payload, {
-    //             onSuccess: () => {
-    //                 closeModal();
-    //                 showToast('success', { message: 'Created successfully!' });
-    //             },
-    //             onError: (errors) => {
-    //                 showToast('error', errors);
-    //             },
-    //         });
-    //     }
-    // };
+    const { handleSubmit } = useRoleFormSubmit({ closeModal });
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

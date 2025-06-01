@@ -3,7 +3,8 @@ import { PaginatedUsers, User, UserForm } from "./user.types";
 export interface UserIndexProps {
     users: PaginatedUsers;
     errors: UserForm;
-    roles: { name: string; id: number }[]
+    roles: { name: string; id: number }[],
+    timezones: string[]
 }
 
 export interface UserFormModalProps {
@@ -13,6 +14,7 @@ export interface UserFormModalProps {
     onSubmit: (formData: UserForm, userId?: number) => void;
     errors: UserForm;
     roles: { name: string; id: number }[];
+    timezones: string[]
 }
 
 export interface SubmitUserFormHandlers {

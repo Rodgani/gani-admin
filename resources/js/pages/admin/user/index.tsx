@@ -22,7 +22,7 @@ const module = '/admin/users';
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Users', href: module }];
 
-export default function UserIndex({ users, roles }: UserIndexProps) {
+export default function UserIndex({ users, roles, timezones }: UserIndexProps) {
     const { hasPermission } = userPermissions();
     const { hasAnyPermission } = userPermissions();
 
@@ -37,6 +37,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
         email: '',
         password: '',
         role_id: '',
+        timezone: ''
     };
 
     const [formErrors, setFormErrors] = useState<UserForm>(resetForm);
@@ -99,6 +100,7 @@ export default function UserIndex({ users, roles }: UserIndexProps) {
                         onSubmit={handleSubmit}
                         errors={formErrors} // 🔥 Use local state errors
                         roles={roles}
+                        timezones={timezones}
                     />
                 )}
             </Suspense>

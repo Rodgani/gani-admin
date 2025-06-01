@@ -4,6 +4,7 @@ namespace Modules\Admin\Http\Requests\Users;
 
 use App\Helpers\PermissionHelper;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserCreateRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class UserCreateRequest extends FormRequest
     public function authorize(): bool
     {
         $permissionHelper = app(PermissionHelper::class);
-        
+
         return $permissionHelper
             ->forUser($this->user())
             ->subMenu("/admin/users")
@@ -32,6 +33,10 @@ class UserCreateRequest extends FormRequest
             "email" => "required|email|unique:users,email",
             "password" => "required|string|min:8|confirmed",
             "role_id" => "required|exists:roles,id",
+            "timezone" => [
+                "required",
+                Rule::in(config('app.supported_timezones')),
+            ],
         ];
     }
 }
