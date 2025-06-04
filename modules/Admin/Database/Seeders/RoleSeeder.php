@@ -20,7 +20,7 @@ final class RoleSeeder extends Seeder
         Role::create([
             "name" => "Administrator",
             "slug" => "admin",
-            "menus_permissions" => json_encode($MenuManager->getAllMenus())
+            "menus_permissions" => $MenuManager->getAllMenus()
         ]);
 
     }

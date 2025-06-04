@@ -35,11 +35,18 @@ final class RoleRepository
 
     public function storeRole(array $request): Role
     {
-        return Role::create($request);
+        return Role::create([
+            "name" => $request['name'],
+            "slug" => $request['slug'],
+            "menus_permissions" => json_decode($request['menus_permissions'],true)
+        ]);
     }
 
     public function updateRole(int $id, array $request): bool
     {
-        return Role::findOrFail($id)->update($request);
+        return Role::findOrFail($id)->update([
+            "name" => $request['name'],
+            "menus_permissions" => json_decode($request['menus_permissions'],true)
+        ]);
     }
 }

@@ -40,7 +40,7 @@ final class RoleController extends Controller
     public function update(RoleUpdateRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        $this->roleRepository->updateRole($validated['id'], $validated);
+        $this->roleRepository->updateRole((int) $validated['id'], $validated);
         return back();
     }
 }

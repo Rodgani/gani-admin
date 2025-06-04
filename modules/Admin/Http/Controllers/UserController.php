@@ -36,14 +36,14 @@ final class UserController extends Controller
 
     public function destroy(UserDeleteRequest $request): RedirectResponse
     {
-        $this->userRepository->destroyUser($request->validated()['id']);
+        $this->userRepository->destroyUser((int) $request->validated()['id']);
         return back();
     }
 
     public function update(UserUpdateRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        $this->userRepository->updateUser($validated['id'], $validated);
+        $this->userRepository->updateUser((int) $validated['id'], $validated);
         return back();
     }
 

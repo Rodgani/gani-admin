@@ -6,6 +6,7 @@ namespace Modules\Admin\Models;
 
 use App\Traits\HandleTimezone;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,9 +24,12 @@ final class Role extends Model
 {
     use HandleTimezone, HasFactory;
 
-    protected $casts = [
-        'menus_permissions' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'menus_permissions' => 'array',
+        ];
+    }
     protected static function newFactory(): RoleFactory
     {
         return RoleFactory::new();
