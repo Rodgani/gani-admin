@@ -7,7 +7,7 @@
 - 🔐 **Authentication** (login, registration, password reset)
 - 👥 **User Management** (create, update, delete, assign roles)
 - 🛡 **Role Management** (define roles and permissions)
-- 🎯 Built on top of a Laravel + React starter kit for rapid development
+- 🎯 **Menu Management** (define menus for front-end and attach available permissions)
 
 ## 🛠️ Tech Stack
 
@@ -51,6 +51,12 @@ php artisan migrate --seed
 
 # Build assets
 npm run dev
+
+or use the laravel sail
+sail up -d
+sail npm run dev
+sail artisan m:fresh --seed
+
 ```
 
 🧪 Usage
