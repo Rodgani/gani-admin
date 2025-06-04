@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Authentication\Repositories;
 
-use Illuminate\Support\Facades\Auth;
 use Modules\Admin\Models\User;
 
-class RegisterRepository
+final class RegisterRepository
 {
     public function storeUser($request)
     {

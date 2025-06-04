@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace {{ namespace }};
 
 use Modules\Controller;
@@ -10,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
 {{ import requests }}
 
-class {{ class }} extends Controller
+final class {{ class }} extends Controller
 {
     public function __construct(private {{ repository }} $repository) {}
 

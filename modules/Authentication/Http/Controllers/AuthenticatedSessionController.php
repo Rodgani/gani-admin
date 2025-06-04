@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Authentication\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
@@ -11,7 +13,7 @@ use Modules\Authentication\Http\Requests\LoginRequest;
 use Modules\Authentication\Services\AuthenticationService;
 use Modules\Controller;
 
-class AuthenticatedSessionController extends Controller
+final class AuthenticatedSessionController extends Controller
 {
     /**
      * Show the login page.

@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Scaffold\ScaffoldGenerateRequest;
 use App\Services\ScaffoldService;
 use Inertia\Inertia;
 
-class ScaffoldController extends Controller
+final class ScaffoldController extends Controller
 {
     public function __construct(protected ScaffoldService $service) {}
     public function index()
     {
-        return Inertia::render('scaffold/index',[
+        return Inertia::render('scaffold/index', [
             "fieldTypes" => config('scaffold.fields')
         ]);
     }

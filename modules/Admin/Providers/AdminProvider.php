@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Providers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
-class AdminProvider extends ServiceProvider
+final class AdminProvider extends ServiceProvider
 {
     public function boot()
     {

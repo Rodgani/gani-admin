@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Http\Controllers;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -11,7 +13,7 @@ use Inertia\Response;
 use Modules\Admin\Http\Requests\Users\UserProfileUpdateRequest;
 use Modules\Controller;
 
-class ProfileController extends Controller
+final class ProfileController extends Controller
 {
     /**
      * Show the user's profile settings page.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
@@ -13,7 +15,7 @@ use Modules\Admin\Repositories\RoleRepository;
 use Modules\Admin\Repositories\UserRepository;
 use Modules\Controller;
 
-class UserController extends Controller
+final class UserController extends Controller
 {
     public function __construct(
         protected UserRepository $userRepository,

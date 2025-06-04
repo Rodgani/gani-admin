@@ -50,7 +50,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => !$request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             // Only include menus_permissions if user is authenticated
-            'menus_permissions' => $request->user() ? json_decode($request->user()->role->menus_permissions, true) : [],
+            'menus_permissions' => $request->user() ? $request->user()->role->menus_permissions : [],
         ];
 
 

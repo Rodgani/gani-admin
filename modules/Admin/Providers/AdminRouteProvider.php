@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class AdminRouteProvider extends RouteServiceProvider
+final class AdminRouteProvider extends RouteServiceProvider
 {
     public function boot()
     {

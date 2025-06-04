@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Modules\Admin\Models\Role;
 use Modules\Admin\Models\User;
 
-class UserFactory extends Factory
+final class UserFactory extends Factory
 {
     /**
      * Define the model's default state.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Observers;
 
 use App\Constants\AdminConstants;
@@ -8,7 +10,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Modules\Admin\Models\User;
 
-class UserObserver
+final class UserObserver
 {
 
     public function created(User $user)
@@ -27,12 +29,10 @@ class UserObserver
             ]);
         }
 
-        if($user->id === AdminConstants::DEFAULT_ADMIN_ID){
+        if ($user->id === AdminConstants::DEFAULT_ADMIN_ID) {
             throw ValidationException::withMessages([
                 'user' => 'The default admin cannot be deleted.',
             ]);
         }
-
     }
-
 }

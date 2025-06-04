@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Http\Requests\Users;
 
 use App\Helpers\PermissionHelper;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserCreateRequest extends FormRequest
+final class UserCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

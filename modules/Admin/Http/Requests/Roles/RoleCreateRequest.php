@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Http\Requests\Roles;
 
 use App\Helpers\PermissionHelper;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RoleCreateRequest extends FormRequest
+final class RoleCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

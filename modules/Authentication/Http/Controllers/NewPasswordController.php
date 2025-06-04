@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Authentication\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -12,7 +14,7 @@ use Inertia\Response;
 use Modules\Authentication\Http\Requests\NewPasswordRequest;
 use Modules\Authentication\Services\PasswordService;
 
-class NewPasswordController extends Controller
+final class NewPasswordController extends Controller
 {
 
     public function __construct(private PasswordService $passwordService)

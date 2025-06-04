@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Http\Controllers;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -11,7 +13,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Modules\Controller;
 
-class PasswordController extends Controller
+final class PasswordController extends Controller
 {
     /**
      * Show the user's password settings page.

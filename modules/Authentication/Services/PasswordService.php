@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Authentication\Services;
 
 use Illuminate\Auth\Events\PasswordReset;
@@ -8,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-class PasswordService
+final class PasswordService
 {
     public function confirmablePassword($request): void
     {

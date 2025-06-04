@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -9,7 +11,7 @@ use Illuminate\Support\Str;
 use Modules\Admin\Models\Role;
 use Modules\Admin\Models\User;
 
-class UserSeeder extends Seeder
+final class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
-class PermissionHelper
+final class PermissionHelper
 {
     private ?string $parentMenu = "#";
     private ?string $subMenu = null;
@@ -21,7 +23,7 @@ class PermissionHelper
 
     public function forUser(object $user): static
     {
-        $this->userMenuManager = collect(json_decode($user->role->menus_permissions, true));
+        $this->userMenuManager = collect($user->role->menus_permissions);
         return $this;
     }
     public function can(string $action): bool
@@ -33,7 +35,7 @@ class PermissionHelper
             return false;
         }
 
-        return $this->validateMenuPermission($this->parentMenu, $this->subMenu, $action,$this->userMenuManager);
+        return $this->validateMenuPermission($this->parentMenu, $this->subMenu, $action, $this->userMenuManager);
     }
 
     private function validateMenuPermission(string $parentMenuUrl, ?string $subMenuUrl, string $action, $MenuManager): bool
@@ -64,5 +66,4 @@ class PermissionHelper
             return collect($submenu['permissions'] ?? [])->contains($action);
         }
     }
-
 }

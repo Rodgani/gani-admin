@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Scaffold;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ScaffoldGenerateRequest extends FormRequest
+final class ScaffoldGenerateRequest extends FormRequest
 {
     protected function prepareForValidation()
     {

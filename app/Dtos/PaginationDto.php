@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Dtos;
 
-class PaginationDto
+final readonly class PaginationDto
 {
     /**
      * Summary of __construct

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Http\Controllers;
 
 use App\Helpers\MenuManager;
@@ -12,7 +14,7 @@ use Modules\Admin\Http\Requests\Roles\RoleUpdateRequest;
 use Modules\Admin\Repositories\RoleRepository;
 use Modules\Controller;
 
-class RoleController extends Controller
+final class RoleController extends Controller
 {
 
     public function __construct(

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
 use App\Dtos\PaginationDto;
 
-class PaginationHelper
+final class PaginationHelper
 {
 
     public static function pageQueryOptions(object $request): PaginationDto
@@ -12,4 +14,3 @@ class PaginationHelper
         return PaginationDto::make($request);
     }
 }
-

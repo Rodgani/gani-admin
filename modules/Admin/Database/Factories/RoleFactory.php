@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Database\Factories;
 
 use App\Helpers\MenuManager;
@@ -9,7 +11,7 @@ use Modules\Admin\Models\Role;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\Admin\Models\Role>
  */
-class RoleFactory extends Factory
+final class RoleFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -24,7 +26,7 @@ class RoleFactory extends Factory
         return [
             'name' => fake()->name(),
             'slug' => fake()->unique()->slug(),
-            'menus_permissions' => json_encode($MenuManager->getAllMenus(), true)
+            'menus_permissions' => json_encode($MenuManager->getAllMenus())
         ];
     }
 }

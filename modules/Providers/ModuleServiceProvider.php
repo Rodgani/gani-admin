@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Admin\Providers\AdminProvider;
 use Modules\Authentication\Providers\AuthProvider;
 
-class ModuleServiceProvider extends ServiceProvider
+final class ModuleServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {

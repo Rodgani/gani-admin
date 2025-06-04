@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Http\Requests\Roles;
 
 use App\Helpers\PermissionHelper;
 use App\Traits\ValidatedAsObject;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RoleIndexRequest extends FormRequest
+final class RoleIndexRequest extends FormRequest
 {
     use ValidatedAsObject;
     /**

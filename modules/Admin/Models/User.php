@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\HandleTimezone;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,8 +15,22 @@ use Illuminate\Notifications\Notifiable;
 use Modules\Admin\Database\Factories\UserFactory;
 use Modules\Admin\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+
+/**
+ * @property-read int $id
+ * @property string $name
+ * @property string $email
+ * @property Carbon $email_verified_at
+ * @property string $password
+ * @property int $role_id
+ * @property int $timezone
+ * @property string $remember_token
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ */
+
 #[ObservedBy([UserObserver::class])]
-class User extends Authenticatable
+final class User extends Authenticatable
 {
     use HasFactory, Notifiable, HandleTimezone;
     /**
@@ -21,7 +38,6 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $guarded = ["id"];
 
     /**
      * The attributes that should be hidden for serialization.

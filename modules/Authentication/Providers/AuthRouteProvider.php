@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Authentication\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class AuthRouteProvider extends RouteServiceProvider
+final class AuthRouteProvider extends RouteServiceProvider
 {
     public function boot()
     {

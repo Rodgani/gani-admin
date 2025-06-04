@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Authentication\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
@@ -9,7 +11,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Modules\Controller;
 
-class PasswordResetLinkController extends Controller
+final class PasswordResetLinkController extends Controller
 {
     /**
      * Show the password reset link request page.

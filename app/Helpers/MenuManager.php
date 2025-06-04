@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\File;
 
-class MenuManager
+final class MenuManager
 {
     protected array $menus;
     public function __construct()
@@ -13,7 +15,7 @@ class MenuManager
 
         $mergedMenus = collect(File::files($menuFolder))
             ->flatMap(function ($file) {
-                $configKey = 'menus.' . basename($file, '.php');
+                $configKey = 'menus.' . basename((string) $file, '.php');
                 return config($configKey, []);
             })
             ->values()

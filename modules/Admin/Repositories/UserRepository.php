@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Repositories;
 
 use App\Constants\AdminConstants;
 use App\Helpers\PaginationHelper;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
 use Modules\Admin\Models\User;
 
-class UserRepository
+final class UserRepository
 {
     public function users(object $request): LengthAwarePaginator
     {

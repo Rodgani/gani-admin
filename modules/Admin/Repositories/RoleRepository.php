@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Repositories;
 
 use App\Constants\AdminConstants;
@@ -9,7 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Modules\Admin\Models\Role;
 
-class RoleRepository
+final class RoleRepository
 {
     public function roles(): Collection
     {

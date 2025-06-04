@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Authentication\Services;
 
 use Illuminate\Support\Facades\Auth;
 
-class AuthenticationService
+final class AuthenticationService
 {
     public function storeUserSession($request): void
     {

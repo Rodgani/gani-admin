@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Admin\Http\Requests\Users;
 
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -7,7 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Modules\Admin\Models\User;
 
-class UserProfileUpdateRequest extends FormRequest
+final class UserProfileUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
