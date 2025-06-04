@@ -33,7 +33,7 @@ final class {{ class }} extends Controller
     public function store({{ storeFormRequest }} $request): RedirectResponse
     {
         $this->repository->store{{ model }}($request->validated());
-        return redirect()->route('{{ pluralVariable }}.index');
+        return back();
     }
 
     /**
@@ -43,7 +43,7 @@ final class {{ class }} extends Controller
     {
         $validated = $request->validated();
         $this->repository->update{{ model }}($validated['id'], $request->validated());
-        return redirect()->route('{{ pluralVariable }}.index');
+        return back();
     }
 
     /**
@@ -53,6 +53,6 @@ final class {{ class }} extends Controller
     {
         $validated = $request->validated();
         $this->repository->destroy{{ model }}($validated['id']);
-        return redirect()->route('{{ pluralVariable }}.index');
+        return back();
     }
 }
