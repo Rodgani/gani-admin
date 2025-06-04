@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
-use App\Dtos\PaginationDto;
+use App\DTOs\PaginationDTO;
 
 final class PaginationHelper
 {
 
-    public static function pageQueryOptions(object $request): PaginationDto
+    public static function pageQueryOptions(object $request): PaginationDTO
     {
-        return PaginationDto::make($request);
+        return PaginationDTO::make($request);
     }
 }
