@@ -21,17 +21,12 @@ export interface RoleForm{
     slug: string;
 }
 
-export interface RolePayload {
-  name: string;
-  slug: string;
+export interface RolePayload extends RoleForm {
   menus_permissions: MenuManager;
 }
 
-export interface Role {
+export interface Role extends RolePayload {
     id: number;
-    name: string;
-    slug: string;
-    menus_permissions: MenuManager;
     created_at: string;
     updated_at: string;
 }
