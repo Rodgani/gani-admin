@@ -59,7 +59,8 @@ sail artisan m:fresh --seed
 
 ```
 
-🧪 Usage
+🧪 Extra usage
+
 Use the following Artisan command to create Laravel classes inside your module:
 ```
 php artisan make:module {type} {name} {module}
