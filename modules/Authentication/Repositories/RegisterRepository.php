@@ -8,7 +8,7 @@ use Modules\Admin\Models\User;
 
 final class RegisterRepository
 {
-    public function storeUser($request)
+    public function storeUser(array $request): User
     {
         return User::create($request);
     }

@@ -29,7 +29,7 @@ final class UserFactory extends Factory
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'timezone' => Arr::random(config('app.supported_timezones')),
-            'role_id' => Role::first()?->id, // make sure Role exists
+            'role_id' => Role::inRandomOrder()->value('id'), // random role ID
         ];
     }
 }

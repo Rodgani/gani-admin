@@ -13,27 +13,32 @@ use Modules\Authentication\Http\Controllers\VerifyEmailController;
 
 Route::middleware('guest')->group(function (): void {
 
-    // Route::get('register', [RegisteredUserController::class, 'index'])
-    //     ->name('register');
+    Route::controller(RegisteredUserController::class)->prefix('register')->group(function () {
+        Route::get('/',  'index')
+            ->name('register');
+        Route::post('/',  'store')
+            ->name('register');
+    });
 
-    // Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::controller(AuthenticatedSessionController::class)->prefix('login')->group(function () {
+        Route::get('/',  'index')
+            ->name('login');
+        Route::post('/',  'store');
+    });
 
-    Route::get('login', [AuthenticatedSessionController::class, 'index'])
-        ->name('login');
+    Route::controller(PasswordResetLinkController::class)->prefix('forgot-password')->group(function () {
+        Route::get('/',  'index')
+            ->name('password.request');
+        Route::post('/',  'store')
+            ->name('password.email');
+    });
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
-
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'index'])
-        ->name('password.request');
-
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->name('password.email');
-
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'index'])
-        ->name('password.reset');
-
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-        ->name('password.store');
+    Route::controller(NewPasswordController::class)->prefix('reset-password')->group(function () {
+        Route::get('/{token}',  'index')
+            ->name('password.reset');
+        Route::post('/',  'store')
+            ->name('password.store');
+    });
 });
 
 Route::middleware('auth')->group(function (): void {
@@ -49,10 +54,11 @@ Route::middleware('auth')->group(function (): void {
         ->middleware('throttle:6,1')
         ->name('verification.send');
 
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-        ->name('password.confirm');
-
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
+    Route::controller(ConfirmablePasswordController::class)->prefix('confirm-password')->group(function () {
+        Route::get('/',  'show')
+            ->name('password.confirm');
+        Route::post('/',  'store');
+    });
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');

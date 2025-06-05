@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Authentication\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -13,17 +12,16 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Modules\Authentication\Http\Requests\NewPasswordRequest;
 use Modules\Authentication\Services\PasswordService;
+use Modules\Controller;
 
 final class NewPasswordController extends Controller
 {
 
-    public function __construct(private PasswordService $passwordService)
-    {
-    }
+    public function __construct(private PasswordService $passwordService){}
     /**
      * Show the password reset page.
      */
-    public function create(Request $request): Response
+    public function index(Request $request): Response
     {
         return Inertia::render('auth/reset-password', [
             'email' => $request->email,

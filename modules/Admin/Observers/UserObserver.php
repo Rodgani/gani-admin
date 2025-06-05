@@ -12,11 +12,6 @@ use Modules\Admin\Models\User;
 
 final class UserObserver
 {
-
-    public function created(User $user)
-    {
-        Password::sendResetLink(["email" => $user->email]);
-    }
     /**
      * Handle the User "deleted" event.
      */

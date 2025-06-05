@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Database\Seeders;
 
+use App\Enums\PublicRoleEnum;
 use App\Helpers\MenuManager;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,11 +18,32 @@ final class RoleSeeder extends Seeder
     public function run(): void
     {
         $MenuManager = new MenuManager();
-        Role::create([
-            "name" => "Administrator",
-            "slug" => "admin",
-            "menus_permissions" => $MenuManager->getAllMenus()
-        ]);
+        $contentCreator = PublicRoleEnum::CONTENT_CREATOR->value;
+        $brandOwner = PublicRoleEnum::BRAND_OWNER->value;
 
+        Role::updateOrCreate(
+            ["slug" => "admin"],
+            [
+                "name" => "Administrator",
+                "slug" => "admin",
+                "menus_permissions" => $MenuManager->getAllMenus()
+            ]
+        );
+        Role::updateOrCreate(
+            ["slug" => $contentCreator],
+            [
+                "name" => "Content Creator",
+                "slug" => $contentCreator,
+                "menus_permissions" => config('menus.1_statistic_menus')
+            ]
+        );
+        Role::updateOrCreate(
+            ["slug" => $brandOwner],
+            [
+                "name" => "Brand Owner",
+                "slug" => $brandOwner,
+                "menus_permissions" => config('menus.1_statistic_menus')
+            ]
+        );
     }
 }

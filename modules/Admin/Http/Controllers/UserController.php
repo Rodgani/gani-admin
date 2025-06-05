@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Http\Controllers;
 
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Modules\Admin\Http\Requests\Users\UserCreateRequest;
 use Modules\Admin\Http\Requests\Users\UserDeleteRequest;
@@ -49,7 +50,8 @@ final class UserController extends Controller
 
     public function store(UserCreateRequest $request): RedirectResponse
     {
-        $this->userRepository->storeUser($request->validated());
+        $user = $this->userRepository->storeUser($request->validated());
+        event(new Registered($user));
         return back();
     }
 }

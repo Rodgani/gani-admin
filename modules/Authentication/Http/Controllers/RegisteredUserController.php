@@ -4,27 +4,33 @@ declare(strict_types=1);
 
 namespace Modules\Authentication\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use Modules\Admin\Repositories\RoleRepository;
 use Modules\Authentication\Http\Requests\RegisterRequest;
 use Modules\Authentication\Repositories\RegisterRepository;
+use Modules\Controller;
 
 final class RegisteredUserController extends Controller
 {
 
-    public function __construct(private RegisterRepository $registerRepository)
-    {
-    }
+    public function __construct(
+        private RegisterRepository $registerRepository,
+        private RoleRepository $roleRepository
+    ){}
     /**
      * Show the registration page.
      */
     public function index(): Response
     {
-        return Inertia::render('auth/register');
+        $roles =$this->roleRepository->publicRoles();
+        return Inertia::render('auth/register',[
+            "roles" => $roles,
+            "timezones" => config('app.supported_timezones')
+        ]);
     }
 
     /**

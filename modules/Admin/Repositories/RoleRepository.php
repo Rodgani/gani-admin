@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Admin\Repositories;
 
 use App\Constants\AdminConstants;
+use App\Enums\PublicRoleEnum;
 use App\Helpers\PaginationHelper;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -16,6 +17,13 @@ final class RoleRepository
     public function roles(): Collection
     {
         return Role::select('id', 'slug', 'name')->get();
+    }
+
+    public function publicRoles()
+    {
+        return Role::select('id', 'slug', 'name')
+            ->whereIn("slug", PublicRoleEnum::slugArray())
+            ->get();
     }
 
     public function paginatedRoles(object $request): LengthAwarePaginator
