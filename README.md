@@ -4,10 +4,10 @@
 
 ## 🧩 Features
 
-- 🔐 **Authentication** (login, registration, password reset)
+- 🔐 **Authentication**  (login, registration, password reset)
 - 👥 **User Management** (create, update, delete, assign roles)
-- 🛡 **Role Management** (define roles and permissions)
-- 🎯 **Menu Management** (define menus for front-end and attach available permissions)
+- 🛡 **Role Management** (define roles and attached permissions)
+- 🎯 **Menu Management** (define menus for front-end and available permissions)
 
 ## 🛠️ Tech Stack
 
