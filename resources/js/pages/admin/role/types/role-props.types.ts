@@ -8,11 +8,14 @@ export interface RoleFormProps {
     onSubmit: (formData: {
         name: string;
         slug: string;
-        menus_permissions: MenuManager
+        menus_permissions: MenuManager;
+        type: string;
     }, roleId?: number) => void;
+    roleTypes: string[];
 }
 
 export interface RoleIndexProps {
     roles: PaginatedRoles,
     default_menus_permissions: MenuManager
+    role_types: string[]
 }

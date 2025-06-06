@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Admin\Repositories;
 
 use App\Constants\AdminConstants;
-use App\Enums\PublicRoleEnum;
+use App\Enums\UserRoleTypeEnum;
 use App\Helpers\PaginationHelper;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -19,10 +19,10 @@ final class RoleRepository
         return Role::select('id', 'slug', 'name')->get();
     }
 
-    public function publicRoles()
+    public function externalUserRoles(): Collection
     {
         return Role::select('id', 'slug', 'name')
-            ->whereIn("slug", PublicRoleEnum::slugArray())
+            ->where("type", UserRoleTypeEnum::EXTERNAL)
             ->get();
     }
 
@@ -32,7 +32,7 @@ final class RoleRepository
         $option = PaginationHelper::pageQueryOptions($request);
 
         return Role::when($search, function ($query, $search) {
-            $query->whereAny(['name', 'slug'], 'like', "%{$search}%");
+            $query->whereAny(['name', 'slug', 'type'], 'like', "%{$search}%");
         })
             ->when(Auth::user()->id != AdminConstants::DEFAULT_ADMIN_ID, function ($query) {
                 $query->whereNot('id', AdminConstants::DEFAULT_ROLE_ID);
@@ -43,18 +43,13 @@ final class RoleRepository
 
     public function storeRole(array $request): Role
     {
-        return Role::create([
-            "name" => $request['name'],
-            "slug" => $request['slug'],
-            "menus_permissions" => json_decode($request['menus_permissions'],true)
-        ]);
+        $request['menus_permissions'] = json_decode($request['menus_permissions'],true);
+        return Role::create($request);
     }
 
     public function updateRole(int $id, array $request): bool
     {
-        return Role::findOrFail($id)->update([
-            "name" => $request['name'],
-            "menus_permissions" => json_decode($request['menus_permissions'],true)
-        ]);
+        $request['menus_permissions'] = json_decode($request['menus_permissions'],true);
+        return Role::findOrFail($id)->update($request);
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->json('menus_permissions');
+            $table->enum('type',['internal','external']);
             $table->timestampsTz();
         });
     }

@@ -19,6 +19,7 @@ export type MenuManager = Menu[];
 export interface RoleForm{
     name: string;
     slug: string;
+    type: string;
 }
 
 export interface RolePayload extends RoleForm {

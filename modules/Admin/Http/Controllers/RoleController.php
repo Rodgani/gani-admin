@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\Enums\UserRoleTypeEnum;
 use App\Helpers\MenuManager;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -27,7 +28,8 @@ final class RoleController extends Controller
         $roles = $this->roleRepository->paginatedRoles($request->validatedObject());
         return Inertia::render('admin/role/index', [
             "roles" => $roles,
-            "default_menus_permissions" => $this->MenuManager->getAllMenus()
+            "default_menus_permissions" => $this->MenuManager->getAllMenus(),
+            "role_types" => UserRoleTypeEnum::array()
         ]);
     }
 

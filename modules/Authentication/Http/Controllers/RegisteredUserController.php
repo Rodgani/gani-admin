@@ -26,7 +26,7 @@ final class RegisteredUserController extends Controller
      */
     public function index(): Response
     {
-        $roles =$this->roleRepository->publicRoles();
+        $roles =$this->roleRepository->externalUserRoles();
         return Inertia::render('auth/register',[
             "roles" => $roles,
             "timezones" => config('app.supported_timezones')

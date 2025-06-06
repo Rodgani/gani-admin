@@ -4,18 +4,21 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox'; // assuming you have a Checkbox component
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 import { useEffect, useMemo, useState } from 'react';
 import { RoleFormProps } from '../types/role-props.types';
 import { RoleForm } from '../types/role.types';
 
-export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManager, onSubmit }: RoleFormProps) {
+export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManager, onSubmit, roleTypes }: RoleFormProps) {
     const [MenuManagerState, setMenuManagerState] = useState<{ [key: string]: string[] }>({});
 
     const [formData, setFormData] = useState<RoleForm>({
         name: '',
         slug: '',
+        type: '',
     });
 
     useEffect(() => {
@@ -39,6 +42,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
                 setFormData({
                     name: role.name,
                     slug: role.slug,
+                    type: role.type,
                 });
             } catch (error) {
                 console.log(error);
@@ -112,7 +116,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
             })
             .filter((menu) => menu !== null);
     }, [MenuManagerState, defaultMenuManager]);
-    
+
     const handleSubmit = () => {
         onSubmit({ ...formData, menus_permissions: computedMenuManager }, role?.id);
     };
@@ -143,12 +147,14 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
     const fields = [
         { name: 'name', type: 'text', placeholder: 'Name', required: true },
         { name: 'slug', type: 'slug', placeholder: 'Slug', required: true, readOnly: !!role },
+        { name: 'type', type: 'select', placeholder: 'Type', options: roleTypes },
     ];
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
         setFormData((prev) => ({
-            ...prev!,
-            [e.target.name]: e.target.value,
+            ...prev,
+            [name]: value,
         }));
     };
 
@@ -166,18 +172,47 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
                             {checkAll ? 'Uncheck All' : 'Check All'}
                         </Button>
                     </div>
-                    {fields.map(({ name, type, placeholder, required, readOnly }) => (
-                        <Input
-                            key={name}
-                            name={name}
-                            type={type}
-                            value={formData[name as keyof typeof formData] ?? ''}
-                            onChange={handleChange}
-                            placeholder={placeholder}
-                            required={required}
-                            {...(readOnly ? { readOnly: true } : {})}
-                        />
-                    ))}
+                    {fields.map(({ name, type, placeholder, required, readOnly, options }) => {
+                        const value = formData[name as keyof typeof formData] ?? '';
+
+                        return (
+                            <div key={name} className="space-y-1">
+                                <Label htmlFor={name}>{placeholder}</Label>
+
+                                {type === 'select' ? (
+                                    <Select
+                                        name={name}
+                                        value={value}
+                                        onValueChange={(val) => handleChange({ target: { name, value: val } } as any)}
+                                        disabled={readOnly}
+                                    >
+                                        <SelectTrigger id={name}>
+                                            <SelectValue placeholder={`Select ${placeholder}`} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {options?.map((option) => (
+                                                <SelectItem key={option} value={option}>
+                                                     {option.charAt(0).toUpperCase() + option.slice(1)}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                ) : (
+                                    <Input
+                                        id={name}
+                                        name={name}
+                                        type={type}
+                                        value={value}
+                                        onChange={handleChange}
+                                        placeholder={placeholder}
+                                        required={required}
+                                        {...(readOnly ? { readOnly: true } : {})}
+                                    />
+                                )}
+                            </div>
+                        );
+                    })}
+
                     <ScrollArea className="w-full rounded-lg">
                         <div className="max-h-[400px] space-y-4 pr-2">
                             <Accordion type="multiple" className="w-full">

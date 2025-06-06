@@ -21,6 +21,7 @@ export async function submitRole(
     name: formData.name,
     slug: formData.slug,
     menus_permissions: JSON.stringify(formData.menus_permissions),
+    type: formData.type
   };
 
   const method = roleId ? 'put' : 'post';

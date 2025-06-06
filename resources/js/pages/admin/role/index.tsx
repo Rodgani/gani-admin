@@ -21,7 +21,7 @@ const breadcrumbs: BreadcrumbItem[] = [{ title: 'Roles & Permissions', href: mod
 // 🔥 Lazy load the modal
 const RoleFormModal = lazy(() => import('./components/role-form-modal'));
 
-export default function RoleIndex({ roles, default_menus_permissions }: RoleIndexProps) {
+export default function RoleIndex({ roles, default_menus_permissions, role_types }: RoleIndexProps) {
     const { hasPermission } = userPermissions();
     const { hasAnyPermission } = userPermissions();
 
@@ -82,6 +82,7 @@ export default function RoleIndex({ roles, default_menus_permissions }: RoleInde
                         role={selectedRole}
                         defaultMenuManager={default_menus_permissions}
                         onSubmit={handleSubmit}
+                        roleTypes={role_types}
                     />
                 )}
             </Suspense>

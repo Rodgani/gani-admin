@@ -30,9 +30,10 @@ final class RoleCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'slug' => 'required|unique:roles,slug',
-            'menus_permissions' => 'required|json'
+            "name" => "required",
+            "slug" => "required|unique:roles,slug",
+            "menus_permissions" => "required|json",
+            "type" => "required|in:internal,external"
         ];
     }
 }

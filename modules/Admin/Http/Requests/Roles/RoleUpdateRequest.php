@@ -39,7 +39,8 @@ final class RoleUpdateRequest extends FormRequest
         return [
             "id" => "required|exists:users,id",
             "name" => "required",
-            "menus_permissions" => "required|json"
+            "menus_permissions" => "required|json",
+            "type" => "required|in:internal,external"
         ];
     }
 }

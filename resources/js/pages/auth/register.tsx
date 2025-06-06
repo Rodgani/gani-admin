@@ -85,6 +85,7 @@ export default function Register({ roles, timezones }: RegisterProps) {
                             ) : (
                                 <Input
                                     id={key}
+                                    key={key}
                                     type={type}
                                     value={data[key as keyof RegisterForm]}
                                     autoComplete={autoComplete}
