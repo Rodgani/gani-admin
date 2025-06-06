@@ -8,36 +8,24 @@ export function fetchUsers(params: Record<string, string | number>) {
     });
 }
 
-export const deleteUser = async (
-  id: number,
-  onSuccess?: () => void,
-  onError?: (errors: Record<string, string[] | string>) => void
-) => {
-  router.delete(route('users.destroy', { id }), {
-    onSuccess,
-    onError,
-  });
+export const deleteUser = async (id: number, onSuccess?: () => void, onError?: (errors: Record<string, string[] | string>) => void) => {
+    router.delete(route('users.destroy', { id }), {
+        onSuccess,
+        onError,
+    });
 };
 
 export interface RequestCallbacks {
-  onSuccess?: () => void;
-  onError?: (errors: Record<string, string[] | string>) => void;
+    onSuccess?: () => void;
+    onError?: (errors: Record<string, string[] | string>) => void;
 }
 
-export function submitUserForm(
-  formData: UserForm,
-  userId?: number,
-  callbacks?: RequestCallbacks
-) {
-  if (userId) {
-    router.put(route('users.update', { id: userId }), formData, {
-      onSuccess: callbacks?.onSuccess,
-      onError: callbacks?.onError,
+export function submitUser(formData: UserForm, userId?: number, callbacks?: RequestCallbacks) {
+    const method = userId ? 'put' : 'post';
+    const url = userId ? route('users.update', { id: userId }) : route('users.store');
+
+    router[method](url, formData, {
+        onSuccess: callbacks?.onSuccess,
+        onError: callbacks?.onError,
     });
-  } else {
-    router.post(route('users.store'), formData, {
-      onSuccess: callbacks?.onSuccess,
-      onError: callbacks?.onError,
-    });
-  }
 }

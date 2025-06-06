@@ -6,6 +6,7 @@ import { DialogDescription } from '@radix-ui/react-dialog';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { UserFormModalProps } from '../types/user-props.types';
 import { UserForm } from '../types/user.types';
+import { Label } from '@/components/ui/label';
 
 const emptyFormData: UserForm = {
     name: '',
@@ -95,40 +96,42 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                         const rawValue = formData[name as keyof UserForm];
                         const normalizedValue = typeof rawValue === 'string' ? rawValue : rawValue != null ? String(rawValue) : '';
 
-                        if (inputType === 'input') {
-                            return (
-                                <Input
-                                    key={name}
-                                    name={name}
-                                    type={type}
-                                    value={normalizedValue}
-                                    onChange={handleChange}
-                                    placeholder={placeholder}
-                                    required={required}
-                                />
-                            );
-                        }
-
                         return (
-                            <Select key={name} value={normalizedValue} onValueChange={(value) => handleSelectChange(name as keyof UserForm, value)}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder={placeholder} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {name === 'role_id' &&
-                                        roles.map((role) => (
-                                            <SelectItem key={role.id} value={String(role.id)}>
-                                                {role.name}
-                                            </SelectItem>
-                                        ))}
-                                    {name === 'timezone' &&
-                                        timezones.map((tz) => (
-                                            <SelectItem key={tz} value={tz}>
-                                                {tz}
-                                            </SelectItem>
-                                        ))}
-                                </SelectContent>
-                            </Select>
+                            <div key={name} className="space-y-1">
+                                <Label htmlFor={name}>{placeholder}</Label>
+
+                                {inputType === 'input' ? (
+                                    <Input
+                                        id={name}
+                                        name={name}
+                                        type={type}
+                                        value={normalizedValue}
+                                        onChange={handleChange}
+                                        placeholder={placeholder}
+                                        required={required}
+                                    />
+                                ) : (
+                                    <Select value={normalizedValue} onValueChange={(value) => handleSelectChange(name as keyof UserForm, value)}>
+                                        <SelectTrigger id={name}>
+                                            <SelectValue placeholder={placeholder} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {name === 'role_id' &&
+                                                roles.map((role) => (
+                                                    <SelectItem key={role.id} value={String(role.id)}>
+                                                        {role.name}
+                                                    </SelectItem>
+                                                ))}
+                                            {name === 'timezone' &&
+                                                timezones.map((tz) => (
+                                                    <SelectItem key={tz} value={tz}>
+                                                        {tz}
+                                                    </SelectItem>
+                                                ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            </div>
                         );
                     })}
                 </div>
