@@ -41,8 +41,8 @@ final class {{ class }} extends Controller
      */
     public function update({{ updateFormRequest }} $request): RedirectResponse
     {
-        $validated = $request->validated();
-        $this->repository->update{{ model }}($validated['id'], $request->validated());
+        $validated = $request->safe();
+        $this->repository->update{{ model }}($validated['id'], $validated->except('id'));
         return back();
     }
 
@@ -51,8 +51,7 @@ final class {{ class }} extends Controller
      */
     public function destroy({{ destroyFormRequest }} $request): RedirectResponse
     {
-        $validated = $request->validated();
-        $this->repository->destroy{{ model }}($validated['id']);
+        $this->repository->destroy{{ model }}($request->validated()['id']);
         return back();
     }
 }
