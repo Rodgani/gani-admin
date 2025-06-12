@@ -19,8 +19,8 @@ final class RoleController extends Controller
 {
 
     public function __construct(
-        protected RoleRepository $roleRepository,
-        protected MenuManager $MenuManager
+        private RoleRepository $roleRepository,
+        private MenuManager $MenuManager
     ) {}
 
     public function index(RoleIndexRequest $request): Response
@@ -35,14 +35,15 @@ final class RoleController extends Controller
 
     public function store(RoleCreateRequest $request): RedirectResponse
     {
-        $this->roleRepository->storeRole($request->validated());
+        $roleData = $request->validated();
+        $this->roleRepository->storeRole($roleData);
         return back();
     }
 
     public function update(RoleUpdateRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-        $this->roleRepository->updateRole((int) $validated['id'], $validated);
+        $roleData = $request->validated();
+        $this->roleRepository->updateRole((int) $roleData['id'], $roleData);
         return back();
     }
 }

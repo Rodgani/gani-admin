@@ -41,15 +41,15 @@ final class RoleRepository
             ->paginate($option->perPage);
     }
 
-    public function storeRole(array $request): Role
+    public function storeRole(array $roleData): Role
     {
-        $request['menus_permissions'] = json_decode($request['menus_permissions'],true);
-        return Role::create($request);
+        $roleData['menus_permissions'] = json_decode($roleData['menus_permissions'],true);
+        return Role::create($roleData);
     }
 
-    public function updateRole(int $id, array $request): bool
+    public function updateRole(int $id, array $roleData): bool
     {
-        $request['menus_permissions'] = json_decode($request['menus_permissions'],true);
-        return Role::findOrFail($id)->update($request);
+        $roleData['menus_permissions'] = json_decode($roleData['menus_permissions'],true);
+        return Role::findOrFail($id)->update($roleData);
     }
 }

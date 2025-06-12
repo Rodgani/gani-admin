@@ -37,13 +37,13 @@ final class UserRepository
         return User::findOrFail($id)->delete();
     }
 
-    public function updateUser(int $id, array $request): bool
+    public function updateUser(int $id, array $userData): bool
     {
-        return User::findOrFail($id)->update($request);
+        return User::findOrFail($id)->update($userData);
     }
 
-    public function storeUser(array $request): User
+    public function storeUser(array $userData): User
     {
-        return User::create($request);
+        return User::create($userData);
     }
 }

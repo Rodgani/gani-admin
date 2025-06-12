@@ -15,9 +15,9 @@ final class {{ class }}
     /**
      * Display a listing of the resource.
      */
-    public function {{ list }}(object $request): LengthAwarePaginator
+    public function {{ list }}(object $data): LengthAwarePaginator
     {
-        $option = PaginationHelper::pageQueryOptions($request);
+        $option = PaginationHelper::pageQueryOptions($data);
 
         return {{ model }}::orderBy($option->column, $option->direction)
             ->paginate($option->perPage);
@@ -26,9 +26,9 @@ final class {{ class }}
     /**
      * Store a newly created resource in storage.
      */
-    public function store{{ model }}(array $request): {{ model }}
+    public function store{{ model }}(array $data): {{ model }}
     {
-        return {{ model }}::create($request);
+        return {{ model }}::create($data);
     }
 
     /**
@@ -47,11 +47,11 @@ final class {{ class }}
     /**
      * Update the specified resource in storage.
      */
-    public function update{{ model }}(int $id, array $request): bool
+    public function update{{ model }}(int $id, array $data): bool
     {
         try {
             $model = {{ model }}::findOrFail($id);
-            return $model->update($request);
+            return $model->update($data);
         } catch (ModelNotFoundException $e) {
             Log::warning("Failed to update: {{ model }} not found for ID {$id}", ['exception' => $e]);
             return false;

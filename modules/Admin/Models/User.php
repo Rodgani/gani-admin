@@ -15,6 +15,7 @@ use Illuminate\Notifications\Notifiable;
 use Modules\Admin\Database\Factories\UserFactory;
 use Modules\Admin\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property-read int $id
@@ -80,5 +81,12 @@ final class User extends Authenticatable
     protected function updatedAt(): Attribute
     {
         return Attribute::get(fn($value) => $this->convertTimezoneToUserTimezone($value));
+    }
+
+    protected function avatar(): Attribute
+    {
+        return Attribute::get(
+            fn($value) => Storage::url($value ?: 'defaults/avatar.jpg')
+        );
     }
 }

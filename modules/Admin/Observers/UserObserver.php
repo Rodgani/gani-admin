@@ -17,16 +17,16 @@ final class UserObserver
      */
     public function deleting(User $user): void
     {
-        if (Auth::user()->id === $user->id) {
-
-            throw ValidationException::withMessages([
-                'user' => 'The current authenticated user cannot be deleted.',
-            ]);
-        }
-
         if ($user->id === AdminConstants::DEFAULT_ADMIN_ID) {
             throw ValidationException::withMessages([
                 'user' => 'The default admin cannot be deleted.',
+            ]);
+        }
+
+        if (Auth::user()?->id === $user->id) {
+
+            throw ValidationException::withMessages([
+                'user' => 'The current authenticated user cannot be deleted.',
             ]);
         }
     }

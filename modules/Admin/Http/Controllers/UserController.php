@@ -19,8 +19,8 @@ use Modules\Controller;
 final class UserController extends Controller
 {
     public function __construct(
-        protected UserRepository $userRepository,
-        protected RoleRepository $roleRepository
+        private UserRepository $userRepository,
+        private RoleRepository $roleRepository
     ) {}
 
     public function index(UserIndexRequest $request): Response
@@ -43,14 +43,15 @@ final class UserController extends Controller
 
     public function update(UserUpdateRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-        $this->userRepository->updateUser((int) $validated['id'], $validated);
+        $userData = $request->validated();
+        $this->userRepository->updateUser((int) $userData['id'], $userData);
         return back();
     }
 
     public function store(UserCreateRequest $request): RedirectResponse
     {
-        $user = $this->userRepository->storeUser($request->validated());
+        $userData = $request->validated();
+        $user = $this->userRepository->storeUser($userData);
         event(new Registered($user));
         return back();
     }

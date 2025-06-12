@@ -20,7 +20,7 @@ final class UserProfileUpdateRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-
+            'avatar' => ['nullable','image'],
             'email' => [
                 'required',
                 'string',
