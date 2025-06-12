@@ -10,9 +10,9 @@ import { userPermissions } from '@/hooks/use-permission';
 import { PlusCircle, Search } from 'lucide-react';
 import { lazy, Suspense, useState } from 'react';
 import RoleTable from './components/role-table';
+import { useRoleFormSubmit } from './hooks/use-role-form-submit';
 import { useRolePagination } from './hooks/use-role-pagination';
 import { RoleIndexProps } from './types/role-props.types';
-import { useRoleFormSubmit } from './hooks/use-role-form-submit';
 import { Role } from './types/role.types';
 
 const module = '/admin/roles';
@@ -28,7 +28,12 @@ export default function RoleIndex({ roles, default_menus_permissions, role_types
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRole, setSelectedRole] = useState<Role | undefined>(undefined);
     const [searchTerm, setSearchTerm] = useState('');
-    const { handleSearch, handlePageChange } = useRolePagination(roles.current_page, searchTerm);
+
+    const filterParams = {
+        ...(searchTerm ? { search: searchTerm } : {}),
+        // add more here
+    };
+    const { handleSearch, handlePageChange } = useRolePagination(roles.current_page, filterParams);
 
     const handleEdit = (role: Role) => {
         setSelectedRole(role || undefined);

@@ -11,10 +11,10 @@ import { userPermissions } from '@/hooks/use-permission';
 import { PlusCircle, Search } from 'lucide-react';
 import UserTable from './components/user-table';
 import { useUserDelete } from './hooks/use-user-delete';
+import { useUserFormSubmit } from './hooks/use-user-form-submit';
 import { useUserPagination } from './hooks/use-user-pagination';
 import { UserIndexProps } from './types/user-props.types';
 import { User, UserForm } from './types/user.types';
-import { useUserFormSubmit } from './hooks/use-user-form-submit';
 
 // 🔥 Lazy load the modal
 const UserFormModal = lazy(() => import('./components/user-form-modal'));
@@ -29,7 +29,13 @@ export default function UserIndex({ users, roles, timezones }: UserIndexProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
     const [searchTerm, setSearchTerm] = useState('');
-    const { handleSearch, handlePageChange } = useUserPagination(users.current_page, searchTerm);
+
+    const filterParams = {
+        ...(searchTerm ? { search: searchTerm } : {}),
+        // add more here
+    };
+    
+    const { handleSearch, handlePageChange } = useUserPagination(users.current_page, filterParams);
     const { handleDelete } = useUserDelete();
 
     const resetForm: UserForm = {
@@ -37,7 +43,7 @@ export default function UserIndex({ users, roles, timezones }: UserIndexProps) {
         email: '',
         password: '',
         role_id: '',
-        timezone: ''
+        timezone: '',
     };
 
     const [formErrors, setFormErrors] = useState<UserForm>(resetForm);
@@ -56,7 +62,7 @@ export default function UserIndex({ users, roles, timezones }: UserIndexProps) {
     const { handleSubmit } = useUserFormSubmit({
         closeModal,
         resetForm,
-        setFormErrors: (errors) => setFormErrors({ ...resetForm, ...errors })
+        setFormErrors: (errors) => setFormErrors({ ...resetForm, ...errors }),
     });
 
     return (
