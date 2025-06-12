@@ -16,9 +16,9 @@ final class {{ class }}
     /**
      * Display a listing of the resource.
      */
-    public function {{ list }}(object $data): LengthAwarePaginator
+    public function {{ list }}(object $request): LengthAwarePaginator
     {
-        $option = PaginationHelper::pageQueryOptions($data);
+        $option = PaginationHelper::pageQueryOptions($request);
 
         return {{ model }}::orderBy($option->column, $option->direction)
             ->paginate($option->perPage);
@@ -41,7 +41,9 @@ final class {{ class }}
             return {{ model }}::findOrFail($id);
         } catch (ModelNotFoundException $e) {
             Log::warning("{{ model }} not found for ID {$id}", ['exception' => $e]);
-            return null;
+             throw ValidationException::withMessages([
+                'failed' => "{{ model }} not found for ID {$id}",
+            ]);
         }
     }
 
@@ -72,7 +74,7 @@ final class {{ class }}
         } catch (ModelNotFoundException $e) {
             Log::warning("Failed to delete: {{ model }} not found for ID {$id}", ['exception' => $e]);
             throw ValidationException::withMessages([
-                'failed' => "Failed to update: {{ model }} not found for ID {$id}",
+                'failed' => "Failed to delete: {{ model }} not found for ID {$id}",
             ]);
         }
     }

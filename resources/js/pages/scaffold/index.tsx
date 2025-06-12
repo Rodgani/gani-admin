@@ -20,7 +20,7 @@ interface Field {
     comment: string;
 }
 interface ScaffoldIndexProps {
-    fieldTypes: string[]; // assuming you’re passing this from the server
+    fieldTypes: string[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [{ title: 'Scaffold', href: '/scaffold' }];
@@ -76,7 +76,7 @@ export default function ScaffoldIndex({ fieldTypes }: ScaffoldIndexProps) {
 
         router.post(route('scaffold.generate'), payload, {
             onSuccess: () => {
-                showToast('success', { message: 'Created successfully!' });
+                showToast('success', { message: 'Success! Your CRUD files are ready.!' });
             },
             onError: (errors) => {
                 showToast('error', errors);
