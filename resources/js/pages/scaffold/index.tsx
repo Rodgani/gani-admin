@@ -92,7 +92,7 @@ export default function ScaffoldIndex({ fieldTypes }: ScaffoldIndexProps) {
 
                 <div className="grid grid-cols-1 gap-4">
                     <Input placeholder="Module" required value={config.module} onChange={(e) => setConfig({ ...config, module: e.target.value })} />
-                    <Input placeholder="Table name" required value={config.table} onChange={(e) => setConfig({ ...config, table: e.target.value })} />
+                    <Input placeholder="Table name should be in snake case only" required value={config.table} onChange={(e) => setConfig({ ...config, table: e.target.value })} />
                     <div className="flex items-center space-x-2">
                         <Checkbox
                             id="formRequest"

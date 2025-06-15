@@ -29,13 +29,14 @@ final class StubService
 
         if (is_array($formRequest)) {
             $importRequests = collect($formRequest)->map(function ($request) use ($module, $model) {
-                $pluralModel = Str::plural($model);
+                $pluralModel = Str::plural(Str::studly($model));
                 return "use Modules\\$module\\Http\\Requests\\$pluralModel\\$request;";
             })->implode("\n");
         } else {
             $importRequests = "";
         }
-
+        $list = Str::studly($pluralVariable);
+        
         return [
             [
                 '{{ module }}',
@@ -51,7 +52,8 @@ final class StubService
                 '{{ updateFormRequest }}',
                 '{{ destroyFormRequest }}',
                 '{{ import requests }}',
-                '{{ pluralVariable }}'
+                '{{ pluralVariable }}',
+                '{{ list }}'
             ],
             [
                 $module,
@@ -67,7 +69,8 @@ final class StubService
                 $updateFormRequest,
                 $destroyFormRequest,
                 $importRequests,
-                $pluralVariable
+                $pluralVariable,
+                $list
             ]
         ];
     }

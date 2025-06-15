@@ -21,20 +21,20 @@ final class ScaffoldService
     private const FORM_REQUEST = "request";
     public function generate($request): void
     {
-        $this->module = Str::ucfirst($request->module);
-        $this->table = Str::studly($request->table);
+        $this->module = Str::studly($request->module);
+        $this->table = $request->table;
         $this->migrationFields = $request->fields;
         $this->formRequest = $request->form_request;
-        $name = ucfirst($this->table);
+        $name = Str::studly($this->table);
 
         // form request
         if (!empty($this->formRequest)) {
             $type = self::FORM_REQUEST;
             $this->formRequest = [
-                "{$this->table}IndexRequest",
-                "{$this->table}CreateRequest",
-                "{$this->table}UpdateRequest",
-                "{$this->table}DestroyRequest",
+                "{$name}IndexRequest",
+                "{$name}CreateRequest",
+                "{$name}UpdateRequest",
+                "{$name}DestroyRequest",
             ];
 
             foreach ($this->formRequest as $formRequestClass) {
@@ -92,10 +92,9 @@ final class ScaffoldService
     {
         // Normalize path (convert forward slashes to namespace style)
         $name = str_replace('/', '\\', $name);
-        $name = Str::studly($name); // Capitalize segments
 
         $relativePath = match ($type) {
-            'request' => 'Http/Requests/' . Str::plural(Str::afterLast(Str::studly($this->table), '/')) . '/',
+            'request' => 'Http/Requests/' . Str::plural(Str::studly($this->table)) . '/',
             'controller' => 'Http/Controllers/',
             'model' => 'Models/',
             'repository' => 'Repositories/',
@@ -125,7 +124,7 @@ final class ScaffoldService
     private function resolveNamespace(string $type, string $module, string $name): string
     {
         $base = match ($type) {
-            'request' => "Modules\\{$module}\\Http\\Requests\\" . Str::plural(Str::afterLast(Str::studly($this->table), '/')),
+            'request' => "Modules\\{$module}\\Http\\Requests\\" . Str::plural(Str::studly($this->table)),
             'controller' => "Modules\\{$module}\\Http\\Controllers",
             'model' => "Modules\\{$module}\\Models",
             'repository' => "Modules\\$module\\Repositories",
@@ -151,7 +150,6 @@ final class ScaffoldService
         $search = [];
         $replace = [];
         $model = $this->table;
-        $modelVariable = Str::lower($model);
         $module = $this->module;
         $modelNamespacePath = Str::replace('/', '\\', $model);
         $table = Str::afterLast($model, '/');
@@ -170,15 +168,14 @@ final class ScaffoldService
                 $pluralTable,
                 $formRequest,
             ) {
-                $repository = Str::ucfirst($table) . Str::ucfirst(self::REPOSITORY);
-                $repositoryNamespace = Str::ucfirst($modelNamespacePath) . Str::ucfirst(self::REPOSITORY);
+                $repository = Str::studly($table) . Str::ucfirst(self::REPOSITORY);
+                $repositoryNamespace = Str::studly($modelNamespacePath) . Str::ucfirst(self::REPOSITORY);
 
 
-                $model = $table;
+                $model = Str::studly($table);
                 $pageModule = Str::lower($module);
-                $subModule = Str::lower($model);
-                $pluralVariable = $pluralTable;
-
+                $subModule = Str::kebab($model);
+                $pluralVariable = Str::camel($pluralTable);
                 return StubService::controller(
                     $module,
                     $namespace,
@@ -189,7 +186,7 @@ final class ScaffoldService
                     $formRequest,
                     $subModule,
                     $repositoryNamespace,
-                    $pluralVariable
+                    $pluralVariable,
                 );
             })(),
 
@@ -201,8 +198,9 @@ final class ScaffoldService
                 $modelNamespacePath,
                 $pluralTable,
             ) {
-                $list = $pluralTable;
-                $model = $table;
+                $list = Str::studly($pluralTable);
+                $model = Str::studly($table);
+                $modelNamespacePath = Str::studly($modelNamespacePath);
                 return StubService::repository(
                     $module,
                     $namespace,

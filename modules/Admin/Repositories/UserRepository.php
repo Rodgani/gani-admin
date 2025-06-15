@@ -11,7 +11,7 @@ use Modules\Admin\Models\User;
 
 final class UserRepository
 {
-    public function users(object $request): LengthAwarePaginator
+    public function getUsers(object $request): LengthAwarePaginator
     {
         $search = $request->search ?? null;
         $option = PaginationHelper::pageQueryOptions($request);

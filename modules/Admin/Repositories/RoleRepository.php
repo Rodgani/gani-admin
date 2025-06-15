@@ -14,19 +14,19 @@ use Modules\Admin\Models\Role;
 
 final class RoleRepository
 {
-    public function roles(): Collection
+    public function getRoles(): Collection
     {
         return Role::select('id', 'slug', 'name')->get();
     }
 
-    public function externalUserRoles(): Collection
+    public function getExternalUserRoles(): Collection
     {
         return Role::select('id', 'slug', 'name')
             ->where("type", UserRoleTypeEnum::EXTERNAL)
             ->get();
     }
 
-    public function paginatedRoles(object $request): LengthAwarePaginator
+    public function getPaginatedRoles(object $request): LengthAwarePaginator
     {
         $search = $request->search ?? null;
         $option = PaginationHelper::pageQueryOptions($request);

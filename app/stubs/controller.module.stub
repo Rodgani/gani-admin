@@ -21,7 +21,7 @@ final class {{ class }} extends Controller
      */
     public function index({{ indexFormRequest }} $request): Response
     {
-        ${{ pluralVariable }} = $this->repository->{{ pluralVariable }}($request->validatedObject());
+        ${{ pluralVariable }} = $this->repository->get{{ list }}($request->validatedObject());
         return Inertia::render("{{ pageModule }}/{{ pageSubModule }}/index", [
             "{{ pluralVariable }}" => ${{ pluralVariable }},
         ]);

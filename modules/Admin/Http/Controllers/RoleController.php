@@ -25,7 +25,7 @@ final class RoleController extends Controller
 
     public function index(RoleIndexRequest $request): Response
     {
-        $roles = $this->roleRepository->paginatedRoles($request->validatedObject());
+        $roles = $this->roleRepository->getPaginatedRoles($request->validatedObject());
         return Inertia::render('admin/role/index', [
             "roles" => $roles,
             "default_menus_permissions" => $this->MenuManager->getAllMenus(),

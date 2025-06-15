@@ -31,7 +31,12 @@ final class ScaffoldGenerateRequest extends FormRequest
     {
         return [
             "module" => ['required', 'string', 'not_regex:/\//'],
-            "table" => ['required', 'string', 'not_regex:/\//'],
+             "table" => [
+                'required',
+                'string',
+                'regex:/^[a-z]+(_[a-z]+)*$/',
+                'not_regex:/\//',
+            ],
             "form_request" => 'sometimes|boolean',
             "fields" => 'required|array',
             "fields.*.name" => 'required|string',
