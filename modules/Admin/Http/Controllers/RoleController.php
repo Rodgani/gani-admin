@@ -28,8 +28,8 @@ final class RoleController extends Controller
         $roles = $this->roleRepository->getPaginatedRoles($request->validatedObject());
         return Inertia::render('admin/role/index', [
             "roles" => $roles,
-            "default_menus_permissions" => $this->MenuManager->getAllMenus(),
-            "role_types" => UserRoleTypeEnum::array()
+            "defaultMenuPermissions" => $this->MenuManager->getAllMenus(),
+            "roleTypes" => UserRoleTypeEnum::array()
         ]);
     }
 

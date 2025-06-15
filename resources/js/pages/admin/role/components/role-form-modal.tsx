@@ -12,7 +12,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { RoleFormProps } from '../types/role-props.types';
 import { RoleForm } from '../types/role.types';
 
-export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManager, onSubmit, roleTypes }: RoleFormProps) {
+export default function RoleFormModal({ isOpen, onClose, role, defaultMenuPermissions, onSubmit, roleTypes }: RoleFormProps) {
     const [MenuManagerState, setMenuManagerState] = useState<{ [key: string]: string[] }>({});
 
     const [formData, setFormData] = useState<RoleForm>({
@@ -45,14 +45,18 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
                     type: role.type,
                 });
             } catch (error) {
-                console.log(error);
                 setMenuManagerState({});
             }
-            setCheckAll(true);
+            
+            setCheckAll(false);
+            if(role?.menus_permissions.length!==0){
+                setCheckAll(true);
+            }
+           
         } else {
             setMenuManagerState({});
         }
-    }, [role, isOpen, defaultMenuManager]);
+    }, [role, isOpen, defaultMenuPermissions]);
 
     const hasPermission = (url: string, permission: string): boolean => {
         return MenuManagerState[url]?.includes(permission) ?? false;
@@ -90,7 +94,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
     };
 
     const computedMenuManager = useMemo(() => {
-        return defaultMenuManager
+        return defaultMenuPermissions
             .map((menu) => {
                 if (menu.items) {
                     const filteredItems = menu.items
@@ -115,7 +119,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
                 }
             })
             .filter((menu) => menu !== null);
-    }, [MenuManagerState, defaultMenuManager]);
+    }, [MenuManagerState, defaultMenuPermissions]);
 
     const handleSubmit = () => {
         onSubmit({ ...formData, menus_permissions: computedMenuManager }, role?.id);
@@ -130,7 +134,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
         } else {
             // Check all
             const allCheckedState: { [key: string]: string[] } = {};
-            defaultMenuManager.forEach((menu) => {
+            defaultMenuPermissions.forEach((menu) => {
                 if (menu.items) {
                     menu.items.forEach((item) => {
                         allCheckedState[item.url] = item.permissions || [];
@@ -216,7 +220,7 @@ export default function RoleFormModal({ isOpen, onClose, role, defaultMenuManage
                     <ScrollArea className="w-full rounded-lg">
                         <div className="max-h-[400px] space-y-4 pr-2">
                             <Accordion type="multiple" className="w-full">
-                                {defaultMenuManager.map((menu, index) => (
+                                {defaultMenuPermissions.map((menu, index) => (
                                     <AccordionItem key={index} value={`item-${index}`}>
                                         <AccordionTrigger>{menu.title}</AccordionTrigger>
                                         <AccordionContent>

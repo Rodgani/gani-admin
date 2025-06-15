@@ -4,7 +4,7 @@ export interface RoleFormProps {
     isOpen: boolean;
     onClose: () => void;
     role?: Role;
-    defaultMenuManager: MenuManager;
+    defaultMenuPermissions: MenuManager;
     onSubmit: (formData: {
         name: string;
         slug: string;
@@ -16,6 +16,6 @@ export interface RoleFormProps {
 
 export interface RoleIndexProps {
     roles: PaginatedRoles,
-    default_menus_permissions: MenuManager
-    role_types: string[]
+    defaultMenuPermissions: MenuManager
+    roleTypes: string[]
 }
