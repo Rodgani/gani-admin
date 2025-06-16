@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\HandleTimezone;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Storage;
  */
 
 #[ObservedBy([UserObserver::class])]
-final class User extends Authenticatable
+final class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, HandleTimezone;
     /**

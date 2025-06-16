@@ -14,10 +14,8 @@ use Modules\Authentication\Http\Controllers\VerifyEmailController;
 Route::middleware('guest')->group(function (): void {
 
     Route::controller(RegisteredUserController::class)->prefix('register')->group(function () {
-        Route::get('/',  'index')
-            ->name('register');
-        Route::post('/',  'store')
-            ->name('register');
+        Route::get('/',  'index')->name('register');
+        Route::post('/',  'store');
     });
 
     Route::controller(AuthenticatedSessionController::class)->prefix('login')->group(function () {
