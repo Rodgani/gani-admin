@@ -32,4 +32,11 @@ final class UserFactory extends Factory
             'role_id' => Role::inRandomOrder()->value('id'), // random role ID
         ];
     }
+    
+    public function unverified(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email_verified_at' => null,
+        ]);
+    }
 }

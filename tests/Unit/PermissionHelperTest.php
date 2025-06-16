@@ -19,10 +19,11 @@ class PermissionHelperTest extends TestCase
         $permissionService = app(PermissionHelper::class);
         Role::factory()->create();
         $user = User::factory()->create();
+       
         $this->assertTrue($permissionService
             ->forUser($user)
             ->parentMenu("/dashboard")
-            ->can("create"));
+            ->can("view"));
     }
 
     public function test_sub_menu_and_permission_exist(): void

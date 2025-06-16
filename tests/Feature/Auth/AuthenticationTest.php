@@ -54,6 +54,7 @@ class AuthenticationTest extends TestCase
         $user = User::factory()->create();
 
         // Visit any page to initiate session and CSRF
+        /** @var \Modules\Admin\Models\User $user */
         $this->actingAs($user)->get('/');
 
         $response = $this->post('/logout', [
