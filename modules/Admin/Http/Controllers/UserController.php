@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Http\Controllers;
 
+use App\Helpers\TimezoneHelper;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Modules\Admin\Http\Requests\Users\UserCreateRequest;
@@ -31,7 +32,7 @@ final class UserController extends Controller
         return Inertia::render('admin/user/index', [
             "users" => $users,
             "roles" => $roles,
-            "timezones" => config('app.supported_timezones')
+            "timezones" => TimezoneHelper::getAll()
         ]);
     }
 

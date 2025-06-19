@@ -21,8 +21,8 @@ export interface UserForm {
     email: string;
     password?: string;
     password_confirmation?: string;
-    role_id?: number | string;
-    timezone: string;
+    role?: number | string;
+    country: string;
     [key: string]: string | number | string[] | undefined;
 }
 

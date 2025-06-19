@@ -13,8 +13,8 @@ const emptyFormData: UserForm = {
     email: '',
     password: '',
     password_confirmation: '',
-    role_id: '',
-    timezone: '',
+    role: '',
+    country: '',
 };
 
 export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors, roles, timezones }: UserFormModalProps) {
@@ -38,8 +38,8 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                 email: user.email || '',
                 password: '',
                 password_confirmation: '',
-                role_id: user.role_id || '',
-                timezone: user.timezone || '',
+                role: user.role_id || '',
+                country: user.timezone || '',
             });
         } else {
             setFormData(emptyFormData);
@@ -67,8 +67,8 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
         const baseFields = [
             { name: 'name', type: 'text', placeholder: 'Name', required: true, inputType: 'input' },
             { name: 'email', type: 'email', placeholder: 'Email', required: true, inputType: 'input' },
-            { name: 'role_id', type: 'number', placeholder: 'Select Role', required: true, inputType: 'dropdown' },
-            { name: 'timezone', type: 'text', placeholder: 'Select Timezone', required: true, inputType: 'dropdown' },
+            { name: 'role', type: 'number', placeholder: 'Select Role', required: true, inputType: 'dropdown' },
+            { name: 'country', type: 'text', placeholder: 'Select Country', required: true, inputType: 'dropdown' },
         ];
 
         if (!user) {
@@ -83,6 +83,10 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
         return baseFields;
     }, [user]);
 
+    const timezoneOptions = Object.entries(timezones).map(([value, label]) => ({
+        label,
+        value,
+    }));
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent>
@@ -116,16 +120,16 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                                             <SelectValue placeholder={placeholder} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {name === 'role_id' &&
+                                            {name === 'role' &&
                                                 roles.map((role) => (
                                                     <SelectItem key={role.id} value={String(role.id)}>
                                                         {role.name}
                                                     </SelectItem>
                                                 ))}
-                                            {name === 'timezone' &&
-                                                timezones.map((tz) => (
-                                                    <SelectItem key={tz} value={tz}>
-                                                        {tz}
+                                            {name === 'country' &&
+                                                timezoneOptions.map((option) => (
+                                                     <SelectItem key={option.value} value={option.value}>
+                                                        {option.label}
                                                     </SelectItem>
                                                 ))}
                                         </SelectContent>

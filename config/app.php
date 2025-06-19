@@ -65,23 +65,29 @@ return [
     |
     */
 
+    #TODO
+    // [
+    //     "id" => 1,
+    //     "timezone" => "Asia/Manila",
+    //     "country" => "Philippines"
+    // ]
     'timezone' => 'UTC',
     'supported_timezones' => [
-        "Asia/Manila",        // Philippines
-        "Asia/Bangkok",       // Thailand
-        "Asia/Ho_Chi_Minh",   // Vietnam
-        "Asia/Phnom_Penh",    // Cambodia
-        "Asia/Vientiane",     // Laos (shares with Bangkok)
-        "Asia/Yangon",        // Myanmar
-        "Asia/Jakarta",       // Indonesia (western)
-        "Asia/Pontianak",     // Indonesia (central)
-        "Asia/Makassar",      // Indonesia (central)
-        "Asia/Jayapura",      // Indonesia (eastern)
-        "Asia/Kuala_Lumpur",  // Malaysia
-        "Asia/Kuching",       // Malaysia (Borneo)
-        "Asia/Singapore",     // Singapore
-        "Asia/Brunei",        // Brunei
-        "Asia/Dili",          // Timor-Leste
+        "Asia/Manila" => "Philippines",
+        "Asia/Bangkok" => "Thailand",
+        "Asia/Ho_Chi_Minh" => "Vietnam",
+        "Asia/Phnom_Penh" => "Cambodia",
+        "Asia/Vientiane" => "Laos",
+        "Asia/Yangon" => "Myanmar",
+        "Asia/Jakarta" => "Indonesia Jakarta",
+        "Asia/Pontianak" => "Indonesia Pontianak",
+        "Asia/Makassar" => "Indonesia Makassar", 
+        "Asia/Jayapura" => "Indonesia Jayapura",
+        "Asia/Kuala_Lumpur" => "Malaysia Kuala Lumpur",
+        "Asia/Kuching" => "Malaysia Kuching (Borneo)",
+        "Asia/Singapore" => "Singapore",
+        "Asia/Brunei" => "Brunei",
+        "Asia/Dili" => "Timor-Leste",
     ],
 
     /*

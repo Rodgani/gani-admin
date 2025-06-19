@@ -30,7 +30,7 @@ export default function Register({ roles, timezones }: RegisterProps) {
         password: '',
         password_confirmation: '',
         role: '',
-        country: '',
+        country: 'Asia/Manila',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -40,11 +40,16 @@ export default function Register({ roles, timezones }: RegisterProps) {
         });
     };
 
+    const timezoneOptions = Object.entries(timezones).map(([value, label]) => ({
+        label,
+        value,
+    }));
+
     const fields = [
-        { key: 'country', label: 'Country', type: 'select', options: timezones },
+        { key: 'country', label: 'Select Country', type: 'select', options: timezoneOptions },
         {
             key: 'role',
-            label: 'Your Role',
+            label: 'Select Role',
             type: 'select',
             options: roles.map((role) => ({ label: role.name, value: String(role.id) })),
         },
@@ -66,19 +71,13 @@ export default function Register({ roles, timezones }: RegisterProps) {
                             {type === 'select' ? (
                                 <Select value={data[key as keyof RegisterForm]} onValueChange={(value) => setData(key as keyof RegisterForm, value)}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder={`Select ${label}`} />
+                                        <SelectValue placeholder={`${label}`} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {options?.map((option) =>
-                                            typeof option === 'string' ? (
-                                                <SelectItem key={option} value={option}>
-                                                    {option}
-                                                </SelectItem>
-                                            ) : (
-                                                <SelectItem key={option.value} value={option.value}>
-                                                    {option.label}
-                                                </SelectItem>
-                                            ),
+                                            <SelectItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </SelectItem>
                                         )}
                                     </SelectContent>
                                 </Select>

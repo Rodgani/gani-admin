@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Admin\Http\Requests\Users;
 
 use App\Helpers\PermissionHelper;
+use App\Helpers\TimezoneHelper;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,11 +35,20 @@ final class UserCreateRequest extends FormRequest
             "name" => "required|string|max:255",
             "email" => "required|email|unique:users,email",
             "password" => "required|string|min:8|confirmed",
-            "role_id" => "required|exists:roles,id",
-            "timezone" => [
-                "required",
-                Rule::in(config('app.supported_timezones')),
+            "role" => "required|exists:roles,id",
+            'country' => [
+                'required',
+                Rule::in(TimezoneHelper::getKeys()),
             ],
         ];
+    }
+
+    public function validated($key = null, $default = null)
+    {
+        $validated = parent::validated();
+        $validated['role_id'] = $validated['role'];
+        $validated['timezone'] = $validated['country'];
+        unset($validated['role'], $validated['country']);
+        return $key ? ($validated[$key] ?? $default) : $validated;
     }
 }

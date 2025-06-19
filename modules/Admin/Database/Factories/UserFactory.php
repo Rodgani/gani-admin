@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Database\Factories;
 
+use App\Helpers\TimezoneHelper;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
@@ -22,14 +23,17 @@ final class UserFactory extends Factory
     protected $model = User::class;
     public function definition(): array
     {
+        $timezone = Arr::random(TimezoneHelper::getKeys());
+        $roleId = Role::inRandomOrder()->value('id');
+        
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
-            'timezone' => Arr::random(config('app.supported_timezones')),
-            'role_id' => Role::inRandomOrder()->value('id'), // random role ID
+            'timezone' => $timezone,
+            'role_id' => $roleId,
         ];
     }
     
