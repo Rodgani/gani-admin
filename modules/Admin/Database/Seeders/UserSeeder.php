@@ -24,9 +24,9 @@ final class UserSeeder extends Seeder
                 "email" => "admin@gmail.com",
                 'email_verified_at' => now(),
                 "password" => Hash::make("password"),
-                'remember_token' => Str::random(10),
                 "role_id" => Role::first()->id,
-                "timezone" => "Asia/Manila"
+                "timezone" => "Asia/Manila",
+                "country" => "Philippines"
             ]
         );
 

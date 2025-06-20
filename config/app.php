@@ -68,11 +68,11 @@ return [
     #TODO
     // [
     //     "id" => 1,
-    //     "timezone" => "Asia/Manila",
     //     "country" => "Philippines"
+    //     "timezone" => "Asia/Manila",
     // ]
     'timezone' => 'UTC',
-    'supported_timezones' => [
+    'supported_countries' => [
         "Asia/Manila" => "Philippines",
         "Asia/Bangkok" => "Thailand",
         "Asia/Ho_Chi_Minh" => "Vietnam",

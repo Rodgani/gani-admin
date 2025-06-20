@@ -33,7 +33,7 @@ final class RegisterRequest extends FormRequest
             'role' => "required|exists:roles,id",
             'country' => [
                 'required',
-                Rule::in(TimezoneHelper::getKeys()),
+                Rule::in(TimezoneHelper::getTimezones()),
             ],
         ];
     }
@@ -43,7 +43,8 @@ final class RegisterRequest extends FormRequest
         $validated = parent::validated();
         $validated['role_id'] = $validated['role'];
         $validated['timezone'] = $validated['country'];
-        unset($validated['role'], $validated['country']);
+        $validated['country'] = TimezoneHelper::getCountry($validated['timezone']);
+        unset($validated['role']);
         return $key ? ($validated[$key] ?? $default) : $validated;
     }
 }
