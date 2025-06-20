@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import InputError from './input-error';
-import { usePage } from '@inertiajs/react';
-import { SharedData } from '@/types';
 
 interface AvatarUploaderProps {
   errors: {
     avatar?: string;
   };
   setData: (key: string, value: any) => void;
+  user: {
+    name: string
+    avatar: string
+  }
 }
 
-export default function AvatarUploader({ errors, setData }: AvatarUploaderProps) {
+export default function AvatarUploader({ errors, setData, user }: AvatarUploaderProps) {
 
-    const { auth } = usePage<SharedData>().props;
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     useEffect(() => {
@@ -35,13 +35,14 @@ export default function AvatarUploader({ errors, setData }: AvatarUploaderProps)
         } else {
             setPreviewUrl(null);
         }
+        
     };
 
     return (
         <div className="grid gap-2">
             <div className="relative w-fit group">
                 {/* Hidden file input over the avatar */}
-                <input
+                <Input
                     type="file"
                     accept="image/*"
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
@@ -51,8 +52,8 @@ export default function AvatarUploader({ errors, setData }: AvatarUploaderProps)
                 {/* Avatar with preview fallback */}
                 <Avatar className="size-30 overflow-hidden rounded-full ring-2 ring-gray-300">
                     <AvatarImage
-                        src={previewUrl ?? auth.user.avatar}
-                        alt={auth.user.name}
+                        src={previewUrl ?? user.avatar}
+                        alt={user.name}
                     />
                 </Avatar>
 

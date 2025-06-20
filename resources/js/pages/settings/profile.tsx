@@ -23,7 +23,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 type ProfileForm = {
     name: string;
     email: string;
-    avatar: File | null;
+    avatar: File | string | null;
     _method: string;
 };
 
@@ -32,7 +32,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
         name: auth.user.name,
         email: auth.user.email,
-        avatar: null,
+        avatar: auth.user.avatar ?? null,
         _method: 'patch',
     });
 
@@ -58,6 +58,10 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         <AvatarUploader
                             errors={errors}
                             setData={setData}
+                            user={{
+                                name: auth.user.name ?? '',
+                                avatar: auth.user.avatar ?? ''
+                            }}
                         />
 
                         <div className="grid gap-2">

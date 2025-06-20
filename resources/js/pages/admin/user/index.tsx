@@ -43,7 +43,7 @@ export default function UserIndex({ users, roles, timezones }: UserIndexProps) {
         email: '',
         password: '',
         role_id: '',
-        timezone: '',
+        country: '',
     };
 
     const [formErrors, setFormErrors] = useState<UserForm>(resetForm);
@@ -104,7 +104,7 @@ export default function UserIndex({ users, roles, timezones }: UserIndexProps) {
                         onClose={closeModal}
                         user={selectedUser}
                         onSubmit={handleSubmit}
-                        errors={formErrors} // 🔥 Use local state errors
+                        errors={formErrors}
                         roles={roles}
                         timezones={timezones}
                     />
