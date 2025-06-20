@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTOs;
 
-final readonly class PaginationDTO
+final readonly class PaginationDto
 {
     /**
      * Summary of __construct
