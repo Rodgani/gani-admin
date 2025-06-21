@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Http\Requests\Users;
 
+use App\Helpers\CountryHelper;
 use App\Helpers\PermissionHelper;
 use App\Helpers\TimezoneHelper;
 use Illuminate\Foundation\Http\FormRequest;
@@ -36,9 +37,9 @@ final class UserCreateRequest extends FormRequest
             "email" => "required|email|unique:users,email",
             "password" => "required|string|min:8|confirmed",
             "role" => "required|exists:roles,id",
-            'country' => [
-                'required',
-                Rule::in(TimezoneHelper::getTimezones()),
+            "country" => [
+                "required",
+                Rule::in(CountryHelper::getAll()->pluck('id')),
             ],
         ];
     }
@@ -47,8 +48,11 @@ final class UserCreateRequest extends FormRequest
     {
         $validated = parent::validated();
         $validated['role_id'] = $validated['role'];
-        $validated['timezone'] = $validated['country'];
-        $validated['country'] = TimezoneHelper::getCountry($validated['timezone']);
+        $countryId = (int) $validated['country'];
+        $country = CountryHelper::getCountry($countryId);
+        $validated['country_id'] = $country?->id;
+        $validated['country'] = $country?->name;
+        $validated['timezone'] = $country?->timezone;
         unset($validated['role']);
         return $key ? ($validated[$key] ?? $default) : $validated;
     }

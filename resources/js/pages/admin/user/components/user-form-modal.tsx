@@ -17,10 +17,10 @@ const emptyFormData: UserForm = {
     country: '',
 };
 
-export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors, roles, timezones }: UserFormModalProps) {
+export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors, roles, countries }: UserFormModalProps) {
     const [formData, setFormData] = useState<UserForm>(emptyFormData);
     const [visibleErrors, setVisibleErrors] = useState<UserForm>(emptyFormData);
-
+    
     // Reset visible errors after 3 seconds when errors change
     useEffect(() => {
         setVisibleErrors(errors);
@@ -39,7 +39,7 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                 password: '',
                 password_confirmation: '',
                 role: user.role_id || '',
-                country: user.timezone || '',
+                country: String(user.country_id) || '',
             });
         } else {
             setFormData(emptyFormData);
@@ -83,10 +83,6 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
         return baseFields;
     }, [user]);
 
-    const timezoneOptions = Object.entries(timezones).map(([value, label]) => ({
-        label,
-        value,
-    }));
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent>
@@ -127,9 +123,9 @@ export default function UserFormModal({ isOpen, onClose, user, onSubmit, errors,
                                                     </SelectItem>
                                                 ))}
                                             {name === 'country' &&
-                                                timezoneOptions.map((option) => (
-                                                     <SelectItem key={option.value} value={option.value}>
-                                                        {option.label}
+                                                countries.map((option) => (
+                                                     <SelectItem key={option.id} value={String(option.id)}>
+                                                        {option.name}
                                                     </SelectItem>
                                                 ))}
                                         </SelectContent>

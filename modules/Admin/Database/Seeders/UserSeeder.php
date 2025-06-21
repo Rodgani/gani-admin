@@ -25,8 +25,10 @@ final class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 "password" => Hash::make("password"),
                 "role_id" => Role::first()->id,
+                "country_id" => 1,
+                "country" => "Philippines",
                 "timezone" => "Asia/Manila",
-                "country" => "Philippines"
+                
             ]
         );
 

@@ -4,7 +4,11 @@ export interface UserIndexProps {
     users: PaginatedUsers;
     errors: UserForm;
     roles: { name: string; id: number }[],
-    timezones: string[]
+    countries: {
+        id: string;
+        name: string;
+        timezone: string;
+    }[]
 }
 
 export interface UserFormModalProps {
@@ -14,7 +18,11 @@ export interface UserFormModalProps {
     onSubmit: (formData: UserForm, userId?: number) => void;
     errors: UserForm;
     roles: { name: string; id: number }[];
-    timezones: string[]
+    countries: {
+        id: string;
+        name: string;
+        timezone: string;
+    }[]
 }
 
 export interface SubmitUserFormHandlers {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Admin\Database\Factories;
 
-use App\Helpers\TimezoneHelper;
+use App\Helpers\CountryHelper;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
@@ -23,8 +23,8 @@ final class UserFactory extends Factory
     protected $model = User::class;
     public function definition(): array
     {
-        $timezone = Arr::random(TimezoneHelper::getTimezones());
-        $country = TimezoneHelper::getCountry($timezone);
+        $country = Arr::random(CountryHelper::getAll()->toArray());
+       
         $roleId = Role::inRandomOrder()->value('id');
     
         return [
@@ -32,8 +32,9 @@ final class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
-            'country' =>  $country,
-            'timezone' => $timezone,
+            'country_id' =>  $country['id'],
+            'country' =>  $country['name'],
+            'timezone' => $country['timezone'],
             'role_id' => $roleId,
         ];
     }

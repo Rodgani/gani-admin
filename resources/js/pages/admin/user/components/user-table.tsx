@@ -36,6 +36,7 @@ export default function UserTable({ users, handlePageChange, handleDelete, handl
     { label: 'Name' },
     { label: 'Email' },
     { label: 'Role' },
+    { label: 'Country' },
     { label: 'Timezone' },
     { label: 'Updated At' },
     { label: 'Created At' },
@@ -50,7 +51,8 @@ export default function UserTable({ users, handlePageChange, handleDelete, handl
     { label: 'Name', value: (user) => user.name },
     { label: 'Email', value: (user) => user.email },
     { label: 'Role', value: (user) => user.role?.name },
-    { label: 'Role', value: (user) => user.timezone },
+    { label: 'Country', value: (user) => user.country },
+    { label: 'Timezone', value: (user) => user.timezone },
     { label: 'Updated At', value: (user) => user.updated_at.toLocaleString() },
     { label: 'Created At', value: (user) => user.created_at.toLocaleString() },
   ];

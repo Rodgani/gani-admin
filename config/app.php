@@ -65,30 +65,85 @@ return [
     |
     */
 
-    #TODO
-    // [
-    //     "id" => 1,
-    //     "country" => "Philippines"
-    //     "timezone" => "Asia/Manila",
-    // ]
     'timezone' => 'UTC',
     'supported_countries' => [
-        "Asia/Manila" => "Philippines",
-        "Asia/Bangkok" => "Thailand",
-        "Asia/Ho_Chi_Minh" => "Vietnam",
-        "Asia/Phnom_Penh" => "Cambodia",
-        "Asia/Vientiane" => "Laos",
-        "Asia/Yangon" => "Myanmar",
-        "Asia/Jakarta" => "Indonesia Jakarta",
-        "Asia/Pontianak" => "Indonesia Pontianak",
-        "Asia/Makassar" => "Indonesia Makassar", 
-        "Asia/Jayapura" => "Indonesia Jayapura",
-        "Asia/Kuala_Lumpur" => "Malaysia Kuala Lumpur",
-        "Asia/Kuching" => "Malaysia Kuching (Borneo)",
-        "Asia/Singapore" => "Singapore",
-        "Asia/Brunei" => "Brunei",
-        "Asia/Dili" => "Timor-Leste",
+        [
+            'id' => 1,
+            'name' => 'Philippines',
+            'timezone' => 'Asia/Manila',
+        ],
+        [
+            'id' => 2,
+            'name' => 'Thailand',
+            'timezone' => 'Asia/Bangkok',
+        ],
+        [
+            'id' => 3,
+            'name' => 'Vietnam',
+            'timezone' => 'Asia/Ho_Chi_Minh',
+        ],
+        [
+            'id' => 4,
+            'name' => 'Cambodia',
+            'timezone' => 'Asia/Phnom_Penh',
+        ],
+        [
+            'id' => 5,
+            'name' => 'Laos',
+            'timezone' => 'Asia/Vientiane',
+        ],
+        [
+            'id' => 6,
+            'name' => 'Myanmar',
+            'timezone' => 'Asia/Yangon',
+        ],
+        [
+            'id' => 7,
+            'name' => 'Indonesia Jakarta',
+            'timezone' => 'Asia/Jakarta',
+        ],
+        [
+            'id' => 8,
+            'name' => 'Indonesia Pontianak',
+            'timezone' => 'Asia/Pontianak',
+        ],
+        [
+            'id' => 9,
+            'name' => 'Indonesia Makassar',
+            'timezone' => 'Asia/Makassar',
+        ],
+        [
+            'id' => 10,
+            'name' => 'Indonesia Jayapura',
+            'timezone' => 'Asia/Jayapura',
+        ],
+        [
+            'id' => 11,
+            'name' => 'Malaysia Kuala Lumpur',
+            'timezone' => 'Asia/Kuala_Lumpur',
+        ],
+        [
+            'id' => 12,
+            'name' => 'Malaysia Kuching (Borneo)',
+            'timezone' => 'Asia/Kuching',
+        ],
+        [
+            'id' => 13,
+            'name' => 'Singapore',
+            'timezone' => 'Asia/Singapore',
+        ],
+        [
+            'id' => 14,
+            'name' => 'Brunei',
+            'timezone' => 'Asia/Brunei',
+        ],
+        [
+            'id' => 15,
+            'name' => 'Timor-Leste',
+            'timezone' => 'Asia/Dili',
+        ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------

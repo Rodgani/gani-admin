@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Authentication\Http\Controllers;
 
-use App\Helpers\TimezoneHelper;
+use App\Helpers\CountryHelper;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +30,7 @@ final class RegisteredUserController extends Controller
         $roles =$this->roleRepository->getExternalUserRoles();
         return Inertia::render('auth/register',[
             "roles" => $roles,
-            "timezones" => TimezoneHelper::getAll()
+            "countries" => CountryHelper::getAll()
         ]);
     }
 

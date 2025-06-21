@@ -14,6 +14,8 @@ export interface User {
         name: string;
     };
     timezone: string;
+    country_id: number;
+    country:string;
 }
 
 export interface UserForm {

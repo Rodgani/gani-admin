@@ -21,16 +21,20 @@ type RegisterForm = {
 };
 interface RegisterProps {
     roles: Role[];
-    timezones: string[];
+    countries: {
+        id: string;
+        name: string;
+        timezone: string;
+    }[];
 }
-export default function Register({ roles, timezones }: RegisterProps) {
+export default function Register({ roles, countries }: RegisterProps) {
     const { data, setData, post, processing, errors, reset } = useForm<Required<RegisterForm>>({
         name: '',
         email: '',
         password: '',
         password_confirmation: '',
         role: '',
-        country: 'Asia/Manila',
+        country: '1',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -40,13 +44,8 @@ export default function Register({ roles, timezones }: RegisterProps) {
         });
     };
 
-    const timezoneOptions = Object.entries(timezones).map(([value, label]) => ({
-        label,
-        value,
-    }));
-
     const fields = [
-        { key: 'country', label: 'Select Country', type: 'select', options: timezoneOptions },
+        { key: 'country', label: 'Select Country', type: 'select', options: countries },
         {
             key: 'role',
             label: 'Select Role',
@@ -74,11 +73,19 @@ export default function Register({ roles, timezones }: RegisterProps) {
                                         <SelectValue placeholder={`${label}`} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {options?.map((option) =>
-                                            <SelectItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </SelectItem>
-                                        )}
+                                        <SelectContent>
+                                            {options?.map((option) =>
+                                                'id' in option ? (
+                                                    <SelectItem key={option.id} value={String(option.id)}>
+                                                        {option.name}
+                                                    </SelectItem>
+                                                ) : (
+                                                    <SelectItem key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </SelectItem>
+                                                ),
+                                            )}
+                                        </SelectContent>
                                     </SelectContent>
                                 </Select>
                             ) : (
