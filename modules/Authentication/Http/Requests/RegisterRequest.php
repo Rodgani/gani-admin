@@ -41,8 +41,8 @@ final class RegisterRequest extends FormRequest
     public function validated($key = null, $default = null)
     {
         $validated = parent::validated();
-        $validated['role_id'] = $validated['role'];
-        $countryId = (int) $validated['country'];
+        $validated['role_id'] = $this->role;
+        $countryId = (int) $this->country;
         $country = CountryHelper::getCountry($countryId);
         $validated['country_id'] = $country?->id;
         $validated['country'] = $country?->name;
