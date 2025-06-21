@@ -32,9 +32,9 @@ final class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
-            'country_id' =>  $country['id'],
-            'country' =>  $country['name'],
-            'timezone' => $country['timezone'],
+            'country_id' =>  $country?->id,
+            'country' =>  $country?->name,
+            'timezone' => $country?->timezone,
             'role_id' => $roleId,
         ];
     }
