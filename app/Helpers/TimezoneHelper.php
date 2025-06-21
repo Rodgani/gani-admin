@@ -41,7 +41,7 @@ final class TimezoneHelper
      */
     public static function getAll(): array
     {
-        return collect(config('app.supported_countries'))->toArray();
+        return config('app.supported_countries');
     }
 
     /**
@@ -54,8 +54,8 @@ final class TimezoneHelper
     }
 
     /**
-     * Summary of getCountry
-     * @param string $timezone
+     * Summary of getCountries
+     * @return array
      */
     public static function getCountries(): array
     {
