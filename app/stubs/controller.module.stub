@@ -51,7 +51,7 @@ final class {{ class }} extends Controller
      */
     public function destroy({{ destroyFormRequest }} $request): RedirectResponse
     {
-        $this->repository->destroy{{ model }}($request->validated()['id']);
+        $this->repository->destroy{{ model }}((int) $request->validated()['id']);
         return back();
     }
 }
